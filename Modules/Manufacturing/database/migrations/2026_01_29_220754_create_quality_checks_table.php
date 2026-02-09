@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('quality_checks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('product_id')->constrained('products')->nullOnDelete();
+            $table->foreignId('product_id')->nullable()->constrained('products')->nullOnDelete();
             $table->string('reference_number')->unique();
             $table->date('check_date');
             $table->string('type')->default('final'); // incoming, in_process, final
