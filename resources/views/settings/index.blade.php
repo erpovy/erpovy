@@ -270,7 +270,7 @@
                                         <span class="material-symbols-outlined text-[20px] text-green-500">database</span>
                                     </div>
                                     <div>
-                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Cache</p>
+                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Önbellek</p>
                                         <p class="text-sm text-white font-bold">Uygulama</p>
                                     </div>
                                 </div>
@@ -282,7 +282,7 @@
                                         <span class="material-symbols-outlined text-[20px] text-blue-500">visibility</span>
                                     </div>
                                     <div>
-                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Views</p>
+                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Görünüm</p>
                                         <p class="text-sm text-white font-bold">Görünüm</p>
                                     </div>
                                 </div>
@@ -294,7 +294,7 @@
                                         <span class="material-symbols-outlined text-[20px] text-purple-500">settings</span>
                                     </div>
                                     <div>
-                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Config</p>
+                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Ayarlar</p>
                                         <p class="text-sm text-white font-bold">Yapılandırma</p>
                                     </div>
                                 </div>
@@ -306,7 +306,7 @@
                                         <span class="material-symbols-outlined text-[20px] text-orange-500">route</span>
                                     </div>
                                     <div>
-                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Routes</p>
+                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Rotalar</p>
                                         <p class="text-sm text-white font-bold">Rotalar</p>
                                     </div>
                                 </div>
@@ -450,7 +450,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Back-end</p>
+                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Altyapi</p>
                                                 <p class="text-lg text-white font-black">Laravel 12</p>
                                             </div>
                                         </div>
@@ -472,7 +472,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Full-stack</p>
+                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Tam Yığın</p>
                                                 <p class="text-lg text-white font-black">Livewire 3</p>
                                             </div>
                                         </div>
@@ -494,7 +494,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Front-end</p>
+                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Ön Yüz</p>
                                                 <p class="text-lg text-white font-black">Alpine.js</p>
                                             </div>
                                         </div>
@@ -516,7 +516,7 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Styling</p>
+                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Tasarım</p>
                                                 <p class="text-lg text-white font-black">Tailwind 4</p>
                                             </div>
                                         </div>
