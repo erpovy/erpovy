@@ -27,7 +27,7 @@ return new class extends Migration
             $table->timestamps();
 
             // Indexes
-            $table->index(['company_id', 'transaction_type', 'transaction_id']);
+            $table->index(['company_id', 'transaction_type', 'transaction_id'], 'cnt_comp_type_trans_idx');
             $table->index(['company_id', 'transaction_date']);
             $table->index(['company_id', 'action']);
         });
