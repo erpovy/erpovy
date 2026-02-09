@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bill_of_material_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('bill_of_material_id')->constrained('bill_of_materials')->cascadeOnDelete();
-            $table->foreignId('product_id')->constrained('products')->nullOnDelete(); // Bileşen/Hammadde
+            $table->foreignId('product_id')->nullable()->constrained('products')->nullOnDelete(); // Bileşen/Hammadde
             $table->decimal('quantity', 10, 4)->default(0);
             $table->string('unit')->nullable(); // Adet, Kg, Mt
             $table->decimal('wastage_percent', 5, 2)->default(0);
