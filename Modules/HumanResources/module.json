@@ -1,0 +1,11 @@
+{
+    "name": "HumanResources",
+    "alias": "humanresources",
+    "description": "Human Resources Management Module",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\HumanResources\\Providers\\HumanResourcesServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,9 @@
+{
+    "Accounting": true,
+    "CRM": true,
+    "Inventory": true,
+    "SuperAdmin": true,
+    "HumanResources": true,
+    "Manufacturing": true,
+    "Sales": true
+}
