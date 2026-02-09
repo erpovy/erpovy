@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bill_of_materials', function (Blueprint $table) {
             $table->id();
             $table->foreignId('company_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('product_id')->constrained('products')->nullOnDelete();
+            $table->foreignId('product_id')->nullable()->constrained('products')->nullOnDelete();
             $table->string('code')->nullable();
             $table->string('name')->nullable();
             $table->string('version')->default('v1.0');
