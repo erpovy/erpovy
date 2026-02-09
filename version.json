@@ -1,5 +1,5 @@
 {
-    "version": "v2.0.0",
-    "last_updated": "2026-01-31 00:45:00",
-    "description": "Erpovy V2 Major Update: Complete redesign of Dashboard & Accounting module with Glassmorphism/Grid V2 architecture. New CRM Deals Kanban board with Drag & Drop functionality."
+    "version": "v2.0.1",
+    "last_updated": "2026-02-10 02:48:00",
+    "description": "Hotfix & Localization Update. Fixed RoleDoesNotExist error on user registration by ensuring company-specific roles are created automatically. Full localization of navigation and settings UI. Updated system branding to 'Erpovy Kurumsal Yönetim Sistemi V2'."
 }
