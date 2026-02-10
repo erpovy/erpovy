@@ -23,16 +23,6 @@ class SettingsController extends Controller
         $logoExpanded = \App\Models\Setting::get('logo_expanded');
         $loginBackground = \App\Models\Setting::get('login_background');
 
-        $debugLog = storage_path('logs/logo_debug.log');
-        $logData = date('Y-m-d H:i:s') . " [INDEX] \n";
-        $logData .= "  User: " . auth()->id() . " (SuperAdmin: " . (auth()->user()->is_super_admin ? 'Yes' : 'No') . ")\n";
-        $logData .= "  logo_collapsed: " . ($logoCollapsed ?: 'NULL') . "\n";
-        $logData .= "  logo_expanded: " . ($logoExpanded ?: 'NULL') . "\n";
-        $logData .= "  URL(logoCollapsed): " . url($logoCollapsed) . "\n";
-        $logData .= "  Asset(logoCollapsed): " . asset($logoCollapsed) . "\n";
-        $logData .= "-----------------------------------\n";
-        file_put_contents($debugLog, $logData, FILE_APPEND);
-
         return view('settings.index', compact('cacheSize', 'logoCollapsed', 'logoExpanded', 'loginBackground'));
     }
 
@@ -43,17 +33,12 @@ class SettingsController extends Controller
     {
         // Security Check: Only SuperAdmin
         if (!auth()->user()->is_super_admin) {
-            Log::warning('SettingsController: Unauthorized access attempt'); // Keep this log for security
+            Log::warning('SettingsController: Unauthorized access attempt');
             abort(403, 'Bu işlemi yapmaya yetkiniz yok.');
         }
 
         // Check if any file was actually sent in the request
-        // This helps catch cases where files are too large for PHP's upload_max_filesize or post_max_size
         if ($request->isMethod('post') && empty($request->allFiles()) && !$request->has('remove_login_background')) {
-            // Minimal debug log for this specific case
-            $debugLog = storage_path('logs/logo_debug.log');
-            $logData = date('Y-m-d H:i:s') . " [UPDATE_ERROR] No files received. User: " . auth()->id() . "\n";
-            file_put_contents($debugLog, $logData, FILE_APPEND);
             return back()->with('error', 'Sunucuya hiçbir dosya ulaşmadı. Dosya boyutu sunucu limitlerini (upload_max_filesize veya post_max_size) aşıyor olabilir.');
         }
 
