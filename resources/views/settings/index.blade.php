@@ -105,7 +105,7 @@
                                          @click="$refs.logoCollapsedInput.click()">
                                         
                                         @if($logoCollapsed)
-                                            <img x-show="!preview" src="{{ asset($logoCollapsed) }}" class="absolute inset-0 w-full h-full object-contain p-8">
+                                            <img x-show="!preview" src="{{ str_starts_with($logoCollapsed, 'http') ? $logoCollapsed : url($logoCollapsed) }}" class="absolute inset-0 w-full h-full object-contain p-8">
                                         @endif
                                         
                                         <img x-show="preview" :src="preview" class="absolute inset-0 w-full h-full object-contain p-8">
@@ -145,7 +145,7 @@
                                          @click="$refs.logoExpandedInput.click()">
                                         
                                         @if($logoExpanded)
-                                            <img x-show="!preview" src="{{ asset($logoExpanded) }}" class="absolute inset-0 w-full h-full object-contain p-8">
+                                            <img x-show="!preview" src="{{ str_starts_with($logoExpanded, 'http') ? $logoExpanded : url($logoExpanded) }}" class="absolute inset-0 w-full h-full object-contain p-8">
                                         @endif
                                         
                                         <img x-show="preview" :src="preview" class="absolute inset-0 w-full h-full object-contain p-8">
@@ -187,9 +187,9 @@
                                         @if(isset($loginBackground) && $loginBackground)
                                             <div x-show="!preview" class="absolute inset-0">
                                                 @if(Str::endsWith($loginBackground, ['.mp4', '.webm']))
-                                                    <video src="{{ asset($loginBackground) }}" class="w-full h-full object-cover" muted loop autoplay></video>
+                                                    <video src="{{ str_starts_with($loginBackground, 'http') ? $loginBackground : url($loginBackground) }}" class="w-full h-full object-cover" muted loop autoplay></video>
                                                 @else
-                                                    <img src="{{ asset($loginBackground) }}" class="w-full h-full object-cover">
+                                                    <img src="{{ str_starts_with($loginBackground, 'http') ? $loginBackground : url($loginBackground) }}" class="w-full h-full object-cover">
                                                 @endif
                                             </div>
                                         @endif

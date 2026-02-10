@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 
 class SettingsController extends Controller
 {
@@ -30,8 +31,17 @@ class SettingsController extends Controller
      */
     public function updateAppearance(Request $request)
     {
+        Log::info('SettingsController: updateAppearance called', [
+            'user' => auth()->id(),
+            'is_super_admin' => auth()->user()->is_super_admin,
+            'has_logo_collapsed' => $request->hasFile('logo_collapsed'),
+            'has_logo_expanded' => $request->hasFile('logo_expanded'),
+            'files' => array_keys($request->allFiles())
+        ]);
+
         // Security Check: Only SuperAdmin
         if (!auth()->user()->is_super_admin) {
+            Log::warning('SettingsController: Unauthorized access attempt');
             abort(403, 'Bu işlemi yapmaya yetkiniz yok.');
         }
 
@@ -57,7 +67,7 @@ class SettingsController extends Controller
             $path = $request->file('logo_collapsed')->store('logos', 'public');
             \App\Models\Setting::updateOrCreate(
                 ['key' => 'logo_collapsed'],
-                ['value' => 'storage/' . $path]
+                ['value' => \Illuminate\Support\Facades\Storage::disk('public')->url($path)]
             );
         }
 
@@ -65,7 +75,7 @@ class SettingsController extends Controller
             $path = $request->file('logo_expanded')->store('logos', 'public');
             \App\Models\Setting::updateOrCreate(
                 ['key' => 'logo_expanded'],
-                ['value' => 'storage/' . $path]
+                ['value' => \Illuminate\Support\Facades\Storage::disk('public')->url($path)]
             );
         }
 
@@ -73,7 +83,7 @@ class SettingsController extends Controller
             $path = $request->file('login_background')->store('backgrounds', 'public');
             \App\Models\Setting::updateOrCreate(
                 ['key' => 'login_background'],
-                ['value' => 'storage/' . $path]
+                ['value' => \Illuminate\Support\Facades\Storage::disk('public')->url($path)]
             );
         }
 
