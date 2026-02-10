@@ -38,5 +38,6 @@ Route::middleware(['auth', 'verified'])->prefix('hr')->name('hr.')->group(functi
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('permissions', PermissionController::class);
+    Route::post('permissions/seed', [PermissionController::class, 'seed'])->name('permissions.seed');
     Route::resource('departments', \Modules\HumanResources\Http\Controllers\DepartmentController::class);
 });

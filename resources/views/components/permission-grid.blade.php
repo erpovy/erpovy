@@ -54,6 +54,27 @@
     }
 @endphp
 
+@if(empty($groupedPermissions))
+    <div class="col-span-full bg-amber-500/10 border border-amber-500/20 rounded-2xl p-8 text-center space-y-4 my-8">
+        <div class="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto text-amber-500 shadow-lg shadow-amber-500/10 mb-4">
+            <span class="material-symbols-outlined text-4xl">warning</span>
+        </div>
+        <h3 class="text-xl font-bold text-white">Standart Yetki Tanımları Eksik</h3>
+        <p class="text-gray-400 max-w-md mx-auto">
+            Sistem yetki tanımları henüz veritabanına yüklenmemiş. Kutucukların görünebilmesi ve seçim yapabilmeniz için tanımları yüklemeniz gerekmektedir.
+        </p>
+        <div class="pt-4">
+            <form action="{{ route('hr.permissions.seed') }}" method="POST">
+                @csrf
+                <button type="submit" class="px-8 py-3 bg-amber-500 hover:bg-amber-600 text-black font-bold rounded-xl transition-all shadow-lg shadow-amber-500/20 flex items-center gap-2 mx-auto scale-110">
+                    <span class="material-symbols-outlined">database</span>
+                    STANDART TANIMLARI YÜKLE
+                </button>
+            </form>
+        </div>
+        <p class="text-xs text-amber-500/60 pt-2 italic">Not: Bu işlem sadece bir kez yapılmalıdır.</p>
+    </div>
+@else
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     @foreach(collect($resources)->groupBy('module') as $module => $moduleResources)
         <div class="space-y-4">
@@ -108,3 +129,4 @@
         </div>
     @endforeach
 </div>
+@endif

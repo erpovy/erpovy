@@ -60,4 +60,16 @@ class PermissionController extends Controller
 
         return redirect()->route('hr.permissions.index')->with('success', 'Yetki başarıyla silindi.');
     }
+
+    public function seed()
+    {
+        try {
+            \Illuminate\Support\Facades\Artisan::call('db:seed', [
+                '--class' => 'RoleAndPermissionSeeder'
+            ]);
+            return back()->with('success', 'Standart yetki tanımları başarıyla yüklendi.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Hata oluştu: ' . $e->getMessage());
+        }
+    }
 }
