@@ -51,6 +51,15 @@
                         </div>
                     </div>
 
+                    <div class="mt-8 space-y-4">
+                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-widest border-b border-white/10 pb-2 flex items-center gap-2">
+                             <span class="material-symbols-outlined text-lg">person_add_analytics</span>
+                             Ekstra Yetkiler (Opsiyonel)
+                        </h3>
+                        <p class="text-xs text-gray-500 italic">Bu yetkiler, kullanıcının rolüne ek olarak doğrudan kendisine atanır.</p>
+                        <x-permission-grid :permissions="$permissions" :selectedPermissions="$selectedPermissions" />
+                    </div>
+
                     @if($user->employee)
                     <div class="border-t border-white/10 pt-6 mt-6">
                         <h3 class="text-lg font-semibold text-white mb-4">Çalışan Bilgileri</h3>
