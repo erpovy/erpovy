@@ -110,7 +110,9 @@ class InvoiceController extends Controller
     public function create()
     {
         $contacts = Contact::where('type', 'customer')->orderBy('name')->get();
-        $products = Product::where('type', 'good')->orWhere('type', 'service')->orderBy('name')->get();
+        $products = Product::whereHas('productType', function($q) {
+            $q->whereIn('code', ['good', 'service']);
+        })->orderBy('name')->get();
         return view('accounting::invoices.create', compact('contacts', 'products'));
     }
 
