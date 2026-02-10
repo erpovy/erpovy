@@ -34,9 +34,18 @@
                     </div>
 
                     <div class="mt-8 space-y-4">
-                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-widest border-b border-white/10 pb-2 flex items-center gap-2">
-                             <span class="material-symbols-outlined text-lg">shield_lock</span>
-                             Rol Yetkileri
+                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-widest border-b border-white/10 pb-2 flex items-center justify-between gap-2">
+                             <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-lg">shield_lock</span>
+                                Rol Yetkileri
+                             </div>
+                             <form action="{{ route('hr.permissions.seed') }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="text-[10px] bg-amber-500/10 hover:bg-amber-500/20 text-amber-500 px-3 py-1 rounded-lg border border-amber-500/20 transition-all flex items-center gap-1 group">
+                                    <span class="material-symbols-outlined text-sm group-hover:rotate-180 transition-transform">sync</span>
+                                    Yetkileri Otomatik Onar
+                                </button>
+                             </form>
                         </h3>
                         <x-permission-grid :permissions="$permissions" :selectedPermissions="$selectedPermissions" />
                     </div>

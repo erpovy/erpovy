@@ -78,8 +78,17 @@
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
     @foreach(collect($resources)->groupBy('module') as $module => $moduleResources)
         <div class="space-y-4">
-            <h3 class="text-sm font-semibold text-primary uppercase tracking-wider px-3 border-l-4 border-primary bg-primary/5 py-1 rounded-r-lg">
-                {{ $module }}
+            <h3 class="text-sm font-semibold text-primary uppercase tracking-wider px-3 border-l-4 border-primary bg-primary/5 py-1 rounded-r-lg flex justify-between items-center">
+                <span>{{ $module }}</span>
+                @if($loop->first)
+                    <form action="{{ route('hr.permissions.seed') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-[10px] bg-amber-500/20 hover:bg-amber-500/40 text-amber-500 px-2 py-0.5 rounded border border-amber-500/30 transition-colors flex items-center gap-1">
+                            <span class="material-symbols-outlined text-xs">sync</span>
+                            Tabloyu Onar / Tanımları Yükle
+                        </button>
+                    </form>
+                @endif
             </h3>
             
             <div class="overflow-hidden rounded-xl border border-white/10 bg-white/5">
