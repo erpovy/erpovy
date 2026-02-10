@@ -23,6 +23,16 @@ class SettingsController extends Controller
         $logoExpanded = \App\Models\Setting::get('logo_expanded');
         $loginBackground = \App\Models\Setting::get('login_background');
 
+        $debugLog = storage_path('logs/logo_debug.log');
+        $logData = date('Y-m-d H:i:s') . " [INDEX] \n";
+        $logData .= "  User: " . auth()->id() . " (SuperAdmin: " . (auth()->user()->is_super_admin ? 'Yes' : 'No') . ")\n";
+        $logData .= "  logo_collapsed: " . ($logoCollapsed ?: 'NULL') . "\n";
+        $logData .= "  logo_expanded: " . ($logoExpanded ?: 'NULL') . "\n";
+        $logData .= "  URL(logoCollapsed): " . url($logoCollapsed) . "\n";
+        $logData .= "  Asset(logoCollapsed): " . asset($logoCollapsed) . "\n";
+        $logData .= "-----------------------------------\n";
+        file_put_contents($debugLog, $logData, FILE_APPEND);
+
         return view('settings.index', compact('cacheSize', 'logoCollapsed', 'logoExpanded', 'loginBackground'));
     }
 
@@ -31,13 +41,19 @@ class SettingsController extends Controller
      */
     public function updateAppearance(Request $request)
     {
-        Log::info('SettingsController: updateAppearance called', [
-            'user' => auth()->id(),
-            'is_super_admin' => auth()->user()->is_super_admin,
-            'has_logo_collapsed' => $request->hasFile('logo_collapsed'),
-            'has_logo_expanded' => $request->hasFile('logo_expanded'),
-            'files' => array_keys($request->allFiles())
-        ]);
+        $debugLog = storage_path('logs/logo_debug.log');
+        $logData = date('Y-m-d H:i:s') . " [UPDATE] \n";
+        $logData .= "  User: " . auth()->id() . "\n";
+        $logData .= "  Files in Request: " . implode(', ', array_keys($request->allFiles())) . "\n";
+        
+        if ($request->hasFile('logo_collapsed')) {
+            $f = $request->file('logo_collapsed');
+            $logData .= "  logo_collapsed: Found. Size: " . $f->getSize() . " bytes, Mime: " . $f->getMimeType() . ", OriginalName: " . $f->getClientOriginalName() . "\n";
+        } else {
+            $logData .= "  logo_collapsed: NOT FOUND (Checked key: logo_collapsed)\n";
+        }
+        
+        file_put_contents($debugLog, $logData, FILE_APPEND);
 
         // Security Check: Only SuperAdmin
         if (!auth()->user()->is_super_admin) {
