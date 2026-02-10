@@ -104,12 +104,24 @@
                     <div class="mb-6">
                         <label for="currency" class="block text-sm font-semibold text-white mb-2">Para Birimi *</label>
                         <select id="currency" name="currency" required
-                                class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
-                            <option value="TRY" selected>TRY - Türk Lirası</option>
-                            <option value="USD">USD - Amerikan Doları</option>
-                            <option value="EUR">EUR - Euro</option>
-                            <option value="GBP">GBP - İngiliz Sterlini</option>
+                                class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all overflow-hidden">
+                            <option value="TRY" selected class="bg-slate-900">TRY - Türk Lirası</option>
+                            <option value="USD" class="bg-slate-900">USD - Amerikan Doları</option>
+                            <option value="EUR" class="bg-slate-900">EUR - Euro</option>
+                            <option value="GBP" class="bg-slate-900">GBP - İngiliz Sterlini</option>
                         </select>
+                    </div>
+
+                    <!-- Açılış Bakiyesi -->
+                    <div class="mb-6">
+                        <label for="opening_balance" class="block text-sm font-semibold text-white mb-2">Açılış Bakiyesi *</label>
+                        <div class="relative">
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500">account_balance_wallet</span>
+                            <input type="number" id="opening_balance" name="opening_balance" step="0.01" required
+                                   class="w-full pl-12 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all font-mono"
+                                   placeholder="0.00" value="0.00">
+                        </div>
+                        <p class="text-xs text-slate-400 mt-2">Hesabın sisteme giriş tarihindeki mevcut bakiye tutarı.</p>
                     </div>
 
                     <!-- Açıklama -->

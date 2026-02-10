@@ -46,6 +46,11 @@ class CashBankAccountController extends Controller
             'branch' => 'nullable|string|max:255',
             'account_number' => 'nullable|string|max:255',
             'iban' => 'nullable|string|max:34',
+        ], [], [
+            'type' => 'Hesap Tipi',
+            'name' => 'Hesap Adı',
+            'currency' => 'Para Birimi',
+            'opening_balance' => 'Açılış Bakiyesi',
         ]);
 
         $validated['company_id'] = auth()->user()->company_id;
