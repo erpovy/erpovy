@@ -16,23 +16,7 @@ class RoleAndPermissionSeeder extends Seeder
         // Reset cached roles and permissions
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // Create roles
-        $roles = [
-            'Admin' => 'Yönetici - Tüm yetkilere sahip',
-            'Manager' => 'Müdür - Çoğu yetkilere sahip',
-            'Employee' => 'Çalışan - Sınırlı yetkiler',
-            'Accountant' => 'Muhasebeci - Muhasebe modülü yetkileri',
-            'Sales' => 'Satış - Satış ve CRM yetkileri',
-        ];
-
-        foreach ($roles as $roleName => $description) {
-            Role::firstOrCreate(
-                ['name' => $roleName],
-                ['guard_name' => 'web']
-            );
-        }
-
-        // Create permissions
+        // 1. Create permissions (Global)
         $permissions = [
             // User & Access Management
             'view users', 'create users', 'edit users', 'delete users',
@@ -81,47 +65,63 @@ class RoleAndPermissionSeeder extends Seeder
 
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(
-                ['name' => $permission],
-                ['guard_name' => 'web']
+                ['name' => $permission, 'guard_name' => 'web']
             );
         }
 
-        // Assign all permissions to Admin role
-        $adminRole = Role::findByName('Admin');
-        $adminRole->syncPermissions(Permission::all());
+        // 2. Create roles for each company
+        $roles = [
+            'Admin' => 'Yönetici - Tüm yetkilere sahip',
+            'Manager' => 'Müdür - Çoğu yetkilere sahip',
+            'Employee' => 'Çalışan - Sınırlı yetkiler',
+            'Accountant' => 'Muhasebeci - Muhasebe modülü yetkileri',
+            'Sales' => 'Satış - Satış ve CRM yetkileri',
+        ];
 
-        // Assign specific permissions to other roles
-        $managerRole = Role::findByName('Manager');
-        $managerRole->syncPermissions([
-            'view users', 'create users', 'edit users',
-            'view companies', 'edit companies',
-            'view accounting', 'view invoices', 'create invoices', 'edit invoices', 'view cash-bank', 'create cash-bank', 'view reports',
-            'view crm', 'view contacts', 'create contacts', 'edit contacts',
-            'view hr', 'view employees', 'create employees', 'edit employees', 'view departments', 'view leaves',
-            'view inventory', 'view products', 'create products', 'edit products', 'manage stock', 'view stock-movements',
-            'view sales', 'view subscriptions', 'create subscriptions', 'view rentals',
-            'view manufacturing', 'view bom',
-        ]);
+        $companies = \App\Models\Company::all();
 
-        $accountantRole = Role::findByName('Accountant');
-        $accountantRole->syncPermissions([
-            'view accounting', 'view invoices', 'create invoices', 'edit invoices', 'view cash-bank', 'create cash-bank', 'view reports',
-            'view crm', 'view contacts',
-        ]);
+        foreach ($companies as $company) {
+            setPermissionsTeamId($company->id);
 
-        $salesRole = Role::findByName('Sales');
-        $salesRole->syncPermissions([
-            'view crm', 'view contacts', 'create contacts', 'edit contacts',
-            'view sales', 'view subscriptions', 'create subscriptions', 'view rentals', 'create rentals',
-            'view inventory', 'view products',
-        ]);
+            foreach ($roles as $roleName => $description) {
+                $role = Role::firstOrCreate(
+                    ['name' => $roleName, 'company_id' => $company->id, 'guard_name' => 'web']
+                );
 
-        $employeeRole = Role::findByName('Employee');
-        $employeeRole->syncPermissions([
-            'view crm', 'view inventory', 'view products',
-            'view sales',
-        ]);
+                // Assign permissions based on role
+                if ($roleName === 'Admin') {
+                    $role->syncPermissions(Permission::all());
+                } elseif ($roleName === 'Manager') {
+                    $role->syncPermissions([
+                        'view users', 'create users', 'edit users',
+                        'view companies', 'edit companies',
+                        'view accounting', 'view invoices', 'create invoices', 'edit invoices', 'view cash-bank', 'create cash-bank', 'view reports',
+                        'view crm', 'view contacts', 'create contacts', 'edit contacts',
+                        'view hr', 'view employees', 'create employees', 'edit employees', 'view departments', 'view leaves',
+                        'view inventory', 'view products', 'create products', 'edit products', 'manage stock', 'view stock-movements',
+                        'view sales', 'view subscriptions', 'create subscriptions', 'view rentals',
+                        'view manufacturing', 'view bom',
+                    ]);
+                } elseif ($roleName === 'Accountant') {
+                    $role->syncPermissions([
+                        'view accounting', 'view invoices', 'create invoices', 'edit invoices', 'view cash-bank', 'create cash-bank', 'view reports',
+                        'view crm', 'view contacts',
+                    ]);
+                } elseif ($roleName === 'Sales') {
+                    $role->syncPermissions([
+                        'view crm', 'view contacts', 'create contacts', 'edit contacts',
+                        'view sales', 'view subscriptions', 'create subscriptions', 'view rentals', 'create rentals',
+                        'view inventory', 'view products',
+                    ]);
+                } elseif ($roleName === 'Employee') {
+                    $role->syncPermissions([
+                        'view crm', 'view inventory', 'view products',
+                        'view sales',
+                    ]);
+                }
+            }
+        }
 
-        $this->command->info('Roles and permissions updated successfully!');
+        $this->command->info('Roles and permissions updated for all companies successfully!');
     }
 }

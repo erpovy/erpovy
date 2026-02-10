@@ -16,7 +16,8 @@ class RoleController extends Controller
         // Since we didn't extend Spatie Role model yet, we can't use 'with'.
         // Let's just user query builder or a simple loop for now to avoid complexity of extending Spatie package model right now.
         // Actually, easiest is to just get them.
-        $roles = \Spatie\Permission\Models\Role::where('name', '!=', 'SuperAdmin')
+        $roles = \Spatie\Permission\Models\Role::where('company_id', auth()->user()->company_id)
+            ->where('name', '!=', 'SuperAdmin')
             ->orderBy('department_id') // Group by department logic
             ->latest()
             ->paginate(10);
