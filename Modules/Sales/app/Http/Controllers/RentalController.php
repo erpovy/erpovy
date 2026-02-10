@@ -49,7 +49,9 @@ class RentalController extends Controller
     public function create()
     {
         $contacts = Contact::where('type', 'customer')->orderBy('name')->get();
-        $products = Product::where('type', 'product')->orderBy('name')->get();
+        $products = Product::whereHas('productType', function($q) {
+            $q->where('code', 'good');
+        })->orderBy('name')->get();
         return view('sales::rentals.create', compact('contacts', 'products'));
     }
 
