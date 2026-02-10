@@ -8,6 +8,7 @@ use Modules\CRM\Models\Contact;
 use Modules\Inventory\Models\Product;
 use Illuminate\Support\Facades\DB;
 use App\Services\WeatherService;
+use Modules\Accounting\Models\CashBankTransaction;
 
 class DashboardController extends Controller
 {
@@ -22,11 +23,11 @@ class DashboardController extends Controller
 
     public function index()
     {
-        // Monthly Revenue (Accounting)
-        $monthlyRevenue = Invoice::whereMonth('issue_date', now()->month)
-            ->whereYear('issue_date', now()->year)
-            ->where('status', 'paid')
-            ->sum('total_amount');
+        // Monthly Revenue (Cash Inflow)
+        $monthlyRevenue = CashBankTransaction::whereMonth('transaction_date', now()->month)
+            ->whereYear('transaction_date', now()->year)
+            ->where('type', 'income')
+            ->sum('amount');
 
         // Pending Invoices (Accounting)
         $pendingInvoicesCount = Invoice::where('status', 'pending')->count();
@@ -57,10 +58,10 @@ class DashboardController extends Controller
             // In Turkish locale with translatedFormat, it should give Oca, Şuban, etc.
             $monthName = $date->translatedFormat('M'); 
             
-            $revenue = Invoice::whereYear('issue_date', $date->year)
-                ->whereMonth('issue_date', $date->month)
-                ->where('status', 'paid')
-                ->sum('total_amount');
+            $revenue = CashBankTransaction::whereYear('transaction_date', $date->year)
+                ->whereMonth('transaction_date', $date->month)
+                ->where('type', 'income')
+                ->sum('amount');
             
             $chartData->push([
                 'month' => $monthName,

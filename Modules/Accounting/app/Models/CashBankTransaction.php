@@ -5,9 +5,12 @@ namespace Modules\Accounting\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\CRM\Models\Contact;
+use App\Traits\BelongsToCompany;
 
 class CashBankTransaction extends Model
 {
+    use BelongsToCompany;
+
     protected $fillable = [
         'company_id',
         'cash_bank_account_id',
