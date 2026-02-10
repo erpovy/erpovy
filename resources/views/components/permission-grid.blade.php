@@ -50,7 +50,11 @@
              if ($action === 'manage' && isset($resources[$resource])) {
                  $groupedPermissions[$resource]['manage'] = $permission->id;
              }
-        }@if(empty($groupedPermissions))
+        }
+    }
+@endphp
+
+@if(empty($groupedPermissions))
     <div class="col-span-full bg-amber-500/10 border border-amber-500/20 rounded-2xl p-8 text-center space-y-4 my-8">
         <div class="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto text-amber-500 shadow-lg shadow-amber-500/10 mb-4">
             <span class="material-symbols-outlined text-4xl">warning</span>
