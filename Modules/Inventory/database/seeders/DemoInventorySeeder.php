@@ -14,7 +14,7 @@ class DemoInventorySeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run(int $companyId = 1): void
     {
         // 1. Create Default Categories
         $categories = [
@@ -25,7 +25,7 @@ class DemoInventorySeeder extends Seeder
         ];
 
         foreach ($categories as $cat) {
-            Category::updateOrCreate(['name' => $cat['name'], 'company_id' => 1], $cat);
+            Category::updateOrCreate(['name' => $cat['name'], 'company_id' => $companyId], $cat);
         }
 
         // 2. Create Default Units
@@ -37,12 +37,12 @@ class DemoInventorySeeder extends Seeder
         ];
 
         foreach ($units as $unit) {
-            Unit::updateOrCreate(['symbol' => $unit['symbol'], 'company_id' => 1], $unit);
+            Unit::updateOrCreate(['symbol' => $unit['symbol'], 'company_id' => $companyId], $unit);
         }
 
         // 3. Create Default Warehouse
         Warehouse::updateOrCreate(
-            ['name' => 'Ana Depo', 'company_id' => 1],
+            ['name' => 'Ana Depo', 'company_id' => $companyId],
             [
                 'code' => 'WH01',
                 'address' => 'Merkez Ofis Depo Katı',
@@ -51,10 +51,10 @@ class DemoInventorySeeder extends Seeder
         );
 
         // 4. Create Demo Products
-        $catElektronik = Category::where('name', 'Elektronik')->first();
-        $catOfis = Category::where('name', 'Ofis Malzemeleri')->first();
-        $unitAdet = Unit::where('symbol', 'AD')->first();
-        $typeMal = ProductType::where('code', 'good')->first();
+        $catElektronik = Category::where('name', 'Elektronik')->where('company_id', $companyId)->first();
+        $catOfis = Category::where('name', 'Ofis Malzemeleri')->where('company_id', $companyId)->first();
+        $unitAdet = Unit::where('symbol', 'AD')->where('company_id', $companyId)->first();
+        $typeMal = ProductType::where('code', 'good')->first(); // Global type
 
         $products = [
             [
@@ -96,9 +96,9 @@ class DemoInventorySeeder extends Seeder
         ];
 
         foreach ($products as $prod) {
-            Product::updateOrCreate(['code' => $prod['code'], 'company_id' => 1], $prod);
+            Product::updateOrCreate(['code' => $prod['code'], 'company_id' => $companyId], $prod);
         }
 
-        $this->command->info('Inventory Demo Data created successfully.');
+        $this->command->info("Inventory Demo Data created for Company ID: $companyId");
     }
 }

@@ -10,7 +10,7 @@ class DemoCRMSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run(int $companyId = 1): void
     {
         $contacts = [
             [
@@ -34,16 +34,6 @@ class DemoCRMSeeder extends Seeder
                 'current_balance' => -12500.50,
             ],
             [
-                'type' => 'customer',
-                'name' => 'Beta Yazılım Çözümleri',
-                'email' => 'admin@betasoft.net',
-                'phone' => '0312 888 1122',
-                'tax_number' => '5566778899',
-                'tax_office' => 'Etimesgut',
-                'address' => 'Teknokent B Blok No:6 Ankara',
-                'current_balance' => 4500.00,
-            ],
-            [
                 'type' => 'vendor',
                 'name' => 'DataCenter Bulut Servisleri',
                 'email' => 'sales@datacenter.com',
@@ -53,25 +43,15 @@ class DemoCRMSeeder extends Seeder
                 'address' => 'İçerenköy Mah. No:112 Ataşehir/İstanbul',
                 'current_balance' => 50000.00,
             ],
-            [
-                'type' => 'vendor',
-                'name' => 'Global Kırtasiye Ltd.',
-                'email' => 'siparis@globalkirtasiye.com',
-                'phone' => '0212 222 3344',
-                'tax_number' => '9988776655',
-                'tax_office' => 'İkitelli',
-                'address' => 'İOSB Galano Blok No:15 Başakşehir/İstanbul',
-                'current_balance' => 0,
-            ],
         ];
 
         foreach ($contacts as $contactData) {
             Contact::updateOrCreate(
-                ['email' => $contactData['email']],
-                array_merge($contactData, ['company_id' => 1])
+                ['email' => $contactData['email'], 'company_id' => $companyId],
+                $contactData
             );
         }
 
-        $this->command->info('CRM Demo Contacts created successfully.');
+        $this->command->info("CRM Demo Contacts created for Company ID: $companyId");
     }
 }
