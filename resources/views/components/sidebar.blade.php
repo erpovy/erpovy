@@ -1,12 +1,10 @@
 <aside 
     x-data="sidebarMenu('{{ $activeMenu ?? null }}')"
     :class="isCollapsed ? 'w-20' : 'w-72'"
-    class="relative z-50 flex flex-col border-r border-white/10 bg-white/5 backdrop-blur-xl shadow-glass transition-all duration-300">
-    <div class="flex h-full flex-col justify-between p-4">
-        <!-- Logo & Nav -->
-        <div class="flex flex-col gap-6">
-            <!-- Brand -->
-            <div class="flex flex-col items-center px-3 py-2">
+    class="sticky top-0 h-screen z-50 flex flex-col border-r border-white/10 bg-white/5 backdrop-blur-xl shadow-glass transition-all duration-300">
+    
+    <!-- Brand (Fixed) -->
+    <div class="flex flex-col items-center px-6 py-6 border-b border-white/5 flex-shrink-0">
                 <div class="flex items-center gap-3 mb-1 overflow-hidden whitespace-nowrap">
                     @php
                         $sysLogoCollapsed = \App\Models\Setting::get('logo_collapsed');
@@ -32,22 +30,23 @@
                         <span class="text-slate-500 text-[10px] font-bold uppercase tracking-widest">{{ auth()->user()->is_super_admin ? 'Superadmin' : 'Şirket Paneli' }}</span>
                     </div>
                 </div>
-            </div>
+    </div>
 
-            <!-- Navigation -->
-            @php
-                $activeMenu = null;
-                if (request()->routeIs('accounting.*')) $activeMenu = 'accounting';
-                elseif (request()->routeIs('sales.*')) $activeMenu = 'sales';
-                elseif (request()->routeIs('crm.*')) $activeMenu = 'crm';
-                elseif (request()->routeIs('inventory.*')) $activeMenu = 'inventory';
-                elseif (request()->routeIs('manufacturing.*')) $activeMenu = 'manufacturing';
-                elseif (request()->routeIs('hr.users.*') || request()->routeIs('hr.roles.*') || request()->routeIs('hr.permissions.*')) $activeMenu = 'user_management';
-                elseif (request()->routeIs('hr.*')) $activeMenu = 'hr';
-                elseif (request()->routeIs('setup.*')) $activeMenu = 'setup';
-            @endphp
+    <!-- Navigation (Scrollable) -->
+    <div class="flex-1 overflow-y-auto px-4 py-4 custom-scrollbar">
+        @php
+            $activeMenu = null;
+            if (request()->routeIs('accounting.*')) $activeMenu = 'accounting';
+            elseif (request()->routeIs('sales.*')) $activeMenu = 'sales';
+            elseif (request()->routeIs('crm.*')) $activeMenu = 'crm';
+            elseif (request()->routeIs('inventory.*')) $activeMenu = 'inventory';
+            elseif (request()->routeIs('manufacturing.*')) $activeMenu = 'manufacturing';
+            elseif (request()->routeIs('hr.users.*') || request()->routeIs('hr.roles.*') || request()->routeIs('hr.permissions.*')) $activeMenu = 'user_management';
+            elseif (request()->routeIs('hr.*')) $activeMenu = 'hr';
+            elseif (request()->routeIs('setup.*')) $activeMenu = 'setup';
+        @endphp
 
-            <div class="flex flex-col gap-2">
+        <div class="flex flex-col gap-2">
                 
                 <!-- Dashboard -->
                 <a href="{{ route('dashboard') }}" class="group relative flex items-center gap-3 rounded-xl px-4 py-3 transition-all hover:bg-white/5 {{ request()->routeIs('dashboard') ? 'text-white' : 'text-gray-400 hover:text-white' }}">
@@ -73,7 +72,7 @@
                             <span class="material-symbols-outlined {{ request()->routeIs('accounting.*') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">account_balance</span>
                             <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Muhasebe</span>
                         </div>
-                        <span class="material-symbols-outlined text-sm transition-transform duration-200" :class="{'rotate-180': isOpen('accounting'), 'hidden': isCollapsed}">expand_more</span>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('accounting'), 'hidden': isCollapsed}">chevron_right</span>
                     </button>
                     
                     <div x-show="isOpen('accounting')" x-cloak class="mt-1 space-y-1 pl-4">
@@ -105,6 +104,14 @@
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.portfolio.*') || request()->routeIs('accounting.cheques.*') || request()->routeIs('accounting.promissory-notes.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Çek/Senet
                         </a>
+                        <a href="{{ route('accounting.cash-bank-transactions.create', ['type' => 'collection']) }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request('type') == 'collection' ? 'text-white bg-white/10' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request('type') == 'collection' ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Ödeme Al (Tahsilat)
+                        </a>
+                        <a href="{{ route('accounting.cash-bank-transactions.create', ['type' => 'payment']) }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request('type') == 'payment' ? 'text-white bg-white/10' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request('type') == 'payment' ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Ödeme Yap (Tediye)
+                        </a>
                         <a href="{{ route('accounting.reports.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.reports.*') ? 'text-white bg-white/10' : 'text-gray-400 hover:text-white hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.reports.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Finansal Raporlar
@@ -124,7 +131,7 @@
                             <span class="material-symbols-outlined {{ request()->routeIs('sales.*') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">point_of_sale</span>
                             <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Satış</span>
                         </div>
-                        <span class="material-symbols-outlined text-sm transition-transform duration-200" :class="{'rotate-180': isOpen('sales'), 'hidden': isCollapsed}">expand_more</span>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('sales'), 'hidden': isCollapsed}">chevron_right</span>
                     </button>
                     
                     <div x-show="isOpen('sales')" x-cloak class="mt-1 space-y-1 pl-4">
@@ -167,7 +174,7 @@
                             <span class="material-symbols-outlined {{ request()->routeIs('crm.*') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">groups</span>
                             <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">CRM</span>
                         </div>
-                        <span class="material-symbols-outlined text-sm transition-transform duration-200" :class="{'rotate-180': isOpen('crm'), 'hidden': isCollapsed}">expand_more</span>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('crm'), 'hidden': isCollapsed}">chevron_right</span>
                     </button>
                     
                     <div x-show="isOpen('crm')" x-cloak class="mt-1 space-y-1 pl-4">
@@ -202,7 +209,7 @@
                             <span class="material-symbols-outlined {{ request()->routeIs('inventory.*') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">inventory_2</span>
                             <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Stok Yönetimi</span>
                         </div>
-                        <span class="material-symbols-outlined text-sm transition-transform duration-200" :class="{'rotate-180': isOpen('inventory'), 'hidden': isCollapsed}">expand_more</span>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('inventory'), 'hidden': isCollapsed}">chevron_right</span>
                     </button>
                     
                     <div x-show="isOpen('inventory')" x-cloak class="mt-1 space-y-1 pl-4">
@@ -245,7 +252,7 @@
                             <span class="material-symbols-outlined {{ request()->routeIs('manufacturing.*') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">factory</span>
                             <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Üretim</span>
                         </div>
-                        <span class="material-symbols-outlined text-sm transition-transform duration-200" :class="{'rotate-180': isOpen('manufacturing'), 'hidden': isCollapsed}">expand_more</span>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('manufacturing'), 'hidden': isCollapsed}">chevron_right</span>
                     </button>
                     
                     <div x-show="isOpen('manufacturing')" x-cloak class="mt-1 space-y-1 pl-4">
@@ -296,7 +303,7 @@
                             <span class="material-symbols-outlined {{ request()->routeIs('hr.*') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">badge</span>
                             <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">İnsan Kaynakları</span>
                         </div>
-                        <span class="material-symbols-outlined text-sm transition-transform duration-200" :class="{'rotate-180': isOpen('hr'), 'hidden': isCollapsed}">expand_more</span>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('hr'), 'hidden': isCollapsed}">chevron_right</span>
                     </button>
                     
                     <div x-show="isOpen('hr')" x-cloak class="mt-1 space-y-1 pl-4">
@@ -331,7 +338,7 @@
                             <span class="material-symbols-outlined {{ (request()->routeIs('hr.users.*') || request()->routeIs('hr.roles.*') || request()->routeIs('hr.permissions.*')) ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">manage_accounts</span>
                             <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Kullanıcı Yönetimi</span>
                         </div>
-                        <span class="material-symbols-outlined text-sm transition-transform duration-200" :class="{'rotate-180': isOpen('user_management'), 'hidden': isCollapsed}">expand_more</span>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('user_management'), 'hidden': isCollapsed}">chevron_right</span>
                     </button>
                     
                     <div x-show="isOpen('user_management')" x-cloak class="mt-1 space-y-1 pl-4">
@@ -372,7 +379,7 @@
                             <span class="material-symbols-outlined {{ request()->routeIs('setup.*') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">settings_suggest</span>
                             <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Kurulum</span>
                         </div>
-                        <span class="material-symbols-outlined text-sm transition-transform duration-200" :class="{'rotate-180': isOpen('setup'), 'hidden': isCollapsed}">expand_more</span>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('setup'), 'hidden': isCollapsed}">chevron_right</span>
                     </button>
                     
                     <div x-show="isOpen('setup')" x-cloak class="mt-1 space-y-1 pl-4">
@@ -429,11 +436,11 @@
                 </div>
                 @endif
 
-            </div>
         </div>
+    </div>
 
-        <!-- Sidebar Footer -->
-        <div class="mt-auto pt-4 border-t border-white/10 flex flex-col gap-2">
+    <!-- Sidebar Footer (Fixed) -->
+    <div class="mt-auto p-4 border-t border-white/10 flex flex-col gap-2 bg-slate-900/50 backdrop-blur-md flex-shrink-0">
             <!-- Collapse Toggle Button -->
             <button @click="toggleSidebar()" class="flex items-center gap-3 rounded-xl px-4 py-2 text-gray-400 hover:text-white hover:bg-white/5 transition-all">
                 <span class="material-symbols-outlined transition-transform duration-300" :class="isCollapsed ? 'rotate-180' : ''">keyboard_double_arrow_left</span>
@@ -466,7 +473,6 @@
                 </button>
             </form>
         </div>
-    </div>
 </aside>
 
 <script>
@@ -524,3 +530,19 @@
         }));
     });
 </script>
+
+<style>
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.2);
+    }
+</style>

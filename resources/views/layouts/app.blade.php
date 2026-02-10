@@ -95,6 +95,26 @@
             }
 
             [x-cloak] { display: none !important; }
+
+            /* Custom Thin Scrollbar */
+            .custom-scrollbar::-webkit-scrollbar {
+                width: 4px;
+                height: 4px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.02);
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+                background: rgba(255, 255, 255, 0.1);
+                border-radius: 10px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: rgba(255, 255, 255, 0.2);
+            }
+            .custom-scrollbar {
+                scrollbar-width: thin;
+                scrollbar-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.02);
+            }
         </style>
     </head>
     <body class="font-display bg-[#0f172a] text-gray-100 antialiased overflow-hidden">
@@ -167,9 +187,9 @@
                             @click.away="open = false"
                             class="hidden md:block relative w-96">
                                 <div class="relative flex items-center rounded-lg bg-white/5 border border-white/5 px-3 py-2 focus-within:bg-white/10 focus-within:border-primary/50 transition-all">
-                                    <span class="material-symbols-outlined text-gray-400 text-[20px]" :class="{'animate-spin text-primary': loading}">
-                                        <template x-if="loading">sync</template>
-                                        <template x-if="!loading">search</template>
+                                    <span class="material-symbols-outlined text-gray-400 text-[20px]" :class="loading ? 'animate-spin text-primary' : ''">
+                                        <template x-if="typeof loading !== 'undefined' && loading">sync</template>
+                                        <template x-if="typeof loading !== 'undefined' && !loading">search</template>
                                     </span>
                                     <input 
                                         x-model="query"
@@ -245,7 +265,7 @@
                             @mouseleave="showDetails = false"
                             class="hidden lg:block relative">
                                 <!-- Loading State -->
-                                <template x-if="loading">
+                                <template x-if="typeof loading !== 'undefined' && loading">
                                     <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10">
                                         <span class="material-symbols-outlined text-white text-[20px] animate-pulse">partly_cloudy_day</span>
                                         <span class="text-xs text-slate-400 font-bold">Yükleniyor...</span>
@@ -253,7 +273,7 @@
                                 </template>
                                 
                                 <!-- Weather Display -->
-                                <template x-if="!loading && weather">
+                                <template x-if="typeof loading !== 'undefined' && !loading && weather">
                                     <div class="relative">
                                         <!-- Main Widget -->
                                         <div class="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer group">

@@ -87,7 +87,18 @@
                                 </p>
                             </div>
 
-                            <div class="mt-4 pt-4 border-t border-white/10">
+                            <div class="grid grid-cols-2 gap-2 mt-4">
+                                <a href="{{ route('accounting.cash-bank-transactions.create', ['type' => 'collection', 'account_id' => $account->id]) }}" 
+                                   class="text-center px-4 py-2 rounded-lg bg-green-500/10 hover:bg-green-500/20 text-green-400 text-xs font-bold transition-all border border-green-500/20">
+                                    Tahsilat Al
+                                </a>
+                                <a href="{{ route('accounting.cash-bank-transactions.create', ['type' => 'payment', 'account_id' => $account->id]) }}" 
+                                   class="text-center px-4 py-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 text-xs font-bold transition-all border border-red-500/20">
+                                    Ödeme Yap
+                                </a>
+                            </div>
+
+                            <div class="mt-2 pt-2 border-t border-white/10">
                                 <a href="{{ route('accounting.cash-bank-accounts.show', $account) }}" 
                                    class="block w-full text-center px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 text-white text-sm font-medium transition-all">
                                     Hareketleri Gör

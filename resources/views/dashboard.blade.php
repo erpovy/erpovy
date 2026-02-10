@@ -231,7 +231,7 @@
                     ['route' => route('accounting.invoices.create'), 'icon' => 'receipt_long', 'label' => 'Fatura Kes', 'desc' => 'Yeni satış faturası oluştur', 'color' => 'blue'],
                     ['route' => route('crm.contacts.create'), 'icon' => 'person_add', 'label' => 'Müşteri Ekle', 'desc' => 'Yeni kişi veya firma kartı', 'color' => 'purple'],
                     ['route' => route('inventory.products.create'), 'icon' => 'add_box', 'label' => 'Stok Gir', 'desc' => 'Envantere yeni ürün girişi', 'color' => 'orange'],
-                    ['route' => '#', 'icon' => 'payments', 'label' => 'Ödeme Al', 'desc' => 'Hızlı tahsilat işlemi', 'color' => 'green', 'disabled' => true]
+                    ['route' => route('accounting.cash-bank-transactions.create', ['type' => 'collection']), 'icon' => 'payments', 'label' => 'Ödeme Al', 'desc' => 'Hızlı tahsilat işlemi', 'color' => 'green']
                 ] as $action)
                     <a href="{{ $action['route'] }}" class="group relative overflow-hidden rounded-2xl p-1 {{ isset($action['disabled']) ? 'cursor-not-allowed opacity-80' : '' }}">
                         <!-- Background Glass -->
