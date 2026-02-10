@@ -53,6 +53,15 @@ class AccountingTestSeeder extends Seeder
         ], [
             'start_date' => '2025-01-01',
             'end_date' => '2025-12-31',
+            'status' => 'closed'
+        ]);
+
+        FiscalPeriod::firstOrCreate([
+            'company_id' => $company->id,
+            'name' => '2026 Mali Yılı'
+        ], [
+            'start_date' => '2026-01-01',
+            'end_date' => '2026-12-31',
             'status' => 'open'
         ]);
 

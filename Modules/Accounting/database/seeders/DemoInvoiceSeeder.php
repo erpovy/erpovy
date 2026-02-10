@@ -6,7 +6,9 @@ use Illuminate\Database\Seeder;
 use Modules\Accounting\Models\Invoice;
 use Modules\Accounting\Models\InvoiceItem;
 use Modules\Accounting\Models\Transaction;
+use Modules\Accounting\Models\LedgerEntry;
 use Modules\Accounting\Models\Account;
+use Modules\Accounting\Models\FiscalPeriod;
 use Modules\CRM\Models\Contact;
 use Modules\Inventory\Models\Product;
 use Modules\Inventory\Models\StockMovement;
@@ -16,21 +18,37 @@ class DemoInvoiceSeeder extends Seeder
 {
     public function run(int $companyId = 1)
     {
-        $this->command->info("Creating Demo Invoices for Company ID: $companyId");
+        $this->command->info("Creating Demo Invoices and Journal Entries for Company ID: $companyId");
 
         // 1. Get Dependencies
         $contact = Contact::where('company_id', $companyId)->where('type', 'customer')->first();
         $product = Product::where('company_id', $companyId)->first();
         $warehouse = Warehouse::where('company_id', $companyId)->where('code', 'WH-' . $companyId . '-01')->first() ?? Warehouse::where('company_id', $companyId)->first();
-        $account = Account::where('company_id', $companyId)->where('code', '120')->first() ?? Account::where('company_id', $companyId)->first();
+        
+        // Use 120 (Alicilar) and 600 (Yurtici Satislar) from TDHP
+        $accountReceivable = Account::where('company_id', $companyId)->where('code', '120')->first();
+        $accountSales = Account::where('company_id', $companyId)->where('code', '600')->first();
+        $accountVat = Account::where('company_id', $companyId)->where('code', '391')->first();
 
-        if (!$contact || !$product || !$warehouse || !$account) {
+        // Check for fiscal period
+        $fiscalPeriod = FiscalPeriod::where('company_id', $companyId)
+            ->where('status', 'open')
+            ->whereDate('start_date', '<=', now())
+            ->whereDate('end_date', '>=', now())
+            ->first();
+
+        if (!$contact || !$product || !$warehouse || !$accountReceivable || !$accountSales || !$fiscalPeriod) {
             $this->command->warn("Missing dependencies for Invoices (Contact: " . ($contact ? 'OK' : 'FAIL') . 
                 ", Product: " . ($product ? 'OK' : 'FAIL') . 
                 ", Warehouse: " . ($warehouse ? 'OK' : 'FAIL') . 
-                ", Account: " . ($account ? 'OK' : 'FAIL') . "). Skipping Invoice creation.");
+                ", Accounts: " . ($accountReceivable && $accountSales ? 'OK' : 'FAIL') . 
+                ", FiscalPeriod: " . ($fiscalPeriod ? 'OK' : 'FAIL') . "). Skipping Invoice creation.");
             return;
         }
+
+        $totalAmount = round($product->sale_price * 1.20, 2);
+        $taxAmount = round($product->sale_price * 0.20, 2);
+        $subtotal = round($product->sale_price, 2);
 
         // 2. Create Invoice
         $invoice = Invoice::create([
@@ -39,8 +57,8 @@ class DemoInvoiceSeeder extends Seeder
             'invoice_number' => 'FAT-' . date('Y') . '-0001',
             'issue_date' => now()->subDays(2),
             'due_date' => now()->addDays(15),
-            'total_amount' => $product->sale_price * 1.20, // Incl VAT
-            'tax_amount' => $product->sale_price * 0.20,
+            'total_amount' => $totalAmount,
+            'tax_amount' => $taxAmount,
             'status' => 'sent',
             'notes' => 'Sistem test faturasıdır.'
         ]);
@@ -53,7 +71,7 @@ class DemoInvoiceSeeder extends Seeder
             'quantity' => 1,
             'unit_price' => $product->sale_price,
             'tax_rate' => 20,
-            'total' => $product->sale_price * 1.20
+            'total' => $totalAmount
         ]);
 
         // 4. Stock Movement
@@ -68,20 +86,54 @@ class DemoInvoiceSeeder extends Seeder
             ]);
         }
 
-        // 5. Accounting Transaction
+        // 5. Accounting Transaction (Header)
         $transaction = Transaction::create([
             'company_id' => $companyId,
-            'account_id' => $account->id,
-            'type' => 'income',
-            'amount' => $invoice->total_amount,
+            'fiscal_period_id' => $fiscalPeriod->id,
+            'type' => 'regular',
+            'receipt_number' => 'FIS-' . time(),
             'date' => $invoice->issue_date,
             'description' => 'Satış Faturası Tahakkuku #' . $invoice->invoice_number,
-            'reference' => $invoice->invoice_number,
+            'is_approved' => true,
         ]);
 
-        $invoice->update(['transaction_id' => $transaction->id]);
-        $contact->increment('current_balance', $invoice->total_amount);
+        // 6. Ledger Entries (Double Entry)
+        
+        // Debit: Customer Account (120)
+        LedgerEntry::create([
+            'company_id' => $companyId,
+            'transaction_id' => $transaction->id,
+            'account_id' => $accountReceivable->id,
+            'debit' => $totalAmount,
+            'credit' => 0,
+            'description' => $contact->name . ' - Fatura Tahakkuku'
+        ]);
 
-        $this->command->info("Demo Invoice created: " . $invoice->invoice_number);
+        // Credit: Sales Account (600)
+        LedgerEntry::create([
+            'company_id' => $companyId,
+            'transaction_id' => $transaction->id,
+            'account_id' => $accountSales->id,
+            'debit' => 0,
+            'credit' => $subtotal,
+            'description' => 'Yurtiçi Satış Geliri'
+        ]);
+
+        // Credit: VAT Account (391) if exists
+        if ($accountVat) {
+            LedgerEntry::create([
+                'company_id' => $companyId,
+                'transaction_id' => $transaction->id,
+                'account_id' => $accountVat->id,
+                'debit' => 0,
+                'credit' => $taxAmount,
+                'description' => 'Hesaplanan KDV'
+            ]);
+        }
+
+        $invoice->update(['transaction_id' => $transaction->id]);
+        $contact->increment('current_balance', $totalAmount);
+
+        $this->command->info("Demo Invoice and Journal Entry created: " . $invoice->invoice_number);
     }
 }
