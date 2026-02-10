@@ -30,7 +30,7 @@ class DashboardController extends Controller
             ->sum('amount');
 
         // Pending Invoices (Accounting)
-        $pendingInvoicesCount = Invoice::where('status', 'pending')->count();
+        $pendingInvoicesCount = Invoice::whereNotIn('status', ['paid', 'cancelled'])->count();
 
         // Total Contacts (CRM)
         $totalContacts = Contact::count();
