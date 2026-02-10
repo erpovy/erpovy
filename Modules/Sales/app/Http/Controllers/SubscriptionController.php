@@ -72,7 +72,9 @@ class SubscriptionController extends Controller
     public function create()
     {
         $contacts = Contact::where('type', 'customer')->orderBy('name')->get();
-        $products = Product::where('type', 'service')->orderBy('name')->get();
+        $products = Product::whereHas('productType', function($q) {
+            $q->where('code', 'service');
+        })->orderBy('name')->get();
         return view('sales::subscriptions.create', compact('contacts', 'products'));
     }
 
@@ -126,7 +128,9 @@ class SubscriptionController extends Controller
     {
         $subscription = Subscription::findOrFail($id);
         $contacts = Contact::where('type', 'customer')->orderBy('name')->get();
-        $products = Product::where('type', 'service')->orderBy('name')->get();
+        $products = Product::whereHas('productType', function($q) {
+            $q->where('code', 'service');
+        })->orderBy('name')->get();
         return view('sales::subscriptions.edit', compact('subscription', 'contacts', 'products'));
     }
 
@@ -194,7 +198,7 @@ class SubscriptionController extends Controller
                 'due_date' => now()->addDays(7),
                 'total_amount' => $subscription->price,
                 'tax_amount' => $subscription->price * 0.20, // Example 20% Tax
-                'status' => 'pending',
+                'status' => 'sent',
                 'notes' => $subscription->name . ' Abonelik Faturası',
             ]);
 
