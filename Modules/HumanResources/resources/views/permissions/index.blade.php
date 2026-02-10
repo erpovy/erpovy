@@ -1,3 +1,34 @@
+@php
+    function translatePermission($name) {
+        $parts = explode(' ', $name);
+        $action = $parts[0] ?? '';
+        $resource = $parts[1] ?? '';
+
+        $actions = [
+            'view' => 'Görüntüleme',
+            'create' => 'Oluşturma',
+            'edit' => 'Düzenleme',
+            'delete' => 'Silme',
+            'manage' => 'Yönetme',
+        ];
+
+        $resources = [
+            'users' => 'Kullanıcı',
+            'companies' => 'Şirket',
+            'accounting' => 'Muhasebe',
+            'invoices' => 'Fatura',
+            'roles' => 'Rol',
+            'permissions' => 'Yetki',
+            'employees' => 'Personel',
+            'departments' => 'Departman',
+        ];
+
+        $translatedAction = $actions[$action] ?? $action;
+        $translatedResource = $resources[$resource] ?? $resource;
+
+        return "$translatedResource $translatedAction";
+    }
+@endphp
 <x-app-layout>
     <x-slot name="header">
         <div class="flex justify-between items-center">
@@ -25,7 +56,8 @@
                     @forelse($permissions as $permission)
                         <tr class="hover:bg-white/5 transition-colors">
                             <td class="px-6 py-4">
-                                <div class="font-medium text-white">{{ $permission->name }}</div>
+                                <div class="font-medium text-white">{{ translatePermission($permission->name) }}</div>
+                                <div class="text-xs text-gray-500">{{ $permission->name }}</div>
                             </td>
                             <td class="px-6 py-4">
                                 <span class="inline-flex items-center rounded-md bg-blue-400/10 px-2 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-400/20">{{ $permission->guard_name }}</span>
@@ -58,7 +90,7 @@
 
         @if($permissions->hasPages())
             <div class="p-4 border-t border-white/5">
-                {{ $permissions->links() }}
+                {{ $permissions->links('pagination::tailwind') }}
             </div>
         @endif
     </x-card>
