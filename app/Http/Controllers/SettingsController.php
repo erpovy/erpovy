@@ -67,7 +67,7 @@ class SettingsController extends Controller
             $path = $request->file('logo_collapsed')->store('logos', 'public');
             \App\Models\Setting::updateOrCreate(
                 ['key' => 'logo_collapsed'],
-                ['value' => \Illuminate\Support\Facades\Storage::disk('public')->url($path)]
+                ['value' => 'storage/' . $path]
             );
         }
 
@@ -75,7 +75,7 @@ class SettingsController extends Controller
             $path = $request->file('logo_expanded')->store('logos', 'public');
             \App\Models\Setting::updateOrCreate(
                 ['key' => 'logo_expanded'],
-                ['value' => \Illuminate\Support\Facades\Storage::disk('public')->url($path)]
+                ['value' => 'storage/' . $path]
             );
         }
 
@@ -83,7 +83,7 @@ class SettingsController extends Controller
             $path = $request->file('login_background')->store('backgrounds', 'public');
             \App\Models\Setting::updateOrCreate(
                 ['key' => 'login_background'],
-                ['value' => \Illuminate\Support\Facades\Storage::disk('public')->url($path)]
+                ['value' => 'storage/' . $path]
             );
         }
 
