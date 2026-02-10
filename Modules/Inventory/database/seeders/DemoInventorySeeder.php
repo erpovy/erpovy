@@ -42,9 +42,9 @@ class DemoInventorySeeder extends Seeder
 
         // 3. Create Default Warehouse
         Warehouse::updateOrCreate(
-            ['name' => 'Ana Depo', 'company_id' => $companyId],
+            ['code' => 'WH-' . $companyId . '-01', 'company_id' => $companyId],
             [
-                'code' => 'WH01',
+                'name' => 'Ana Depo',
                 'address' => 'Merkez Ofis Depo Katı',
                 'is_active' => true
             ]

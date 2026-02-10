@@ -21,7 +21,7 @@ class DemoInvoiceSeeder extends Seeder
         // 1. Get Dependencies
         $contact = Contact::where('company_id', $companyId)->where('type', 'customer')->first();
         $product = Product::where('company_id', $companyId)->first();
-        $warehouse = Warehouse::where('company_id', $companyId)->first();
+        $warehouse = Warehouse::where('company_id', $companyId)->where('code', 'WH-' . $companyId . '-01')->first() ?? Warehouse::where('company_id', $companyId)->first();
         $account = Account::where('company_id', $companyId)->where('code', '120')->first() ?? Account::where('company_id', $companyId)->first();
 
         if (!$contact || !$product || !$warehouse || !$account) {
