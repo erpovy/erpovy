@@ -48,7 +48,6 @@
                             </select>
                             @error('role') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
-                        </div>
                     </div>
 
                     <div class="mt-8 space-y-4">
