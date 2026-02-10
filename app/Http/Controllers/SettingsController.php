@@ -41,24 +41,20 @@ class SettingsController extends Controller
      */
     public function updateAppearance(Request $request)
     {
-        $debugLog = storage_path('logs/logo_debug.log');
-        $logData = date('Y-m-d H:i:s') . " [UPDATE] \n";
-        $logData .= "  User: " . auth()->id() . "\n";
-        $logData .= "  Files in Request: " . implode(', ', array_keys($request->allFiles())) . "\n";
-        
-        if ($request->hasFile('logo_collapsed')) {
-            $f = $request->file('logo_collapsed');
-            $logData .= "  logo_collapsed: Found. Size: " . $f->getSize() . " bytes, Mime: " . $f->getMimeType() . ", OriginalName: " . $f->getClientOriginalName() . "\n";
-        } else {
-            $logData .= "  logo_collapsed: NOT FOUND (Checked key: logo_collapsed)\n";
-        }
-        
-        file_put_contents($debugLog, $logData, FILE_APPEND);
-
         // Security Check: Only SuperAdmin
         if (!auth()->user()->is_super_admin) {
-            Log::warning('SettingsController: Unauthorized access attempt');
+            Log::warning('SettingsController: Unauthorized access attempt'); // Keep this log for security
             abort(403, 'Bu işlemi yapmaya yetkiniz yok.');
+        }
+
+        // Check if any file was actually sent in the request
+        // This helps catch cases where files are too large for PHP's upload_max_filesize or post_max_size
+        if ($request->isMethod('post') && empty($request->allFiles()) && !$request->has('remove_login_background')) {
+            // Minimal debug log for this specific case
+            $debugLog = storage_path('logs/logo_debug.log');
+            $logData = date('Y-m-d H:i:s') . " [UPDATE_ERROR] No files received. User: " . auth()->id() . "\n";
+            file_put_contents($debugLog, $logData, FILE_APPEND);
+            return back()->with('error', 'Sunucuya hiçbir dosya ulaşmadı. Dosya boyutu sunucu limitlerini (upload_max_filesize veya post_max_size) aşıyor olabilir.');
         }
 
         $request->validate([
@@ -71,12 +67,15 @@ class SettingsController extends Controller
             'login_background' => 'Giriş Ekranı Arkaplanı',
         ]);
 
+        $updatedCount = 0;
+
         // Remove Login Background
         if ($request->has('remove_login_background') && $request->remove_login_background == '1') {
             \App\Models\Setting::updateOrCreate(
                 ['key' => 'login_background'],
                 ['value' => null]
             );
+            $updatedCount++;
         }
 
         if ($request->hasFile('logo_collapsed')) {
@@ -85,6 +84,7 @@ class SettingsController extends Controller
                 ['key' => 'logo_collapsed'],
                 ['value' => 'storage/' . $path]
             );
+            $updatedCount++;
         }
 
         if ($request->hasFile('logo_expanded')) {
@@ -93,6 +93,7 @@ class SettingsController extends Controller
                 ['key' => 'logo_expanded'],
                 ['value' => 'storage/' . $path]
             );
+            $updatedCount++;
         }
 
         if ($request->hasFile('login_background')) {
@@ -101,6 +102,11 @@ class SettingsController extends Controller
                 ['key' => 'login_background'],
                 ['value' => 'storage/' . $path]
             );
+            $updatedCount++;
+        }
+
+        if ($updatedCount === 0) {
+            return back()->with('error', 'Herhangi bir değişiklik yapılmadı. Lütfen yüklemek için bir dosya seçtiğinizden emin olun.');
         }
 
         return back()->with('success', 'Görünüm ayarları başarıyla güncellendi.');
