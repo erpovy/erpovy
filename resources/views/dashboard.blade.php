@@ -303,8 +303,8 @@
                                 <div class="text-sm font-black text-white">₺{{ number_format($invoice->total_amount, 2, ',', '.') }}</div>
                                 <!-- Standardized Badge -->
                                 <div class="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-md border mt-1 inline-block
-                                    {{ $invoice->status === 'paid' ? 'bg-green-900/30 text-green-400 border-green-500/30' : 'bg-yellow-900/30 text-yellow-400 border-yellow-500/30' }}">
-                                    {{ $invoice->status === 'paid' ? 'Ödendi' : 'Bekliyor' }}
+                                    {{ $invoice->is_paid_status ? 'bg-green-900/30 text-green-400 border-green-500/30' : 'bg-yellow-900/30 text-yellow-400 border-yellow-500/30' }}">
+                                    {{ $invoice->is_paid_status ? 'Ödendi' : 'Bekliyor' }}
                                 </div>
                             </div>
                         </div>

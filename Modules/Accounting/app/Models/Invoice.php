@@ -117,6 +117,24 @@ class Invoice extends Model
             'overdue' => 'Gecikmiş',
         ];
 
+        if ($this->is_paid_status) {
+            return 'Ödendi';
+        }
+
         return $statuses[$this->status] ?? 'Bilinmiyor';
+    }
+
+    public function getIsPaidStatusAttribute()
+    {
+        if ($this->status === 'paid') {
+            return true;
+        }
+
+        // If contact balance is 0 or less (meaning they don't owe us), assume paid
+        if ($this->contact && $this->contact->current_balance <= 0) {
+            return true;
+        }
+
+        return false;
     }
 }
