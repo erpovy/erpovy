@@ -30,7 +30,8 @@ class RoleController extends Controller
     public function create()
     {
         $departments = \Modules\HumanResources\Models\Department::all();
-        return view('humanresources::roles.create', compact('departments'));
+        $permissions = \Spatie\Permission\Models\Permission::all();
+        return view('humanresources::roles.create', compact('departments', 'permissions'));
     }
 
     public function store(Request $request)
@@ -38,6 +39,8 @@ class RoleController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:roles,name',
             'department_id' => 'nullable|exists:departments,id',
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'exists:permissions,id',
         ]);
 
         $role = \Spatie\Permission\Models\Role::create([
@@ -53,6 +56,10 @@ class RoleController extends Controller
             $role->save();
         }
 
+        if (!empty($validated['permissions'])) {
+            $role->syncPermissions($validated['permissions']);
+        }
+
         return redirect()->route('hr.roles.index')->with('success', 'Rol başarıyla oluşturuldu.');
     }
 
@@ -62,7 +69,10 @@ class RoleController extends Controller
             abort(403, 'Süper Admin rolü düzenlenemez.');
         }
         $departments = \Modules\HumanResources\Models\Department::all();
-        return view('humanresources::roles.edit', compact('role', 'departments'));
+        $permissions = \Spatie\Permission\Models\Permission::all();
+        $selectedPermissions = $role->permissions->pluck('id')->toArray();
+
+        return view('humanresources::roles.edit', compact('role', 'departments', 'permissions', 'selectedPermissions'));
     }
 
     public function update(Request $request, \Spatie\Permission\Models\Role $role)
@@ -74,6 +84,8 @@ class RoleController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:roles,name,' . $role->id,
             'department_id' => 'nullable|exists:departments,id',
+            'permissions' => 'nullable|array',
+            'permissions.*' => 'exists:permissions,id',
         ]);
 
         $role->update(['name' => $validated['name']]);
@@ -85,6 +97,8 @@ class RoleController extends Controller
              $role->department_id = null;
              $role->save();
         }
+
+        $role->syncPermissions($validated['permissions'] ?? []);
 
         return redirect()->route('hr.roles.index')->with('success', 'Rol başarıyla güncellendi.');
     }

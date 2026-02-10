@@ -29,7 +29,14 @@
                             <label class="input-label text-gray-300">Rol Adı</label>
                             <input type="text" name="name" value="{{ old('name') }}" class="custom-input text-white" placeholder="Örn: Uzman, Şef, Sorumlu" required>
                             @error('name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                        </div>
+                    </div>
+
+                    <div class="mt-8 space-y-4">
+                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-widest border-b border-white/10 pb-2 flex items-center gap-2">
+                             <span class="material-symbols-outlined text-lg">shield_lock</span>
+                             Rol Yetkileri
+                        </h3>
+                        <x-permission-grid :permissions="$permissions" />
                     </div>
 
                     <div class="flex justify-end gap-3 mt-6 border-t border-white/10 pt-6">

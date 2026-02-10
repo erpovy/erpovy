@@ -48,6 +48,15 @@
                         </div>
                     </div>
 
+                    <div class="mt-8 space-y-4">
+                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-widest border-b border-white/10 pb-2 flex items-center gap-2">
+                             <span class="material-symbols-outlined text-lg">person_add_analytics</span>
+                             Ekstra Yetkiler (Opsiyonel)
+                        </h3>
+                        <p class="text-xs text-gray-500 italic">Bu yetkiler, kullanıcının rolüne ek olarak doğrudan kendisine atanır.</p>
+                        <x-permission-grid :permissions="$permissions" />
+                    </div>
+
                     <div class="flex justify-end gap-3 mt-6">
                         <a href="{{ route('hr.users.index') }}" class="px-6 py-2.5 rounded-xl border border-white/10 text-gray-300 hover:bg-white/5 transition-colors">
                             İptal
