@@ -49,9 +49,14 @@ class CashBankAccount extends Model
         };
     }
 
+    public function getBalanceAttribute(): float
+    {
+        return (float) $this->current_balance;
+    }
+
     public function getFormattedBalanceAttribute(): string
     {
-        return number_format($this->current_balance, 2, ',', '.') . ' ' . $this->currency;
+        return number_format((float)$this->current_balance, 2, ',', '.') . ' ' . $this->currency;
     }
 
     // Scopes

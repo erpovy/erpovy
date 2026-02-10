@@ -99,12 +99,21 @@ class CashBankAccountController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
+            'opening_balance' => 'required|numeric',
             'bank_name' => 'nullable|string|max:255',
             'branch' => 'nullable|string|max:255',
             'account_number' => 'nullable|string|max:255',
             'iban' => 'nullable|string|max:34',
             'is_active' => 'boolean',
+        ], [], [
+            'name' => 'Hesap Adı',
+            'opening_balance' => 'Açılış Bakiyesi',
         ]);
+
+        // If no transactions exist, sync current balance with opening balance
+        if ($account->transactions()->count() === 0) {
+            $validated['current_balance'] = $validated['opening_balance'];
+        }
 
         $account->update($validated);
 

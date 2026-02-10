@@ -138,7 +138,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php $runningBalance = 0; @endphp
+                                @php $runningBalance = (float) $account->opening_balance; @endphp
                                 @foreach($account->transactions()->orderBy('transaction_date')->get() as $transaction)
                                     @php
                                         if ($transaction->type === 'deposit') {
