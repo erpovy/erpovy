@@ -30,6 +30,7 @@
                             <label class="input-label text-gray-300">Rol Adı</label>
                             <input type="text" name="name" value="{{ old('name', $role->name) }}" class="custom-input text-white" required>
                             @error('name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                        </div>
                     </div>
 
                     <div class="mt-8 space-y-4">
