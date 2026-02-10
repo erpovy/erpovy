@@ -20,53 +20,41 @@ class DemoInventorySeeder extends Seeder
         $categories = [
             ['name' => 'Elektronik'],
             ['name' => 'Ofis Malzemeleri'],
-            ['name' => 'Hizmet'],
+            ['name' => 'Hizmetler'],
             ['name' => 'Lojistik'],
         ];
 
         foreach ($categories as $cat) {
-            Category::updateOrCreate(['name' => $cat['name']], array_merge($cat, ['company_id' => 1]));
+            Category::updateOrCreate(['name' => $cat['name'], 'company_id' => 1], $cat);
         }
 
         // 2. Create Default Units
         $units = [
-            ['name' => 'Adet', 'short_name' => 'AD'],
-            ['name' => 'Paket', 'short_name' => 'PK'],
-            ['name' => 'Saat', 'short_name' => 'SA'],
-            ['name' => 'Kilogram', 'short_name' => 'KG'],
+            ['name' => 'Adet', 'symbol' => 'AD'],
+            ['name' => 'Paket', 'symbol' => 'PK'],
+            ['name' => 'Saat', 'symbol' => 'SA'],
+            ['name' => 'Kilogram', 'symbol' => 'KG'],
         ];
 
         foreach ($units as $unit) {
-            Unit::updateOrCreate(['short_name' => $unit['short_name']], array_merge($unit, ['company_id' => 1]));
+            Unit::updateOrCreate(['symbol' => $unit['symbol'], 'company_id' => 1], $unit);
         }
 
-        // 3. Create Default Product Types
-        $types = [
-            ['name' => 'Ticari Mal'],
-            ['name' => 'Hizmet'],
-            ['name' => 'Hammadde'],
-        ];
-
-        foreach ($types as $type) {
-            ProductType::updateOrCreate(['name' => $type['name']], array_merge($type, ['company_id' => 1]));
-        }
-
-        // 4. Create Default Warehouse
-        $warehouse = Warehouse::updateOrCreate(
-            ['name' => 'Ana Depo'],
+        // 3. Create Default Warehouse
+        Warehouse::updateOrCreate(
+            ['name' => 'Ana Depo', 'company_id' => 1],
             [
-                'company_id' => 1,
                 'code' => 'WH01',
                 'address' => 'Merkez Ofis Depo Katı',
                 'is_active' => true
             ]
         );
 
-        // 5. Create Demo Products
+        // 4. Create Demo Products
         $catElektronik = Category::where('name', 'Elektronik')->first();
         $catOfis = Category::where('name', 'Ofis Malzemeleri')->first();
-        $unitAdet = Unit::where('short_name', 'AD')->first();
-        $typeMal = ProductType::where('name', 'Ticari Mal')->first();
+        $unitAdet = Unit::where('symbol', 'AD')->first();
+        $typeMal = ProductType::where('code', 'good')->first();
 
         $products = [
             [
@@ -108,7 +96,7 @@ class DemoInventorySeeder extends Seeder
         ];
 
         foreach ($products as $prod) {
-            Product::updateOrCreate(['code' => $prod['code']], array_merge($prod, ['company_id' => 1]));
+            Product::updateOrCreate(['code' => $prod['code'], 'company_id' => 1], $prod);
         }
 
         $this->command->info('Inventory Demo Data created successfully.');

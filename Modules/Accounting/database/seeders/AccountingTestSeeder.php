@@ -30,7 +30,7 @@ class AccountingTestSeeder extends Seeder
         }
 
         if (class_exists(\Modules\Inventory\Models\Product::class)) {
-            $serviceType = \Modules\Inventory\Models\ProductType::where('name', 'Hizmet')->first();
+            $serviceType = \Modules\Inventory\Models\ProductType::where('code', 'service')->first();
             
             \Modules\Inventory\Models\Product::firstOrCreate([
                 'company_id' => $company->id,
