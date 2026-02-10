@@ -10,9 +10,8 @@ class VatRateSeeder extends Seeder
     /**
      * Türkiye'deki standart KDV oranlarını seed eder.
      */
-    public function run(): void
+    public function run(int $companyId = 1): void
     {
-        $companyId = 1; // İlk şirket için (production'da dinamik olmalı)
 
         $rates = VatRate::getTurkeyStandardRates();
 

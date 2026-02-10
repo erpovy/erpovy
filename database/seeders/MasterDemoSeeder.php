@@ -37,9 +37,7 @@ class MasterDemoSeeder extends Seeder
         $this->call(DemoInventorySeeder::class, false, ['companyId' => $companyId]);
 
         // 4. Setup Base Accounting
-        // AccountingDatabaseSeeder calls TekDuzenHesapPlaniSeeder which uses Company::first()
-        // We might want to run it specifically for this company if it's not ID 1
-        $this->call(AccountingDatabaseSeeder::class);
+        $this->call(AccountingDatabaseSeeder::class, false, ['companyId' => $companyId]);
 
         // 5. Populate CRM
         $this->call(DemoCRMSeeder::class, false, ['companyId' => $companyId]);

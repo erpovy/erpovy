@@ -28,7 +28,7 @@ class DemoQuoteSeeder extends Seeder
             'expiry_date' => now()->addDays(10),
             'total_amount' => 50000.00,
             'tax_amount' => 10000.00,
-            'status' => 'approved',
+            'status' => 'accepted',
             'notes' => 'Örnek onaylanmış satış teklifi.'
         ]);
 
@@ -40,7 +40,7 @@ class DemoQuoteSeeder extends Seeder
             'expiry_date' => now()->addDays(15),
             'total_amount' => 12500.00,
             'tax_amount' => 2500.00,
-            'status' => 'pending',
+            'status' => 'sent',
             'notes' => 'Beklemedeki satış teklifi.'
         ]);
 

@@ -12,9 +12,10 @@ class AccountingTestSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run(int $companyId = 1): void
     {
-        $company = Company::first(); // Demo Company
+        $this->command->info("Accounting Test Seeder running for Company ID: $companyId");
+        $company = \App\Models\Company::find($companyId);
         
         // 0. Ensure Contacts and Products exist for Invoice testing
         if (class_exists(\Modules\CRM\Models\Contact::class)) {

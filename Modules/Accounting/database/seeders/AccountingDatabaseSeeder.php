@@ -9,12 +9,10 @@ class AccountingDatabaseSeeder extends Seeder
     /**
      * Run the database seeds.
      */
-    public function run(): void
+    public function run(int $companyId = 1): void
     {
-        $this->call([
-            TekDuzenHesapPlaniSeeder::class,
-            VatRateSeeder::class,
-            AccountingTestSeeder::class,
-        ]);
+        $this->call(TekDuzenHesapPlaniSeeder::class, false, ['companyId' => $companyId]);
+        $this->call(VatRateSeeder::class, false, ['companyId' => $companyId]);
+        $this->call(AccountingTestSeeder::class, false, ['companyId' => $companyId]);
     }
 }

@@ -11,9 +11,8 @@ class TekDuzenHesapPlaniSeeder extends Seeder
      * Tek Düzen Hesap Planı'nın temel hesaplarını seed eder.
      * Türkiye muhasebe standartlarına göre 1xx-9xx arası hesaplar.
      */
-    public function run(): void
+    public function run(int $companyId = 1): void
     {
-        $companyId = 1; // İlk şirket için (production'da dinamik olmalı)
 
         $accounts = [
             // 1XX - DÖNEN VARLIKLAR
