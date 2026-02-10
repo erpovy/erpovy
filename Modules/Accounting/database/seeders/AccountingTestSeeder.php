@@ -30,12 +30,14 @@ class AccountingTestSeeder extends Seeder
         }
 
         if (class_exists(\Modules\Inventory\Models\Product::class)) {
+            $serviceType = \Modules\Inventory\Models\ProductType::where('name', 'Hizmet')->first();
+            
             \Modules\Inventory\Models\Product::firstOrCreate([
                 'company_id' => $company->id,
                 'code' => 'HIZMET-001'
             ], [
                 'name' => 'Yazılım Danışmanlık Hizmeti',
-                'type' => 'service',
+                'product_type_id' => $serviceType->id ?? null,
                 'sale_price' => 1500.00,
                 'purchase_price' => 0,
                 'vat_rate' => 20,

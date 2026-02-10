@@ -19,14 +19,14 @@ class MasterDemoSeeder extends Seeder
         // 1. Update User
         $this->call(DemoUserUpdateSeeder::class);
 
-        // 2. Setup Base Accounting (Chart of Accounts, VAT Rates)
+        // 2. Populate Inventory (Creates ProductTypes, Categories, etc.)
+        $this->call(DemoInventorySeeder::class);
+
+        // 3. Setup Base Accounting (Chart of Accounts, VAT Rates)
         $this->call(AccountingDatabaseSeeder::class);
 
-        // 3. Populate CRM
+        // 4. Populate CRM
         $this->call(DemoCRMSeeder::class);
-
-        // 4. Populate Inventory
-        $this->call(DemoInventorySeeder::class);
 
         $this->command->info('Master Demo Seeding completed successfully!');
     }
