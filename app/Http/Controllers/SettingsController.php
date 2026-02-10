@@ -36,9 +36,13 @@ class SettingsController extends Controller
         }
 
         $request->validate([
-            'logo_collapsed' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'logo_expanded' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'login_background' => 'nullable|mimes:jpeg,png,jpg,gif,svg,mp4,webm|max:20480', // Max 20MB for video
+            'logo_collapsed' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/svg+xml|max:2048',
+            'logo_expanded' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/svg+xml|max:2048',
+            'login_background' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/svg+xml,video/mp4,video/webm|max:20480',
+        ], [], [
+            'logo_collapsed' => 'Menü Kapalı Logo',
+            'logo_expanded' => 'Menü Açık Logo',
+            'login_background' => 'Giriş Ekranı Arkaplanı',
         ]);
 
         // Remove Login Background

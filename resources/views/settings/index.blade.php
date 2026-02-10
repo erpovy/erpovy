@@ -15,6 +15,20 @@
                 </div>
             @endif
 
+            @if($errors->any())
+                <div class="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-xl animate-fade-in">
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="material-symbols-outlined">error</span>
+                        <span class="text-sm font-bold">Hata! Lütfen aşağıdaki sorunları düzeltin:</span>
+                    </div>
+                    <ul class="list-disc list-inside text-xs space-y-1 ml-9">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             @if(session('error'))
                 <div class="bg-red-500/10 border border-red-500/50 text-red-400 p-4 rounded-xl flex items-center gap-3 animate-fade-in">
                     <span class="material-symbols-outlined">error</span>
