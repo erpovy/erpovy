@@ -20,8 +20,8 @@ class StockAnalyticsService
         
         // Faturalardan satış verilerini al
         $totalSales = InvoiceItem::whereHas('invoice', function($query) use ($startDate) {
-                $query->where('type', 'sales')
-                      ->where('invoice_date', '>=', $startDate)
+                $query->where('invoice_type', 'SATIS')
+                      ->where('issue_date', '>=', $startDate)
                       ->where('status', '!=', 'cancelled');
             })
             ->where('product_id', $productId)
@@ -78,12 +78,12 @@ class StockAnalyticsService
         
         // Günlük satışları al
         $dailySales = InvoiceItem::whereHas('invoice', function($query) use ($startDate) {
-                $query->where('type', 'sales')
-                      ->where('invoice_date', '>=', $startDate)
+                $query->where('invoice_type', 'SATIS')
+                      ->where('issue_date', '>=', $startDate)
                       ->where('status', '!=', 'cancelled');
             })
             ->where('product_id', $productId)
-            ->selectRaw('DATE(invoices.invoice_date) as date, SUM(quantity) as total')
+            ->selectRaw('DATE(invoices.issue_date) as date, SUM(quantity) as total')
             ->join('invoices', 'invoice_items.invoice_id', '=', 'invoices.id')
             ->groupBy('date')
             ->pluck('total')
