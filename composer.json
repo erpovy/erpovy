@@ -44,7 +44,9 @@
             "Modules\\Manufacturing\\": "Modules/Manufacturing/app/",
             "Modules\\Manufacturing\\Database\\Seeders\\": "Modules/Manufacturing/database/seeders/",
             "Modules\\Sales\\": "Modules/Sales/app/",
-            "Modules\\Sales\\Database\\Seeders\\": "Modules/Sales/database/seeders/"
+            "Modules\\Sales\\Database\\Seeders\\": "Modules/Sales/database/seeders/",
+            "Modules\\FixedAssets\\": "Modules/FixedAssets/app/",
+            "Modules\\FixedAssets\\Database\\Seeders\\": "Modules/FixedAssets/database/seeders/"
         }
     },
     "autoload-dev": {

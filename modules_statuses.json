@@ -5,5 +5,6 @@
     "SuperAdmin": true,
     "HumanResources": true,
     "Manufacturing": true,
-    "Sales": true
+    "Sales": true,
+    "FixedAssets": true
 }

@@ -168,7 +168,15 @@ class CompanyManagementController extends Controller
                     'hr.employees' => 'Personel Listesi',
                     'hr.leaves' => 'İzin Takvimi',
                     'hr.fleet' => 'Filo Yönetimi',
-                    'hr.users' => 'Kullanıcılar',
+                ]
+            ],
+            'FixedAssets' => [
+                'name' => 'Demirbaş Yönetimi',
+                'icon' => 'inventory_2',
+                'items' => [
+                    'fixedassets.index' => 'Demirbaş Listesi',
+                    'fixedassets.create' => 'Yeni Demirbaş',
+                    'fixedassets.categories' => 'Kategoriler',
                 ]
             ],
             'MarketSetup' => [

@@ -445,6 +445,41 @@
                 </div>
                 @endif
 
+                <!-- Fixed Assets (Demirbaşlar) -->
+                @if(auth()->user()->hasModuleAccess('FixedAssets'))
+                <div>
+                    <button type="button" @click.stop.prevent="toggle('fixedassets')" 
+                        class="w-full group relative flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('fixedassets.*') ? 'text-gray-900 bg-gray-100 dark:text-white dark:bg-white/5' : 'text-slate-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
+                        @if(request()->routeIs('fixedassets.*'))
+                             <div class="absolute inset-0 rounded-xl bg-neon-active opacity-100 pointer-events-none"></div>
+                             <div class="absolute left-0 h-6 w-1 rounded-r-full bg-primary shadow-[0_0_10px_#137fec] pointer-events-none"></div>
+                        @endif
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined {{ request()->routeIs('fixedassets.*') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">inventory_2</span>
+                            <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Demirbaş Yönetimi</span>
+                        </div>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('fixedassets'), 'hidden': isCollapsed}">chevron_right</span>
+                    </button>
+                    
+                    <div x-show="isOpen('fixedassets')" x-cloak class="mt-1 space-y-1 pl-4">
+                        <a href="{{ route('fixedassets.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('fixedassets.index') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('fixedassets.index') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Demirbaş Listesi
+                        </a>
+                        
+                        <a href="{{ route('fixedassets.create') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('fixedassets.create') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('fixedassets.create') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Yeni Demirbaş
+                        </a>
+
+                        <a href="{{ route('fixedassets.categories.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('fixedassets.categories.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('fixedassets.categories.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Kategoriler
+                        </a>
+                    </div>
+                </div>
+                @endif
+
                 <!-- Activities -->
                 @if(auth()->user()->hasModuleAccess('activities'))
                 <a href="{{ route('activities.index') }}" class="group relative flex items-center gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('activities.index') ? 'text-gray-900 bg-gray-100 dark:text-white dark:bg-white/5' : 'text-slate-500 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
