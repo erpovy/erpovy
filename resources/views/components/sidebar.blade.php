@@ -497,6 +497,7 @@
                 @endif
 
                 <!-- Module Market (Visible to all admins) -->
+                @if(auth()->user()->hasModuleAccess('market.index'))
                 <a href="{{ route('superadmin.market.index') }}" class="group relative flex items-center gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('superadmin.market.index') ? 'text-white' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
                     @if(request()->routeIs('superadmin.market.index'))
                         <div class="absolute inset-0 rounded-xl bg-neon-active opacity-100 pointer-events-none"></div>
@@ -505,6 +506,7 @@
                     <span class="material-symbols-outlined {{ request()->routeIs('superadmin.market.index') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">storefront</span>
                     <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Modül Market</span>
                 </a>
+                @endif
 
                 @if(auth()->user()->is_super_admin)
                  {{-- Settings removed --}}

@@ -106,12 +106,6 @@ class User extends Authenticatable
      */
     protected function checkCompanyModuleAccess(\App\Models\Company $company, string $module): bool
     {
-        // Core modules/groups that are always accessible
-        $core = ['dashboard', 'activities', 'Accounting', 'General'];
-        if (in_array($module, $core)) {
-            return true;
-        }
-
         $activeModules = $company->settings['modules'] ?? [];
 
         // Check for direct match
