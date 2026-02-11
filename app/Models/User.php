@@ -106,6 +106,11 @@ class User extends Authenticatable
      */
     protected function checkCompanyModuleAccess(\App\Models\Company $company, string $module): bool
     {
+        // Items that are always accessible to company users/admins
+        if ($module === 'market.index') {
+            return true;
+        }
+
         $activeModules = $company->settings['modules'] ?? [];
 
         // Check for direct match
