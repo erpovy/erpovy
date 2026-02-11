@@ -288,21 +288,57 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4 md:gap-6">
-                            <!-- Theme Toggle Switch -->
+                            <!-- Enhanced Theme Toggle Switch -->
                             <div x-data="{ darkMode: localStorage.getItem('theme') === 'dark' || !localStorage.getItem('theme') }" 
                                  x-init="$watch('darkMode', value => { localStorage.setItem('theme', value ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', value); })"
-                                 class="relative">
+                                 class="relative group">
                                 <button @click="darkMode = !darkMode"
-                                        class="relative w-16 h-8 rounded-full transition-all duration-300 backdrop-blur-md border border-white/10 shadow-lg hover:shadow-xl"
-                                        :class="darkMode ? 'bg-slate-800/80' : 'bg-slate-200/80'">
-                                    <!-- Toggle Circle -->
-                                    <div class="absolute top-1 left-1 w-6 h-6 rounded-full transition-all duration-300 flex items-center justify-center shadow-md"
-                                         :class="darkMode ? 'translate-x-8 bg-white' : 'translate-x-0 bg-slate-800'">
-                                        <!-- Icons -->
-                                        <span x-show="darkMode" x-transition class="material-symbols-outlined text-[14px] text-slate-800">dark_mode</span>
-                                        <span x-show="!darkMode" x-transition class="material-symbols-outlined text-[14px] text-white">light_mode</span>
+                                        class="relative w-20 h-10 rounded-full transition-all duration-500 backdrop-blur-xl border-2 shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95"
+                                        :class="darkMode ? 'bg-gradient-to-r from-slate-800 to-slate-900 border-slate-700' : 'bg-gradient-to-r from-blue-400 to-cyan-300 border-blue-300'">
+                                    
+                                    <!-- Background Glow Effect -->
+                                    <div class="absolute inset-0 rounded-full blur-md opacity-50 transition-opacity duration-500"
+                                         :class="darkMode ? 'bg-purple-500' : 'bg-yellow-400'"></div>
+                                    
+                                    <!-- Stars (Dark Mode) -->
+                                    <div x-show="darkMode" x-transition class="absolute inset-0 overflow-hidden rounded-full">
+                                        <div class="absolute top-2 left-3 w-1 h-1 bg-white rounded-full animate-pulse"></div>
+                                        <div class="absolute top-4 left-6 w-0.5 h-0.5 bg-white rounded-full animate-pulse" style="animation-delay: 0.3s"></div>
+                                        <div class="absolute top-3 left-10 w-0.5 h-0.5 bg-white rounded-full animate-pulse" style="animation-delay: 0.6s"></div>
+                                    </div>
+                                    
+                                    <!-- Toggle Circle with Icon -->
+                                    <div class="absolute top-1 left-1 w-8 h-8 rounded-full transition-all duration-500 flex items-center justify-center shadow-2xl transform"
+                                         :class="darkMode ? 'translate-x-10 bg-gradient-to-br from-slate-700 to-slate-900' : 'translate-x-0 bg-gradient-to-br from-yellow-300 to-yellow-500'">
+                                        <!-- Moon Icon (Dark Mode) -->
+                                        <div x-show="darkMode" x-transition:enter="transition ease-out duration-300" 
+                                             x-transition:enter-start="opacity-0 rotate-90" 
+                                             x-transition:enter-end="opacity-100 rotate-0"
+                                             class="absolute inset-0 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-[18px] text-yellow-200">dark_mode</span>
+                                        </div>
+                                        <!-- Sun Icon (Light Mode) -->
+                                        <div x-show="!darkMode" x-transition:enter="transition ease-out duration-300" 
+                                             x-transition:enter-start="opacity-0 -rotate-90" 
+                                             x-transition:enter-end="opacity-100 rotate-0"
+                                             class="absolute inset-0 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-[18px] text-orange-600 animate-pulse">light_mode</span>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Clouds (Light Mode) -->
+                                    <div x-show="!darkMode" x-transition class="absolute inset-0 overflow-hidden rounded-full">
+                                        <div class="absolute top-2 right-4 w-3 h-2 bg-white/40 rounded-full"></div>
+                                        <div class="absolute top-3 right-2 w-2 h-1.5 bg-white/30 rounded-full"></div>
                                     </div>
                                 </button>
+                                
+                                <!-- Tooltip -->
+                                <div class="absolute -bottom-10 left-1/2 transform -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                                    <div class="bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-xs font-bold px-3 py-1.5 rounded-lg shadow-xl whitespace-nowrap">
+                                        <span x-text="darkMode ? 'Aydınlık Mod' : 'Karanlık Mod'"></span>
+                                    </div>
+                                </div>
                             </div>
                             
                             <!-- Modern Minimalist Weather Widget -->
