@@ -22,19 +22,33 @@ class CompanyManagementController extends Controller
     public function toggleModule(Request $request, Company $company)
     {
         $module = $request->input('module');
+        $isGroup = $request->boolean('is_group', false);
         $settings = $company->settings ?? [];
+        $activeModules = $settings['modules'] ?? [];
         
-        $modules = $settings['modules'] ?? [];
-        
-        if (in_array($module, $modules)) {
-            $modules = array_filter($modules, fn($m) => $m !== $module);
+        if ($isGroup) {
+            $items = explode(',', $module);
+            $allActive = count(array_intersect($items, $activeModules)) === count($items);
+            
+            if ($allActive) {
+                // Remove all items in this group
+                $activeModules = array_diff($activeModules, $items);
+            } else {
+                // Add all items in this group
+                $activeModules = array_unique(array_merge($activeModules, $items));
+            }
         } else {
-            $modules[] = $module;
+            if (in_array($module, $activeModules)) {
+                $activeModules = array_filter($activeModules, fn($m) => $m !== $module);
+            } else {
+                $activeModules[] = $module;
+            }
         }
         
-        $settings['modules'] = array_values($modules);
+        $settings['modules'] = array_values($activeModules);
         $company->settings = $settings;
         $company->save();
+        
         return back()->with('success', "Modül durumu güncellendi.");
     }
 

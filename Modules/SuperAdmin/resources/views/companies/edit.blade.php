@@ -102,17 +102,22 @@
         <x-card class="overflow-hidden">
             <div class="p-6 border-b border-white/5 bg-slate-900/20">
                 <h2 class="text-xl font-bold text-white">Modül & Menü Yönetimi</h2>
-                <p class="text-sm text-slate-400 mt-1">Şirket paneli için aktif menü öğelerini belirleyin</p>
+                <p class="text-sm text-slate-400 mt-1">Şirket paneli için aktif menü öğelerini ve özellikleri belirleyin</p>
             </div>
 
             <div class="p-6 space-y-4" x-data="{ openGroup: null }">
                 @php $activeModules = $company->settings['modules'] ?? []; @endphp
                 
                 @foreach($menuGroups as $groupId => $group)
+                    @php 
+                        $groupItems = array_keys($group['items']);
+                        $isGroupAllActive = count(array_intersect($groupItems, $activeModules)) === count($groupItems);
+                        $isGroupPartiallyActive = count(array_intersect($groupItems, $activeModules)) > 0;
+                    @endphp
                     <div class="border border-white/5 rounded-2xl overflow-hidden bg-slate-900/30">
                         <!-- Group Header -->
-                        <button @click="openGroup = (openGroup === '{{ $groupId }}' ? null : '{{ $groupId }}')" 
-                                class="w-full flex items-center justify-between p-4 hover:bg-white/5 transition-colors group">
+                        <div class="flex items-center justify-between p-4 hover:bg-white/5 transition-colors group cursor-pointer"
+                             @click="openGroup = (openGroup === '{{ $groupId }}' ? null : '{{ $groupId }}')">
                             <div class="flex items-center gap-4">
                                 <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
                                     <span class="material-symbols-outlined text-[24px]">{{ $group['icon'] }}</span>
@@ -124,9 +129,23 @@
                                     </p>
                                 </div>
                             </div>
-                            <span class="material-symbols-outlined text-slate-500 transition-transform duration-300" 
-                                  :class="openGroup === '{{ $groupId }}' ? 'rotate-180' : ''">expand_more</span>
-                        </button>
+                            
+                            <div class="flex items-center gap-4">
+                                <!-- Master Toggle for Group -->
+                                <form action="{{ route('superadmin.companies.toggle-module', $company) }}" method="POST" @click.stop>
+                                    @csrf
+                                    <input type="hidden" name="module" value="{{ implode(',', $groupItems) }}">
+                                    <input type="hidden" name="is_group" value="1">
+                                    <button type="submit" 
+                                            class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none {{ $isGroupAllActive ? 'bg-primary' : ($isGroupPartiallyActive ? 'bg-primary/40' : 'bg-slate-700') }}">
+                                        <span aria-hidden="true" 
+                                              class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $isGroupAllActive ? 'translate-x-5' : 'translate-x-0' }}"></span>
+                                    </button>
+                                </form>
+                                <span class="material-symbols-outlined text-slate-500 transition-transform duration-300" 
+                                      :class="openGroup === '{{ $groupId }}' ? 'rotate-180' : ''">expand_more</span>
+                            </div>
+                        </div>
 
                         <!-- Group Items -->
                         <div x-show="openGroup === '{{ $groupId }}'" 
@@ -134,10 +153,11 @@
                              class="border-t border-white/5 bg-slate-950/50">
                             <div class="p-2 space-y-1">
                                 @foreach($group['items'] as $itemId => $itemName)
-                                    <div class="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-all">
+                                    @php $isActive = in_array($itemId, $activeModules); @endphp
+                                    <div class="flex items-center justify-between p-3 rounded-lg hover:bg-white/5 transition-all group/item">
                                         <div class="flex items-center gap-3">
-                                            <div class="w-1.5 h-1.5 rounded-full {{ in_array($itemId, $activeModules) ? 'bg-primary shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'bg-slate-700' }}"></div>
-                                            <span class="text-sm {{ in_array($itemId, $activeModules) ? 'text-white font-medium' : 'text-slate-400' }}">
+                                            <div class="w-2 h-2 rounded-full {{ $isActive ? 'bg-primary shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'bg-slate-700' }}"></div>
+                                            <span class="text-sm transition-colors {{ $isActive ? 'text-white font-medium' : 'text-slate-500 group-hover/item:text-slate-400' }}">
                                                 {{ $itemName }}
                                             </span>
                                         </div>
@@ -146,10 +166,9 @@
                                             @csrf
                                             <input type="hidden" name="module" value="{{ $itemId }}">
                                             <button type="submit" 
-                                                    class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none {{ in_array($itemId, $activeModules) ? 'bg-primary' : 'bg-slate-700' }}">
-                                                <span class="sr-only">Toggle Item</span>
+                                                    class="relative inline-flex h-5 w-9 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none {{ $isActive ? 'bg-primary' : 'bg-slate-800' }}">
                                                 <span aria-hidden="true" 
-                                                      class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ in_array($itemId, $activeModules) ? 'translate-x-4' : 'translate-x-0' }}"></span>
+                                                      class="pointer-events-none inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $isActive ? 'translate-x-4' : 'translate-x-0' }}"></span>
                                             </button>
                                         </form>
                                     </div>
@@ -169,7 +188,7 @@
                 <form action="{{ route('superadmin.companies.destroy', $company) }}" method="POST" onsubmit="return confirm('Bu şirketi silmek istediğinize emin misiniz? Bu işlem geri alınamaz!')">
                     @csrf
                     @method('DELETE')
-                    <button type="submit" class="flex items-center gap-2 px-4 py-2+ rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-colors font-bold text-sm w-full justify-center border border-red-500/20">
+                    <button type="submit" class="flex items-center gap-2 px-4 py-2 rounded-lg bg-red-500/10 text-red-500 hover:bg-red-500/20 transition-colors font-bold text-sm w-full justify-center border border-red-500/20">
                         <span class="material-symbols-outlined text-[18px]">delete</span>
                         ŞİRKETİ TAMAMEN SİL
                     </button>
