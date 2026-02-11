@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-bold text-xl text-white tracking-tight">
+        <h2 class="font-bold text-xl text-gray-900 dark:text-white tracking-tight">
             {{ __('Sistem Ayarları') }}
         </h2>
     </x-slot>
@@ -37,11 +37,11 @@
             @endif
 
             <!-- Tab Navigation -->
-            <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-2 flex gap-2">
+            <div class="bg-gray-100 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-2 flex gap-2">
                 @if(auth()->user()->is_super_admin)
                 <button 
                     @click="activeTab = 'appearance'" 
-                    :class="activeTab === 'appearance' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-lg shadow-pink-500/25' : 'text-slate-400 hover:text-white hover:bg-white/5'"
+                    :class="activeTab === 'appearance' ? 'bg-gradient-to-r from-pink-500 to-purple-500 text-white shadow-lg shadow-pink-500/25' : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-white/5'"
                     class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm transition-all duration-300">
                     <span class="material-symbols-outlined text-[20px]">palette</span>
                     <span>Görünüm</span>
@@ -51,7 +51,7 @@
                 @if(auth()->user()->is_super_admin)
                 <button 
                     @click="activeTab = 'performance'" 
-                    :class="activeTab === 'performance' ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/25' : 'text-slate-400 hover:text-white hover:bg-white/5'"
+                    :class="activeTab === 'performance' ? 'bg-gradient-to-r from-blue-500 to-cyan-500 text-white shadow-lg shadow-blue-500/25' : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-white/5'"
                     class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm transition-all duration-300">
                     <span class="material-symbols-outlined text-[20px]">speed</span>
                     <span>Performans</span>
@@ -60,7 +60,7 @@
                 
                 <button 
                     @click="activeTab = 'system'" 
-                    :class="activeTab === 'system' ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/25' : 'text-slate-400 hover:text-white hover:bg-white/5'"
+                    :class="activeTab === 'system' ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white shadow-lg shadow-purple-500/25' : 'text-gray-500 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-white/5'"
                     class="flex-1 flex items-center justify-center gap-2 py-3 px-4 rounded-xl font-bold text-sm transition-all duration-300">
                     <span class="material-symbols-outlined text-[20px]">info</span>
                     <span>Sistem Bilgisi</span>
@@ -73,15 +73,15 @@
                 <!-- Appearance Settings Tab -->
                 @if(auth()->user()->is_super_admin)
                 <div x-show="activeTab === 'appearance'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
-                    <x-card class="p-8 border-white/10 bg-white/5 backdrop-blur-xl">
+                    <x-card class="p-8 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-xl">
                         <div class="mb-8">
                             <div class="flex items-center gap-3 mb-2">
                                 <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white" style="background: linear-gradient(135deg, #ec4899, #a855f7);">
                                     <span class="material-symbols-outlined text-[28px]">palette</span>
                                 </div>
                                 <div>
-                                    <h3 class="text-2xl font-bold text-white">Görünüm Ayarları</h3>
-                                    <p class="text-sm text-slate-400">Logolarınızı ve giriş ekranı arkaplanınızı özelleştirin</p>
+                                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Görünüm Ayarları</h3>
+                                    <p class="text-sm text-gray-500 dark:text-slate-400">Logolarınızı ve giriş ekranı arkaplanınızı özelleştirin</p>
                                 </div>
                             </div>
                         </div>
@@ -93,7 +93,7 @@
                                 
                                 <!-- Collapsed Logo (Favicon) -->
                                 <div x-data="{ preview: null }" class="group">
-                                    <label class="block text-sm font-bold text-white mb-3">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-white mb-3">
                                         <span class="flex items-center gap-2">
                                             <span class="material-symbols-outlined text-[18px] text-pink-400">favicon</span>
                                             Menü Kapalı Logo & Favicon
@@ -134,7 +134,7 @@
 
                                 <!-- Logo (Aydınlık Tema) -->
                                 <div x-data="{ preview: null }" class="group">
-                                    <label class="block text-sm font-bold text-white mb-3">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-white mb-3">
                                         <span class="flex items-center gap-2">
                                             <span class="material-symbols-outlined text-[18px] text-orange-400">light_mode</span>
                                             Aydınlık Tema Logosu
@@ -175,7 +175,7 @@
 
                                 <!-- Logo (Karanlık Tema) -->
                                 <div x-data="{ preview: null }" class="group">
-                                    <label class="block text-sm font-bold text-white mb-3">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-white mb-3">
                                         <span class="flex items-center gap-2">
                                             <span class="material-symbols-outlined text-[18px] text-indigo-400">dark_mode</span>
                                             Karanlık Tema Logosu
@@ -216,7 +216,7 @@
 
                                 <!-- Login Background -->
                                 <div x-data="{ preview: null, isVideo: false }" class="group">
-                                    <label class="block text-sm font-bold text-white mb-3">
+                                    <label class="block text-sm font-bold text-gray-700 dark:text-white mb-3">
                                         <span class="flex items-center gap-2">
                                             <span class="material-symbols-outlined text-[18px] text-blue-400">wallpaper</span>
                                             Giriş Ekranı Arkaplanı
@@ -293,7 +293,7 @@
                                 </div>
                             </div>
 
-                            <div class="flex justify-end pt-6 border-t border-white/10">
+                            <div class="flex justify-end pt-6 border-t border-gray-200 dark:border-white/10">
                                 <button type="submit" class="flex items-center gap-2 py-3 px-8 rounded-xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold text-sm transition-all hover:scale-105 hover:shadow-lg hover:shadow-pink-600/25 active:scale-95">
                                     <span class="material-symbols-outlined text-[20px]">save</span>
                                     Değişiklikleri Kaydet
@@ -307,64 +307,64 @@
                 <!-- Performance Tab -->
                 @if(auth()->user()->is_super_admin)
                 <div x-show="activeTab === 'performance'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
-                    <x-card class="p-8 border-white/10 bg-white/5 backdrop-blur-xl">
+                    <x-card class="p-8 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-xl">
                         <div class="mb-8">
                             <div class="flex items-center gap-3 mb-2">
                                 <div class="w-12 h-12 rounded-xl flex items-center justify-center text-white" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">
                                     <span class="material-symbols-outlined text-[28px]">speed</span>
                                 </div>
                                 <div>
-                                    <h3 class="text-2xl font-bold text-white">Performans & Önbellek</h3>
-                                    <p class="text-sm text-slate-400">Sistem önbelleğini yönetin ve performansı optimize edin</p>
+                                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Performans & Önbellek</h3>
+                                    <p class="text-sm text-gray-500 dark:text-slate-400">Sistem önbelleğini yönetin ve performansı optimize edin</p>
                                 </div>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-                            <div class="bg-slate-900/50 border border-white/5 rounded-xl p-4">
+                            <div class="bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-white/5 rounded-xl p-4">
                                 <div class="flex items-center gap-3 mb-3">
                                     <div class="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
                                         <span class="material-symbols-outlined text-[20px] text-green-500">database</span>
                                     </div>
                                     <div>
-                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Önbellek</p>
-                                        <p class="text-sm text-white font-bold">Uygulama</p>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wider font-bold">Önbellek</p>
+                                        <p class="text-sm text-gray-900 dark:text-white font-bold">Uygulama</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="bg-slate-900/50 border border-white/5 rounded-xl p-4">
+                            <div class="bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-white/5 rounded-xl p-4">
                                 <div class="flex items-center gap-3 mb-3">
                                     <div class="w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
                                         <span class="material-symbols-outlined text-[20px] text-blue-500">visibility</span>
                                     </div>
                                     <div>
-                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Görünüm</p>
-                                        <p class="text-sm text-white font-bold">Görünüm</p>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wider font-bold">Görünüm</p>
+                                        <p class="text-sm text-gray-900 dark:text-white font-bold">Görünüm</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="bg-slate-900/50 border border-white/5 rounded-xl p-4">
+                            <div class="bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-white/5 rounded-xl p-4">
                                 <div class="flex items-center gap-3 mb-3">
                                     <div class="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
                                         <span class="material-symbols-outlined text-[20px] text-purple-500">settings</span>
                                     </div>
                                     <div>
-                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Ayarlar</p>
-                                        <p class="text-sm text-white font-bold">Yapılandırma</p>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wider font-bold">Ayarlar</p>
+                                        <p class="text-sm text-gray-900 dark:text-white font-bold">Yapılandırma</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="bg-slate-900/50 border border-white/5 rounded-xl p-4">
+                            <div class="bg-gray-50 dark:bg-slate-900/50 border border-gray-200 dark:border-white/5 rounded-xl p-4">
                                 <div class="flex items-center gap-3 mb-3">
                                     <div class="w-10 h-10 rounded-lg bg-orange-500/10 flex items-center justify-center">
                                         <span class="material-symbols-outlined text-[20px] text-orange-500">route</span>
                                     </div>
                                     <div>
-                                        <p class="text-xs text-slate-400 uppercase tracking-wider font-bold">Rotalar</p>
-                                        <p class="text-sm text-white font-bold">Rotalar</p>
+                                        <p class="text-xs text-gray-500 dark:text-slate-400 uppercase tracking-wider font-bold">Rotalar</p>
+                                        <p class="text-sm text-gray-900 dark:text-white font-bold">Rotalar</p>
                                     </div>
                                 </div>
                             </div>
@@ -373,8 +373,8 @@
                         <div class="bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/20 rounded-2xl p-6 mb-8">
                             <div class="flex items-center justify-between mb-4">
                                 <div>
-                                    <p class="text-sm text-slate-400 mb-1">Toplam Önbellek Boyutu</p>
-                                    <p class="text-3xl font-bold text-white">{{ $cacheSize }}</p>
+                                    <p class="text-sm text-gray-500 dark:text-slate-400 mb-1">Toplam Önbellek Boyutu</p>
+                                    <p class="text-3xl font-bold text-gray-900 dark:text-white">{{ $cacheSize }}</p>
                                 </div>
                                 <div class="w-16 h-16 rounded-2xl bg-blue-500/20 flex items-center justify-center">
                                     <span class="material-symbols-outlined text-[32px] text-blue-400">storage</span>
@@ -398,7 +398,7 @@
 
                 <!-- System Info Tab -->
                 <div x-show="activeTab === 'system'" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform scale-95" x-transition:enter-end="opacity-100 transform scale-100">
-                    <x-card class="p-8 lg:p-12 border-white/10 bg-white/5 backdrop-blur-xl">
+                    <x-card class="p-8 lg:p-12 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-xl">
                         <!-- Header with Icon -->
                         <div class="mb-12">
                             <div class="flex items-center gap-4 mb-3">
@@ -409,8 +409,8 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <h3 class="text-3xl font-black text-white tracking-tight">Sistem Bilgisi</h3>
-                                    <p class="text-sm text-slate-400 mt-1">Sunucu ve uygulama detayları</p>
+                                    <h3 class="text-3xl font-black text-gray-900 dark:text-white tracking-tight">Sistem Bilgisi</h3>
+                                    <p class="text-sm text-gray-500 dark:text-slate-400 mt-1">Sunucu ve uygulama detayları</p>
                                 </div>
                             </div>
                         </div>
@@ -420,15 +420,15 @@
                             <!-- Version Card -->
                             <div class="group relative overflow-hidden">
                                 <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-indigo-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                <div class="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-purple-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-purple-500/20 group-hover:-translate-y-1">
+                                <div class="relative bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 hover:border-purple-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-purple-500/20 group-hover:-translate-y-1">
                                     <div class="flex items-start justify-between mb-6">
                                         <div class="flex-1">
-                                            <p class="text-xs text-slate-500 uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                                            <p class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
                                                 <span class="material-symbols-outlined text-[14px] text-purple-400">package_2</span>
                                                 Versiyon
                                             </p>
-                                            <p class="text-4xl font-black text-white mb-1 tracking-tight">{{ $appVersion['version'] ?? '1.0.4' }}</p>
-                                            <p class="text-xs text-slate-400">Uygulama Sürümü</p>
+                                            <p class="text-4xl font-black text-gray-900 dark:text-white mb-1 tracking-tight">{{ $appVersion['version'] ?? '1.0.4' }}</p>
+                                            <p class="text-xs text-gray-400">Uygulama Sürümü</p>
                                         </div>
                                     </div>
                                     <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden">
@@ -440,15 +440,15 @@
                             <!-- PHP Card -->
                             <div class="group relative overflow-hidden">
                                 <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                <div class="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-blue-500/20 group-hover:-translate-y-1">
+                                <div class="relative bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 hover:border-blue-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-blue-500/20 group-hover:-translate-y-1">
                                     <div class="flex items-start justify-between mb-6">
                                         <div class="flex-1">
-                                            <p class="text-xs text-slate-500 uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                                            <p class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
                                                 <span class="material-symbols-outlined text-[14px] text-blue-400">code</span>
                                                 PHP
                                             </p>
-                                            <p class="text-4xl font-black text-white mb-1 tracking-tight">{{ PHP_VERSION }}</p>
-                                            <p class="text-xs text-slate-400">Sistem Dili</p>
+                                            <p class="text-4xl font-black text-gray-900 dark:text-white mb-1 tracking-tight">{{ PHP_VERSION }}</p>
+                                            <p class="text-xs text-gray-400">Sistem Dili</p>
                                         </div>
                                     </div>
                                     <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden">
@@ -460,15 +460,15 @@
                             <!-- Environment Card -->
                             <div class="group relative overflow-hidden">
                                 <div class="absolute inset-0 bg-gradient-to-br from-green-500/20 to-emerald-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                <div class="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-green-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-green-500/20 group-hover:-translate-y-1">
+                                <div class="relative bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 hover:border-green-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-green-500/20 group-hover:-translate-y-1">
                                     <div class="flex items-start justify-between mb-6">
                                         <div class="flex-1">
-                                            <p class="text-xs text-slate-500 uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
+                                            <p class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-2 flex items-center gap-2">
                                                 <span class="material-symbols-outlined text-[14px] text-green-400">dns</span>
                                                 Ortam
                                             </p>
-                                            <p class="text-3xl font-black text-white mb-1 tracking-tight">{{ config('app.env') === 'local' ? 'ABS' : strtoupper(config('app.env')) }}</p>
-                                            <p class="text-xs text-slate-400">{{ config('app.env') === 'local' ? 'Artovy Beta Servers' : 'Sunucu Modu' }}</p>
+                                            <p class="text-3xl font-black text-gray-900 dark:text-white mb-1 tracking-tight">{{ config('app.env') === 'local' ? 'ABS' : strtoupper(config('app.env')) }}</p>
+                                            <p class="text-xs text-gray-400">{{ config('app.env') === 'local' ? 'Artovy Beta Servers' : 'Sunucu Modu' }}</p>
                                         </div>
                                     </div>
                                     <div class="h-1 w-full bg-slate-800/50 rounded-full overflow-hidden">
@@ -483,7 +483,7 @@
                             <!-- Section Header -->
                             <div class="flex items-center gap-3 mb-8">
                                 <div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-                                <h4 class="text-xl font-black text-white tracking-tight flex items-center gap-2">
+                                <h4 class="text-xl font-black text-gray-900 dark:text-white tracking-tight flex items-center gap-2">
                                     <span class="material-symbols-outlined text-[24px] text-purple-400">stacks</span>
                                     Proje Teknolojileri
                                 </h4>
@@ -495,7 +495,7 @@
                                 <!-- Laravel -->
                                 <div class="group relative overflow-hidden">
                                     <div class="absolute inset-0 bg-gradient-to-br from-red-500/0 to-red-500/0 group-hover:from-red-500/10 group-hover:to-orange-500/10 rounded-2xl transition-all duration-500"></div>
-                                    <div class="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-red-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-red-500/20 group-hover:-translate-y-2">
+                                    <div class="relative bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 hover:border-red-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-red-500/20 group-hover:-translate-y-2">
                                         <div class="flex flex-col items-center text-center gap-4">
                                             <div class="relative">
                                                 <div class="absolute inset-0 bg-red-500/30 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -507,8 +507,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Altyapi</p>
-                                                <p class="text-lg text-white font-black">Laravel 12</p>
+                                                <p class="text-xs text-gray-500 dark:text-slate-500 font-bold uppercase tracking-wider mb-1">Altyapi</p>
+                                                <p class="text-lg text-gray-900 dark:text-white font-black">Laravel 12</p>
                                             </div>
                                         </div>
                                     </div>
@@ -517,7 +517,7 @@
                                 <!-- Livewire -->
                                 <div class="group relative overflow-hidden">
                                     <div class="absolute inset-0 bg-gradient-to-br from-fuchsia-500/0 to-purple-500/0 group-hover:from-fuchsia-500/10 group-hover:to-purple-500/10 rounded-2xl transition-all duration-500"></div>
-                                    <div class="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-fuchsia-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-fuchsia-500/20 group-hover:-translate-y-2">
+                                    <div class="relative bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 hover:border-fuchsia-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-fuchsia-500/20 group-hover:-translate-y-2">
                                         <div class="flex flex-col items-center text-center gap-4">
                                             <div class="relative">
                                                 <div class="absolute inset-0 bg-fuchsia-500/30 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -529,8 +529,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Tam Yığın</p>
-                                                <p class="text-lg text-white font-black">Livewire 3</p>
+                                                <p class="text-xs text-gray-500 dark:text-slate-500 font-bold uppercase tracking-wider mb-1">Tam Yığın</p>
+                                                <p class="text-lg text-gray-900 dark:text-white font-black">Livewire 3</p>
                                             </div>
                                         </div>
                                     </div>
@@ -539,7 +539,7 @@
                                 <!-- Alpine.js -->
                                 <div class="group relative overflow-hidden">
                                     <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/0 to-teal-500/0 group-hover:from-emerald-500/10 group-hover:to-teal-500/10 rounded-2xl transition-all duration-500"></div>
-                                    <div class="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-emerald-500/20 group-hover:-translate-y-2">
+                                    <div class="relative bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 hover:border-emerald-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-emerald-500/20 group-hover:-translate-y-2">
                                         <div class="flex flex-col items-center text-center gap-4">
                                             <div class="relative">
                                                 <div class="absolute inset-0 bg-emerald-500/30 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -551,8 +551,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Ön Yüz</p>
-                                                <p class="text-lg text-white font-black">Alpine.js</p>
+                                                <p class="text-xs text-gray-500 dark:text-slate-500 font-bold uppercase tracking-wider mb-1">Ön Yüz</p>
+                                                <p class="text-lg text-gray-900 dark:text-white font-black">Alpine.js</p>
                                             </div>
                                         </div>
                                     </div>
@@ -561,7 +561,7 @@
                                 <!-- Tailwind CSS -->
                                 <div class="group relative overflow-hidden">
                                     <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/0 to-blue-500/0 group-hover:from-cyan-500/10 group-hover:to-blue-500/10 rounded-2xl transition-all duration-500"></div>
-                                    <div class="relative bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-cyan-500/20 group-hover:-translate-y-2">
+                                    <div class="relative bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl p-6 hover:border-cyan-500/30 transition-all duration-300 group-hover:shadow-2xl group-hover:shadow-cyan-500/20 group-hover:-translate-y-2">
                                         <div class="flex flex-col items-center text-center gap-4">
                                             <div class="relative">
                                                 <div class="absolute inset-0 bg-cyan-500/30 rounded-xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -573,8 +573,8 @@
                                                 </div>
                                             </div>
                                             <div>
-                                                <p class="text-xs text-slate-500 font-bold uppercase tracking-wider mb-1">Tasarım</p>
-                                                <p class="text-lg text-white font-black">Tailwind 4</p>
+                                                <p class="text-xs text-gray-500 dark:text-slate-500 font-bold uppercase tracking-wider mb-1">Tasarım</p>
+                                                <p class="text-lg text-gray-900 dark:text-white font-black">Tailwind 4</p>
                                             </div>
                                         </div>
                                     </div>
