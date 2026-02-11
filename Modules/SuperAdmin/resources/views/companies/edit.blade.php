@@ -64,6 +64,26 @@
                         @enderror
                     </div>
 
+                    @if($registrant)
+                    <!-- Registrant Info -->
+                    <div class="p-4 rounded-xl bg-primary/5 border border-primary/20 space-y-3">
+                        <div class="flex items-center gap-2 text-primary">
+                            <span class="material-symbols-outlined text-[20px]">person_pin_circle</span>
+                            <span class="text-sm font-bold uppercase tracking-wider">Kayıt Eden Kullanıcı</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="text-[10px] text-slate-500 uppercase font-bold">Ad Soyad</p>
+                                <p class="text-sm text-white font-medium">{{ $registrant->name }}</p>
+                            </div>
+                            <div>
+                                <p class="text-[10px] text-slate-500 uppercase font-bold">E-posta</p>
+                                <p class="text-sm text-white font-medium">{{ $registrant->email }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
                     <div class="flex justify-between items-center pt-6 border-t border-white/5">
                         <div class="flex gap-4">
                             <a href="{{ route('superadmin.companies.index') }}" class="px-6 py-2 rounded-lg border border-white/10 text-slate-300 hover:bg-white/5 transition-colors font-medium text-sm">

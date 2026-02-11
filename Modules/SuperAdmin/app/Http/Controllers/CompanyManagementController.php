@@ -79,7 +79,9 @@ class CompanyManagementController extends Controller
             'Sales' => ['name' => 'Satış', 'icon' => 'shopping_cart'],
         ];
 
-        return view('superadmin::companies.edit', compact('company', 'allModules'));
+        $registrant = $company->users()->oldest()->first();
+
+        return view('superadmin::companies.edit', compact('company', 'allModules', 'registrant'));
     }
 
     public function update(Request $request, Company $company)
