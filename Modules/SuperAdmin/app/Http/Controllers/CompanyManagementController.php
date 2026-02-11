@@ -70,7 +70,16 @@ class CompanyManagementController extends Controller
 
     public function edit(Company $company)
     {
-        return view('superadmin::companies.edit', compact('company'));
+        $allModules = [
+            'Accounting' => ['name' => 'Muhasebe', 'icon' => 'account_balance'],
+            'CRM' => ['name' => 'CRM', 'icon' => 'groups'],
+            'HumanResources' => ['name' => 'İnsan Kaynakları', 'icon' => 'badge'],
+            'Inventory' => ['name' => 'Stok Yönetimi', 'icon' => 'inventory_2'],
+            'Manufacturing' => ['name' => 'Üretim', 'icon' => 'factory'],
+            'Sales' => ['name' => 'Satış', 'icon' => 'shopping_cart'],
+        ];
+
+        return view('superadmin::companies.edit', compact('company', 'allModules'));
     }
 
     public function update(Request $request, Company $company)

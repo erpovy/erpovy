@@ -3,8 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Modules\HumanResources\Http\Controllers\EmployeeController;
 use Modules\HumanResources\Http\Controllers\LeaveController;
-use Modules\HumanResources\Http\Controllers\PermissionController;
-use Modules\HumanResources\Http\Controllers\RoleController;
 use Modules\HumanResources\Http\Controllers\UserController;
 use Modules\HumanResources\Http\Controllers\VehicleController;
 
@@ -39,8 +37,5 @@ Route::middleware(['auth', 'verified'])->prefix('hr')->name('hr.')->group(functi
 
     // User Management Routes
     Route::resource('users', UserController::class);
-    Route::resource('roles', RoleController::class);
-    Route::resource('permissions', PermissionController::class);
-    Route::post('permissions/seed', [PermissionController::class, 'seed'])->name('permissions.seed');
     Route::resource('departments', \Modules\HumanResources\Http\Controllers\DepartmentController::class);
 });

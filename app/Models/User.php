@@ -7,13 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-use Spatie\Permission\Traits\HasRoles;
 use App\Traits\BelongsToCompany;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasRoles, BelongsToCompany;
+    use HasFactory, Notifiable, BelongsToCompany;
 
     /**
      * The "booted" method of the model.

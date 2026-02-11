@@ -348,14 +348,6 @@
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.users.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Kullanıcılar
                         </a>
-                        <a href="{{ route('hr.roles.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.roles.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
-                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.roles.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
-                            Roller
-                        </a>
-                        <a href="{{ route('hr.permissions.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.permissions.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
-                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.permissions.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
-                            Yetkiler
-                        </a>
                     </div>
                 </div>
 
