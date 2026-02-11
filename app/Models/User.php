@@ -88,14 +88,11 @@ class User extends Authenticatable
             return $this->checkCompanyModuleAccess($company, $module);
         }
 
-        // 2. Regular SuperAdmin access (not inspecting)
-        if ($this->is_super_admin) {
-            return true;
-        }
-
-        // 3. Regular user access
+        // 2. Regular user access (including SuperAdmin associated with a company)
         if (!$this->company) {
-            return false;
+            // SuperAdmins without a company see all business modules 
+            // Regular users without a company see nothing
+            return $this->is_super_admin;
         }
 
         return $this->checkCompanyModuleAccess($this->company, $module);
