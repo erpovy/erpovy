@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User;
-use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
@@ -15,7 +14,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::where('company_id', auth()->user()->company_id)
-            ->with(['roles', 'employee'])
+            ->with(['employee'])
             ->latest()
             ->paginate(10);
             
@@ -24,9 +23,7 @@ class UserController extends Controller
 
     public function create()
     {
-        $roles = Role::where('name', '!=', 'SuperAdmin')->get(); // Hide SuperAdmin role
-        $permissions = \Spatie\Permission\Models\Permission::all();
-        return view('humanresources::users.create', compact('roles', 'permissions'));
+        return view('humanresources::users.create');
     }
 
     public function store(Request $request)
@@ -35,9 +32,6 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')],
             'password' => 'required|string|min:8',
-            'role' => 'required|string|exists:roles,name',
-            'permissions' => 'nullable|array',
-            'permissions.*' => 'exists:permissions,id',
         ]);
 
         $user = User::create([
@@ -46,14 +40,6 @@ class UserController extends Controller
             'password' => Hash::make($validated['password']),
             'company_id' => auth()->user()->company_id,
         ]);
-
-        // Fix: Set permission team id for role assignment
-        setPermissionsTeamId($user->company_id);
-        $user->assignRole($validated['role']);
-        
-        if (!empty($validated['permissions'])) {
-            $user->syncPermissions($validated['permissions']);
-        }
 
         return redirect()->route('hr.users.index')->with('success', 'Kullanıcı başarıyla oluşturuldu.');
     }
@@ -65,11 +51,7 @@ class UserController extends Controller
             abort(403);
         }
 
-        $roles = Role::where('name', '!=', 'SuperAdmin')->get();
-        $permissions = \Spatie\Permission\Models\Permission::all();
-        $selectedPermissions = $user->permissions->pluck('id')->toArray();
-
-        return view('humanresources::users.edit', compact('user', 'roles', 'permissions', 'selectedPermissions'));
+        return view('humanresources::users.edit', compact('user'));
     }
 
     public function update(Request $request, User $user)
@@ -82,9 +64,6 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'password' => 'nullable|string|min:8',
-            'role' => 'required|string|exists:roles,name',
-            'permissions' => 'nullable|array',
-            'permissions.*' => 'exists:permissions,id',
         ]);
 
         $user->update([
@@ -97,11 +76,6 @@ class UserController extends Controller
                 'password' => Hash::make($validated['password']),
             ]);
         }
-
-        // Fix: Set permission team id for role assignment
-        setPermissionsTeamId($user->company_id);
-        $user->syncRoles([$validated['role']]);
-        $user->syncPermissions($validated['permissions'] ?? []);
 
         // Update linked employee
         if ($user->employee) {

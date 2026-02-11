@@ -402,7 +402,7 @@
                     <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Modül Market</span>
                 </a>
 
-                @if(auth()->user()->is_super_admin || auth()->user()->hasRole('Admin'))
+                @if(auth()->user()->is_super_admin)
                  {{-- Settings removed --}}
                 @endif
 

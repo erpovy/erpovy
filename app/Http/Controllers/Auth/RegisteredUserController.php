@@ -52,17 +52,12 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        // Set the team (company) for permission context
-        setPermissionsTeamId($company->id);
-        
-        // Create default roles for the new company
-        // We use forceCreate because company_id is not in the default Spatie Role fillable array
-        $adminRole = \Spatie\Permission\Models\Role::forceCreate(['name' => 'Admin', 'company_id' => $company->id, 'guard_name' => 'web']);
-        \Spatie\Permission\Models\Role::forceCreate(['name' => 'Accountant', 'company_id' => $company->id, 'guard_name' => 'web']);
-        \Spatie\Permission\Models\Role::forceCreate(['name' => 'USER', 'company_id' => $company->id, 'guard_name' => 'web']);
-
-        // Assign Admin role
-        $user->assignRole($adminRole);
+        $user = User::create([
+            'company_id' => $company->id,
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
         event(new Registered($user));
 

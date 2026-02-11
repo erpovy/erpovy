@@ -32,29 +32,6 @@
                             <input type="password" name="password" class="custom-input text-white" required placeholder="********">
                             @error('password') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
-
-                        <!-- Rol -->
-                        <div>
-                            <label class="input-label text-gray-300">Rol</label>
-                            <select name="role" class="custom-input text-white !bg-[#0f172a]" required>
-                                <option value="" class="bg-[#0f172a] text-white">Seçiniz</option>
-                                @foreach($roles as $role)
-                                    <option value="{{ $role->name }}" class="bg-[#0f172a] text-white" {{ old('role') == $role->name ? 'selected' : '' }}>
-                                        {{ $role->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('role') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
-                        </div>
-                    </div>
-
-                    <div class="mt-8 space-y-4">
-                        <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-widest border-b border-white/10 pb-2 flex items-center gap-2">
-                             <span class="material-symbols-outlined text-lg">person_add_analytics</span>
-                             Ekstra Yetkiler (Opsiyonel)
-                        </h3>
-                        <p class="text-xs text-gray-500 italic">Bu yetkiler, kullanıcının rolüne ek olarak doğrudan kendisine atanır.</p>
-                        <x-permission-grid :permissions="$permissions" />
                     </div>
 
                     <div class="flex justify-end gap-3 mt-6">

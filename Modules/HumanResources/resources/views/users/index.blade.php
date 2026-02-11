@@ -18,7 +18,6 @@
                         <th scope="col" class="px-6 py-3">Kullanıcı</th>
                         <th scope="col" class="px-6 py-3">E-posta</th>
                         <th scope="col" class="px-6 py-3">Departman</th>
-                        <th scope="col" class="px-6 py-3">Rol</th>
                         <th scope="col" class="px-6 py-3">Durum</th>
                         <th scope="col" class="px-6 py-3 text-right">İşlemler</th>
                     </tr>
@@ -46,11 +45,6 @@
                                 @else
                                     <span class="text-gray-600">-</span>
                                 @endif
-                            </td>
-                            <td class="px-6 py-4">
-                                @foreach($user->roles as $role)
-                                    <span class="inline-flex items-center rounded-md bg-blue-400/10 px-2 py-1 text-xs font-medium text-blue-400 ring-1 ring-inset ring-blue-400/20">{{ $role->name }}</span>
-                                @endforeach
                             </td>
                             <td class="px-6 py-4">
                                 <span class="inline-flex items-center rounded-md bg-green-400/10 px-2 py-1 text-xs font-medium text-green-400 ring-1 ring-inset ring-green-400/20">Aktif</span>
