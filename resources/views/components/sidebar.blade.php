@@ -11,22 +11,34 @@
                 <div class="flex items-center gap-3 mb-1 overflow-hidden whitespace-nowrap">
                     @php
                         $sysLogoCollapsed = \App\Models\Setting::get('logo_collapsed');
-                        $sysLogoExpanded = \App\Models\Setting::get('logo_expanded');
+                        $sysLogoLight = \App\Models\Setting::get('logo_light');
+                        $sysLogoDark = \App\Models\Setting::get('logo_dark');
                         $defaultLogo = asset('images/logo.png');
+
+                        $collapsedUrl = $sysLogoCollapsed ? (str_starts_with($sysLogoCollapsed, 'http') ? $sysLogoCollapsed : asset($sysLogoCollapsed)) : $defaultLogo;
+                        $lightUrl = $sysLogoLight ? (str_starts_with($sysLogoLight, 'http') ? $sysLogoLight : asset($sysLogoLight)) : $defaultLogo;
+                        $darkUrl = $sysLogoDark ? (str_starts_with($sysLogoDark, 'http') ? $sysLogoDark : asset($sysLogoDark)) : $defaultLogo;
                     @endphp
 
-                    <!-- Collapsed Logo -->
-                    <img src="{{ $sysLogoCollapsed ? asset($sysLogoCollapsed) : $defaultLogo }}" 
+                    <!-- Collapsed Logo (Always same, or can be theme aware if requested, but plan said favicon/collapsed is shared) -->
+                    <img src="{{ $collapsedUrl }}" 
                          alt="Erpovy" 
                          class="h-8 w-auto flex-shrink-0 transition-all duration-200"
                          :class="isCollapsed ? 'block opacity-100' : 'hidden opacity-0'"
                     >
 
-                    <!-- Expanded Logo -->
-                    <img src="{{ $sysLogoExpanded ? asset($sysLogoExpanded) : $defaultLogo }}" 
+                    <!-- Expanded Logo (Light Theme) -->
+                    <img src="{{ $lightUrl }}" 
                          alt="Erpovy" 
                          class="h-10 w-auto flex-shrink-0 transition-all duration-200"
-                         :class="isCollapsed ? 'hidden opacity-0' : 'block opacity-100'"
+                         :class="!isCollapsed && !darkMode ? 'block opacity-100' : 'hidden opacity-0'"
+                    >
+
+                    <!-- Expanded Logo (Dark Theme) -->
+                    <img src="{{ $darkUrl }}" 
+                         alt="Erpovy" 
+                         class="h-10 w-auto flex-shrink-0 transition-all duration-200"
+                         :class="!isCollapsed && darkMode ? 'block opacity-100' : 'hidden opacity-0'"
                     >
 
                     <div class="flex flex-col transition-opacity duration-200" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">
@@ -395,7 +407,7 @@
                         <div class="absolute left-0 h-6 w-1 rounded-r-full bg-primary shadow-[0_0_10px_#137fec] pointer-events-none"></div>
                     @endif
                     <span class="material-symbols-outlined {{ request()->routeIs('superadmin.market.index') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">storefront</span>
-                    <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Modül Pazarı</span>
+                    <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Modül Market</span>
                 </a>
 
                 @if(auth()->user()->is_super_admin || auth()->user()->hasRole('Admin'))

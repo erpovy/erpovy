@@ -7,7 +7,8 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+        @php $favicon = \App\Models\Setting::get('logo_collapsed'); @endphp
+        <link rel="icon" type="image/x-icon" href="{{ $favicon ? (str_starts_with($favicon, 'http') ? $favicon : asset($favicon)) : asset('favicon.png') }}">
 
         <title>{{ config('app.name', 'Erpovy Kurumsal Yönetim Sistemi V2') }}</title>
 

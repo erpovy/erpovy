@@ -7,7 +7,7 @@
                 </div>
                 <div>
                     <h2 class="font-black text-3xl text-gray-900 dark:text-white tracking-tight">
-                        {{ __('Modül Pazarı') }}
+                        {{ __('Modül Market') }}
                     </h2>
                     <p class="text-gray-600 dark:text-slate-400 text-sm font-medium">
                         Sisteminizi genişletmek için modülleri keşfedin

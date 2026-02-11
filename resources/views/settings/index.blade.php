@@ -91,12 +91,12 @@
                             
                             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                                 
-                                <!-- Collapsed Logo -->
+                                <!-- Collapsed Logo (Favicon) -->
                                 <div x-data="{ preview: null }" class="group">
                                     <label class="block text-sm font-bold text-white mb-3">
                                         <span class="flex items-center gap-2">
-                                            <span class="material-symbols-outlined text-[18px] text-pink-400">image</span>
-                                            Menü Kapalı Logo
+                                            <span class="material-symbols-outlined text-[18px] text-pink-400">favicon</span>
+                                            Menü Kapalı Logo & Favicon
                                         </span>
                                     </label>
                                     
@@ -104,6 +104,7 @@
                                          style="min-height: 256px;"
                                          @click="$refs.logoCollapsedInput.click()">
                                         
+                                        @php $logoCollapsed = \App\Models\Setting::get('logo_collapsed'); @endphp
                                         @if($logoCollapsed)
                                             <img x-show="!preview" src="{{ str_starts_with($logoCollapsed, 'http') ? (str_contains($logoCollapsed, '127.0.0.1') ? preg_replace('/^http:\/\/127\.0\.0\.1:9000/', '', $logoCollapsed) : $logoCollapsed) : '/'.ltrim($logoCollapsed, '/') }}" class="absolute inset-0 w-full h-full object-contain p-8">
                                         @endif
@@ -112,11 +113,11 @@
                                         
                                         <div :class="preview || '{{ $logoCollapsed }}' ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'" class="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity">
                                             <span class="material-symbols-outlined text-[48px] text-slate-400 mb-2">upload</span>
-                                            <p class="text-xs font-bold text-slate-300 uppercase tracking-wider">Dosya Seç</p>
+                                            <p class="text-xs font-bold text-slate-300 uppercase tracking-wider">Favicon Seç</p>
                                         </div>
                                     </div>
                                     
-                                    <input x-ref="logoCollapsedInput" type="file" name="logo_collapsed" class="hidden" accept="image/png, image/jpeg, image/svg+xml"
+                                    <input x-ref="logoCollapsedInput" type="file" name="logo_collapsed" class="hidden" accept="image/png, image/jpeg, image/svg+xml, image/x-icon"
                                            @change="if($event.target.files[0]) {
                                                const reader = new FileReader();
                                                reader.onload = (e) => preview = e.target.result;
@@ -126,37 +127,38 @@
                                     <p class="mt-3 text-xs text-slate-500 text-center">
                                         <span class="inline-flex items-center gap-1">
                                             <span class="material-symbols-outlined text-[14px]">info</span>
-                                            Önerilen: 64x64px
+                                            Önerilen: 64x64px (.png veya .ico)
                                         </span>
                                     </p>
                                 </div>
 
-                                <!-- Expanded Logo -->
+                                <!-- Logo (Aydınlık Tema) -->
                                 <div x-data="{ preview: null }" class="group">
                                     <label class="block text-sm font-bold text-white mb-3">
                                         <span class="flex items-center gap-2">
-                                            <span class="material-symbols-outlined text-[18px] text-purple-400">photo_library</span>
-                                            Menü Açık Logo
+                                            <span class="material-symbols-outlined text-[18px] text-orange-400">light_mode</span>
+                                            Aydınlık Tema Logosu
                                         </span>
                                     </label>
                                     
-                                    <div class="relative h-64 rounded-2xl bg-gradient-to-br from-slate-900/50 to-slate-800/50 border-2 border-dashed border-slate-700 hover:border-purple-500/50 transition-all cursor-pointer overflow-hidden group-hover:shadow-xl group-hover:shadow-purple-500/10"
+                                    <div class="relative h-64 rounded-2xl bg-white border-2 border-dashed border-slate-300 hover:border-orange-500/50 transition-all cursor-pointer overflow-hidden group-hover:shadow-xl group-hover:shadow-orange-500/10"
                                          style="min-height: 256px;"
-                                         @click="$refs.logoExpandedInput.click()">
+                                         @click="$refs.logoLightInput.click()">
                                         
-                                        @if($logoExpanded)
-                                            <img x-show="!preview" src="{{ str_starts_with($logoExpanded, 'http') ? (str_contains($logoExpanded, '127.0.0.1') ? preg_replace('/^http:\/\/127\.0\.0\.1:9000/', '', $logoExpanded) : $logoExpanded) : '/'.ltrim($logoExpanded, '/') }}" class="absolute inset-0 w-full h-full object-contain p-8">
+                                        @php $logoLight = \App\Models\Setting::get('logo_light'); @endphp
+                                        @if($logoLight)
+                                            <img x-show="!preview" src="{{ str_starts_with($logoLight, 'http') ? (str_contains($logoLight, '127.0.0.1') ? preg_replace('/^http:\/\/127\.0\.0\.1:9000/', '', $logoLight) : $logoLight) : '/'.ltrim($logoLight, '/') }}" class="absolute inset-0 w-full h-full object-contain p-8">
                                         @endif
                                         
                                         <img x-show="preview" :src="preview" class="absolute inset-0 w-full h-full object-contain p-8">
                                         
-                                        <div :class="preview || '{{ $logoExpanded }}' ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'" class="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity">
-                                            <span class="material-symbols-outlined text-[48px] text-slate-400 mb-2">upload</span>
-                                            <p class="text-xs font-bold text-slate-300 uppercase tracking-wider">Dosya Seç</p>
+                                        <div :class="preview || '{{ $logoLight }}' ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'" class="absolute inset-0 flex flex-col items-center justify-center bg-black/20 backdrop-blur-sm transition-opacity">
+                                            <span class="material-symbols-outlined text-[48px] text-slate-600 mb-2">upload</span>
+                                            <p class="text-xs font-bold text-slate-700 uppercase tracking-wider">Logo Seç</p>
                                         </div>
                                     </div>
                                     
-                                    <input x-ref="logoExpandedInput" type="file" name="logo_expanded" class="hidden" accept="image/png, image/jpeg, image/svg+xml"
+                                    <input x-ref="logoLightInput" type="file" name="logo_light" class="hidden" accept="image/png, image/jpeg, image/svg+xml"
                                            @change="if($event.target.files[0]) {
                                                const reader = new FileReader();
                                                reader.onload = (e) => preview = e.target.result;
@@ -166,7 +168,48 @@
                                     <p class="mt-3 text-xs text-slate-500 text-center">
                                         <span class="inline-flex items-center gap-1">
                                             <span class="material-symbols-outlined text-[14px]">info</span>
-                                            Önerilen: 200x50px
+                                            Aydınlık modda görünecek geniş logo
+                                        </span>
+                                    </p>
+                                </div>
+
+                                <!-- Logo (Karanlık Tema) -->
+                                <div x-data="{ preview: null }" class="group">
+                                    <label class="block text-sm font-bold text-white mb-3">
+                                        <span class="flex items-center gap-2">
+                                            <span class="material-symbols-outlined text-[18px] text-indigo-400">dark_mode</span>
+                                            Karanlık Tema Logosu
+                                        </span>
+                                    </label>
+                                    
+                                    <div class="relative h-64 rounded-2xl bg-gradient-to-br from-slate-900 to-slate-800 border-2 border-dashed border-slate-700 hover:border-indigo-500/50 transition-all cursor-pointer overflow-hidden group-hover:shadow-xl group-hover:shadow-indigo-500/10"
+                                         style="min-height: 256px;"
+                                         @click="$refs.logoDarkInput.click()">
+                                        
+                                        @php $logoDark = \App\Models\Setting::get('logo_dark'); @endphp
+                                        @if($logoDark)
+                                            <img x-show="!preview" src="{{ str_starts_with($logoDark, 'http') ? (str_contains($logoDark, '127.0.0.1') ? preg_replace('/^http:\/\/127\.0\.0\.1:9000/', '', $logoDark) : $logoDark) : '/'.ltrim($logoDark, '/') }}" class="absolute inset-0 w-full h-full object-contain p-8">
+                                        @endif
+                                        
+                                        <img x-show="preview" :src="preview" class="absolute inset-0 w-full h-full object-contain p-8">
+                                        
+                                        <div :class="preview || '{{ $logoDark }}' ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'" class="absolute inset-0 flex flex-col items-center justify-center bg-black/50 backdrop-blur-sm transition-opacity">
+                                            <span class="material-symbols-outlined text-[48px] text-slate-400 mb-2">upload</span>
+                                            <p class="text-xs font-bold text-slate-300 uppercase tracking-wider">Logo Seç</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <input x-ref="logoDarkInput" type="file" name="logo_dark" class="hidden" accept="image/png, image/jpeg, image/svg+xml"
+                                           @change="if($event.target.files[0]) {
+                                               const reader = new FileReader();
+                                               reader.onload = (e) => preview = e.target.result;
+                                               reader.readAsDataURL($event.target.files[0]);
+                                           }">
+                                    
+                                    <p class="mt-3 text-xs text-slate-500 text-center">
+                                        <span class="inline-flex items-center gap-1">
+                                            <span class="material-symbols-outlined text-[14px]">info</span>
+                                            Karanlık mod ve Giriş ekranı logosu
                                         </span>
                                     </p>
                                 </div>

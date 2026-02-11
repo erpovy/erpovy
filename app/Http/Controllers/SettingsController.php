@@ -20,10 +20,11 @@ class SettingsController extends Controller
 
         $cacheSize = \Modules\SuperAdmin\Services\MetricService::getCacheSize();
         $logoCollapsed = \App\Models\Setting::get('logo_collapsed');
-        $logoExpanded = \App\Models\Setting::get('logo_expanded');
+        $logoLight = \App\Models\Setting::get('logo_light');
+        $logoDark = \App\Models\Setting::get('logo_dark');
         $loginBackground = \App\Models\Setting::get('login_background');
 
-        return view('settings.index', compact('cacheSize', 'logoCollapsed', 'logoExpanded', 'loginBackground'));
+        return view('settings.index', compact('cacheSize', 'logoCollapsed', 'logoLight', 'logoDark', 'loginBackground'));
     }
 
     /**
@@ -44,11 +45,13 @@ class SettingsController extends Controller
 
         $request->validate([
             'logo_collapsed' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/svg+xml|max:2048',
-            'logo_expanded' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/svg+xml|max:2048',
+            'logo_light' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/svg+xml|max:2048',
+            'logo_dark' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/svg+xml|max:2048',
             'login_background' => 'nullable|file|mimetypes:image/jpeg,image/png,image/jpg,image/gif,image/svg+xml,video/mp4,video/webm|max:20480',
         ], [], [
-            'logo_collapsed' => 'Menü Kapalı Logo',
-            'logo_expanded' => 'Menü Açık Logo',
+            'logo_collapsed' => 'Menü Kapalı Logo (Favicon)',
+            'logo_light' => 'Aydınlık Tema Logosu',
+            'logo_dark' => 'Karanlık Tema Logosu',
             'login_background' => 'Giriş Ekranı Arkaplanı',
         ]);
 
@@ -72,10 +75,19 @@ class SettingsController extends Controller
             $updatedCount++;
         }
 
-        if ($request->hasFile('logo_expanded')) {
-            $path = $request->file('logo_expanded')->store('logos', 'public');
+        if ($request->hasFile('logo_light')) {
+            $path = $request->file('logo_light')->store('logos', 'public');
             \App\Models\Setting::updateOrCreate(
-                ['key' => 'logo_expanded'],
+                ['key' => 'logo_light'],
+                ['value' => 'storage/' . $path]
+            );
+            $updatedCount++;
+        }
+
+        if ($request->hasFile('logo_dark')) {
+            $path = $request->file('logo_dark')->store('logos', 'public');
+            \App\Models\Setting::updateOrCreate(
+                ['key' => 'logo_dark'],
                 ['value' => 'storage/' . $path]
             );
             $updatedCount++;

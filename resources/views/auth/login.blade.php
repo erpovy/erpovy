@@ -2,7 +2,8 @@
     <!-- Branding Header -->
     <div class="mb-10 flex flex-col items-center">
         <div class="mb-6">
-            <img src="{{ asset('images/logo.png') }}" alt="Erpovy" class="h-20 w-auto">
+            @php $logoDark = \App\Models\Setting::get('logo_dark'); @endphp
+            <img src="{{ $logoDark ? (str_starts_with($logoDark, 'http') ? $logoDark : asset($logoDark)) : asset('images/logo.png') }}" alt="Erpovy" class="h-20 w-auto">
         </div>
         <h1 class="text-3xl font-extrabold text-white tracking-tight mb-2">Hoş Geldiniz</h1>
         <p class="text-slate-400 text-sm font-medium">Devam etmek için hesabınıza giriş yapın</p>
