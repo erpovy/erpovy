@@ -1,125 +1,185 @@
 <x-app-layout>
     <x-slot name="header">
-        Stok ve Ürün Yönetimi
-    </x-slot>
+        <div class="relative overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 dark:from-primary/5 dark:via-purple-500/5 dark:to-blue-500/5 animate-pulse"></div>
+            <div class="relative flex justify-between items-center py-4">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-500 dark:text-slate-400 shadow-sm dark:shadow-none">
+                        <span class="material-symbols-outlined text-[24px]">inventory_2</span>
+                    </div>
+                    <div>
+                        <h2 class="font-black text-3xl text-gray-900 dark:text-white tracking-tight mb-1 font-display">
+                            Ürün Yönetimi
+                        </h2>
+                        <p class="text-gray-500 dark:text-slate-400 text-sm font-medium flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[18px] text-primary">list_alt</span>
+                            Stok kartları ve hizmet listesi
+                        </p>
+                    </div>
+                </div>
 
-    <x-card>
-        <div class="p-6 border-b border-white/5">
-            <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-white">Ürün Listesi</h2>
-                <div class="flex gap-2">
-                    <a href="{{ route('inventory.products.import.sample') }}" class="bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white font-medium py-2 px-3 rounded-lg border border-white/10 transition-all flex items-center gap-2 text-sm" title="Excel Şablonu İndir">
-                        <span class="material-symbols-outlined text-lg">download</span>
-                        Şablon
+                <div class="flex gap-3">
+                    <a href="{{ route('inventory.products.import.sample') }}" 
+                       class="flex items-center gap-2 px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/10 text-gray-600 dark:text-slate-400 font-bold text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-all shadow-sm dark:shadow-none" title="Excel Şablonu İndir">
+                        <span class="material-symbols-outlined text-[20px]">download</span>
+                        <span class="hidden xl:inline">Şablon</span>
                     </a>
-                    <a href="{{ route('inventory.products.export') }}" class="bg-white/5 hover:bg-white/10 text-gray-400 hover:text-white font-medium py-2 px-3 rounded-lg border border-white/10 transition-all flex items-center gap-2 text-sm" title="Excel Olarak İndir">
-                        <span class="material-symbols-outlined text-lg">export_notes</span>
-                        Excel İndir
+                    <a href="{{ route('inventory.products.export') }}" 
+                       class="flex items-center gap-2 px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/10 text-gray-600 dark:text-slate-400 font-bold text-sm hover:bg-gray-50 dark:hover:bg-white/5 transition-all shadow-sm dark:shadow-none" title="Excel Olarak İndir">
+                        <span class="material-symbols-outlined text-[20px]">export_notes</span>
+                        <span class="hidden xl:inline">Excel İndir</span>
                     </a>
-                    <a href="{{ route('inventory.products.import.form') }}" class="bg-blue-600/20 hover:bg-blue-600/30 text-blue-400 font-bold py-2 px-4 rounded-lg border border-blue-600/30 transition-all flex items-center gap-2 text-sm">
-                        <span class="material-symbols-outlined text-lg">upload_file</span>
-                        Excel Yükle
+                    <a href="{{ route('inventory.products.import.form') }}" 
+                       class="flex items-center gap-2 px-4 py-3 rounded-xl bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/10 text-blue-600 dark:text-blue-400 font-bold text-sm hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:border-blue-200 dark:hover:border-blue-500/30 transition-all shadow-sm dark:shadow-none">
+                        <span class="material-symbols-outlined text-[20px]">upload_file</span>
+                        <span class="hidden sm:inline">Excel Yükle</span>
                     </a>
-                    <a href="{{ route('inventory.products.create') }}" class="bg-primary-600 hover:bg-primary-500 text-white font-bold py-2 px-4 rounded-lg shadow-neon transition-all flex items-center gap-2 text-sm">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                    <a href="{{ route('inventory.products.create') }}" 
+                       class="flex items-center gap-2 px-5 py-3 rounded-xl bg-gray-900 dark:bg-primary-600 text-white font-bold text-sm hover:bg-gray-800 dark:hover:bg-primary-500 transition-all shadow-lg shadow-gray-200/50 dark:shadow-primary-500/20">
+                        <span class="material-symbols-outlined text-[20px]">add_circle</span>
                         Yeni Ürün
                     </a>
                 </div>
             </div>
+        </div>
+    </x-slot>
 
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-white/5">
-                    <thead class="bg-white/5">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Kod (SKU)</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Ürün Adı</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Tür</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Alış Fiyatı</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">Satış Fiyatı</th>
-                            <th class="px-6 py-3 text-center text-xs font-medium text-slate-400 uppercase tracking-wider">Stok</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">İşlem</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-transparent divide-y divide-white/5">
-                        @forelse($products as $product)
-                            <tr class="hover:bg-white/5 transition-colors group">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-400 font-mono">
-                                    {{ $product->code }}
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="flex items-center">
-                                        <div class="h-10 w-10 flex-shrink-0 bg-slate-800 rounded-lg flex items-center justify-center text-slate-500">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+    <div class="py-8 min-h-screen transition-colors duration-300">
+        <div class="container mx-auto px-6 lg:px-8 max-w-[1600px]">
+            
+            <div class="bg-white dark:bg-[#1e293b]/50 border border-gray-200 dark:border-white/5 rounded-3xl shadow-sm dark:shadow-2xl overflow-hidden backdrop-blur-xl">
+                <div class="p-6 border-b border-gray-100 dark:border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="w-2 h-8 bg-blue-500 rounded-full"></span>
+                        <h3 class="text-lg font-black text-gray-900 dark:text-white tracking-tight">Ürün Listesi</h3>
+                        <span class="px-3 py-1 bg-gray-100 dark:bg-white/5 text-gray-500 dark:text-slate-400 rounded-full text-xs font-bold border border-gray-200 dark:border-white/5">
+                            Top. {{ $products->total() }} Kayıt
+                        </span>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gray-50/50 dark:bg-white/5 border-b border-gray-100 dark:border-white/5">
+                                <th class="px-6 py-4 text-left text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kod (SKU)</th>
+                                <th class="px-6 py-4 text-left text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Ürün Adı</th>
+                                <th class="px-6 py-4 text-left text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Tür</th>
+                                <th class="px-6 py-4 text-right text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Alış Fiyatı</th>
+                                <th class="px-6 py-4 text-right text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Satış Fiyatı</th>
+                                <th class="px-6 py-4 text-center text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Stok</th>
+                                <th class="px-6 py-4 text-right text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 dark:divide-white/5">
+                            @forelse($products as $product)
+                                <tr class="group hover:bg-blue-50/50 dark:hover:bg-blue-500/5 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <span class="text-sm font-mono font-bold text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-white/5 px-2 py-1 rounded-md border border-gray-200 dark:border-white/5">
+                                            {{ $product->code }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-4">
+                                            <div class="w-10 h-10 rounded-xl bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-400 dark:text-slate-500 border border-gray-200 dark:border-white/5 shadow-sm">
+                                                <span class="material-symbols-outlined">inventory_2</span>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                                                {{ $product->name }}
+                                            </div>
                                         </div>
-                                        <div class="ml-4">
-                                            <div class="text-sm font-medium text-white">{{ $product->name }}</div>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                    @if($product->type == 'good')
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">Ürün</span>
-                                    @else
-                                        <span class="px-2 py-1 text-xs font-semibold rounded-full bg-purple-500/10 text-purple-400 border border-purple-500/20">Hizmet</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-slate-400 font-mono">
-                                    {{ number_format($product->purchase_price, 2) }} ₺
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm text-green-400 font-mono font-bold">
-                                    {{ number_format($product->sale_price, 2) }} ₺
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-bold {{ $product->stock > 0 ? 'text-white' : 'text-red-400' }}">
-                                    @if($product->type == 'good' && $product->stock_track)
-                                        {{ $product->stock }} {{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}
-                                    @else
-                                        <span class="text-slate-600">-</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                    <div class="flex items-center justify-end gap-2">
-                                        @if($product->type == 'good' && $product->stock_track)
-                                            <button @click="openAdjustmentModal('{{ $product->id }}', '{{ $product->name }}', '{{ $product->stock }}', '{{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}')" 
-                                                    class="p-2 rounded-lg bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 transition-all">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-                                                </svg>
-                                            </button>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if($product->type == 'good')
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-bold border border-blue-200 dark:border-blue-500/20">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                                                Ürün
+                                            </span>
+                                        @else
+                                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs font-bold border border-purple-200 dark:border-purple-500/20">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
+                                                Hizmet
+                                            </span>
                                         @endif
-                                        <a href="{{ route('inventory.products.edit', $product) }}" 
-                                           class="p-2 rounded-lg bg-slate-500/10 text-slate-400 hover:bg-slate-500/20 hover:text-white border border-slate-500/20 transition-all">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                            </svg>
-                                        </a>
-                                        <form action="{{ route('inventory.products.destroy', $product) }}" method="POST" class="inline" onsubmit="return confirm('Bu ürünü silmek istediğinizden emin misiniz?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="p-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500/20 border border-red-500/20 transition-all">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                                </svg>
-                                            </button>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
-                        @empty
-                            <tr>
-                                <td colspan="7" class="px-6 py-10 text-center text-slate-500">
-                                    Henüz ürün/hizmet tanımlanmamış.
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <span class="text-sm font-medium text-gray-500 dark:text-slate-400">
+                                            {{ number_format($product->purchase_price, 2) }} ₺
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-100 dark:border-emerald-500/20">
+                                            {{ number_format($product->sale_price, 2) }} ₺
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-center">
+                                        @if($product->type == 'good' && $product->stock_track)
+                                            @if($product->stock <= 0)
+                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-bold border border-red-200 dark:border-red-500/20">
+                                                    Stok Yok
+                                                </span>
+                                            @elseif($product->stock <= $product->min_stock_level)
+                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-bold border border-orange-200 dark:border-orange-500/20">
+                                                    {{ $product->stock }} {{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}
+                                                    <span class="text-[10px] opacity-75">(Kritik)</span>
+                                                </span>
+                                            @else
+                                                <span class="text-sm font-bold text-gray-700 dark:text-white">
+                                                    {{ $product->stock }} <span class="text-xs text-gray-400 font-normal">{{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}</span>
+                                                </span>
+                                            @endif
+                                        @else
+                                            <span class="text-gray-400 dark:text-slate-600 font-mono text-xs">-</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <div class="flex items-center justify-end gap-2">
+                                            @if($product->type == 'good' && $product->stock_track)
+                                                <button @click="openAdjustmentModal('{{ $product->id }}', '{{ $product->name }}', '{{ $product->stock }}', '{{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}')" 
+                                                        class="p-2 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-500/20 border border-blue-200 dark:border-blue-500/20 transition-all" title="Stok Düzeltme">
+                                                    <span class="material-symbols-outlined text-[18px]">swap_vert</span>
+                                                </button>
+                                            @endif
+                                            <a href="{{ route('inventory.products.edit', $product) }}" 
+                                               class="p-2 rounded-xl bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 transition-all" title="Düzenle">
+                                                <span class="material-symbols-outlined text-[18px]">edit</span>
+                                            </a>
+                                            <form action="{{ route('inventory.products.destroy', $product) }}" method="POST" class="inline" onsubmit="return confirm('Bu ürünü silmek istediğinizden emin misiniz?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="p-2 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 border border-red-200 dark:border-red-500/20 transition-all" title="Sil">
+                                                    <span class="material-symbols-outlined text-[18px]">delete</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="7" class="px-6 py-12 text-center">
+                                        <div class="flex flex-col items-center justify-center">
+                                            <div class="w-16 h-16 bg-gray-50 dark:bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-gray-100 dark:border-white/5">
+                                                <span class="material-symbols-outlined text-gray-300 dark:text-slate-600 text-[32px]">inventory_2</span>
+                                            </div>
+                                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-1">Henüz ürün eklenmemiş</h3>
+                                            <p class="text-gray-500 dark:text-slate-400 text-sm mb-4">Stok takibi yapmak için ilk ürününüzü ekleyin.</p>
+                                            <a href="{{ route('inventory.products.create') }}" class="px-4 py-2 bg-primary-600 text-white rounded-xl text-sm font-bold shadow-lg shadow-primary-500/20 hover:bg-primary-500 transition-all">
+                                                Ürün Ekle
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
 
-            <div class="mt-4">
-                {{ $products->links() }}
+                <div class="px-6 py-4 border-t border-gray-100 dark:border-white/5 bg-gray-50/50 dark:bg-white/5">
+                    {{ $products->links() }}
+                </div>
             </div>
         </div>
-    </x-card>
+    </div>
 
     <!-- Adjustment Modal -->
     <div x-data="{ show: false, productId: null, productName: '', currentStock: 0, unit: 'Adet', type: 'in', quantity: 1, description: '' }"
@@ -128,46 +188,74 @@
          class="fixed inset-0 z-50 overflow-y-auto" 
          style="display: none;">
         <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 transition-opacity bg-slate-900 bg-opacity-75 backdrop-blur-sm" @click="show = false"></div>
+            <div class="fixed inset-0 transition-opacity bg-gray-900/50 dark:bg-black/80 backdrop-blur-sm" @click="show = false"></div>
 
-            <div class="inline-block px-4 pt-5 pb-4 overflow-hidden text-left align-bottom transition-all transform bg-slate-900 border border-white/10 rounded-lg shadow-xl sm:my-8 sm:align-middle sm:max-w-lg sm:w-full sm:p-6">
+            <div class="inline-block w-full max-w-lg p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/10 rounded-3xl shadow-2xl relative">
                 
-                <h3 class="text-lg font-medium leading-6 text-white mb-4">
-                    Stok Hareketi: <span x-text="productName" class="text-primary-400"></span>
-                </h3>
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-black text-gray-900 dark:text-white tracking-tight">
+                        Stok Hareketi
+                    </h3>
+                    <button @click="show = false" class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                <div class="mb-6 p-4 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/5">
+                    <p class="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-1">Seçili Ürün</p>
+                    <div class="flex justify-between items-end">
+                        <p class="text-lg font-bold text-gray-900 dark:text-white" x-text="productName"></p>
+                        <p class="text-sm font-medium text-gray-500 dark:text-slate-400">
+                            Mevcut: <span x-text="currentStock" class="text-gray-900 dark:text-white font-bold"></span> <span x-text="unit"></span>
+                        </p>
+                    </div>
+                </div>
 
                 <form action="{{ route('inventory.stock.adjust') }}" method="POST">
                     @csrf
                     <input type="hidden" name="product_id" :value="productId">
                     
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-slate-400 mb-2">İşlem Türü</label>
-                        <div class="flex gap-4">
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="type" value="in" x-model="type" class="text-green-500 bg-slate-900 border-white/10 focus:ring-green-500">
-                                <span class="text-white">Giriş (Ekleme)</span>
+                    <div class="mb-6">
+                        <label class="block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2">İşlem Türü</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <label class="relative cursor-pointer group">
+                                <input type="radio" name="type" value="in" x-model="type" class="peer sr-only">
+                                <div class="p-4 rounded-xl border-2 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 peer-checked:border-emerald-500 dark:peer-checked:border-emerald-500 peer-checked:bg-emerald-50 dark:peer-checked:bg-emerald-500/10 transition-all text-center">
+                                    <span class="material-symbols-outlined text-3xl mb-1 text-gray-400 peer-checked:text-emerald-500 block">add_circle</span>
+                                    <span class="text-sm font-bold text-gray-500 dark:text-slate-400 peer-checked:text-emerald-700 dark:peer-checked:text-emerald-400">Giriş (Ekleme)</span>
+                                </div>
                             </label>
-                            <label class="flex items-center gap-2 cursor-pointer">
-                                <input type="radio" name="type" value="out" x-model="type" class="text-red-500 bg-slate-900 border-white/10 focus:ring-red-500">
-                                <span class="text-white">Çıkış (Azaltma)</span>
+                            <label class="relative cursor-pointer group">
+                                <input type="radio" name="type" value="out" x-model="type" class="peer sr-only">
+                                <div class="p-4 rounded-xl border-2 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 peer-checked:border-red-500 dark:peer-checked:border-red-500 peer-checked:bg-red-50 dark:peer-checked:bg-red-500/10 transition-all text-center">
+                                    <span class="material-symbols-outlined text-3xl mb-1 text-gray-400 peer-checked:text-red-500 block">remove_circle</span>
+                                    <span class="text-sm font-bold text-gray-500 dark:text-slate-400 peer-checked:text-red-700 dark:peer-checked:text-red-400">Çıkış (Azaltma)</span>
+                                </div>
                             </label>
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-slate-400 mb-1">Miktar (<span x-text="unit"></span>)</label>
-                        <input type="number" name="quantity" x-model="quantity" step="0.01" min="0.01" class="w-full rounded-lg bg-slate-800 border border-white/10 text-white focus:border-primary-500 focus:ring-primary-500">
-                        <p class="text-xs text-slate-500 mt-1">Mevcut Stok: <span x-text="currentStock"></span> <span x-text="unit"></span></p>
-                    </div>
-
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-slate-400 mb-1">Açıklama</label>
-                        <input type="text" name="description" x-model="description" class="w-full rounded-lg bg-slate-800 border border-white/10 text-white focus:border-primary-500 focus:ring-primary-500" placeholder="Örn: Sayım farkı, hasarlı ürün vb.">
+                        <label class="block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2">Miktar (<span x-text="unit"></span>)</label>
+                        <div class="relative">
+                            <input type="number" name="quantity" x-model="quantity" step="0.01" min="0.01" 
+                                   class="w-full h-12 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white px-4 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all font-bold text-lg">
+                        </div>
                     </div>
 
-                    <div class="flex justify-end gap-3">
-                        <button type="button" @click="show = false" class="px-4 py-2 text-sm text-slate-300 hover:text-white">İptal</button>
-                        <button type="submit" class="px-4 py-2 text-sm font-bold text-white bg-primary-600 rounded-lg hover:bg-primary-500 shadow-neon">Kaydet</button>
+                    <div class="mb-8">
+                        <label class="block text-sm font-bold text-gray-700 dark:text-slate-300 mb-2">Açıklama</label>
+                        <input type="text" name="description" x-model="description" 
+                               class="w-full h-12 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white px-4 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all" 
+                               placeholder="Örn: Sayım farkı, hasarlı ürün vb.">
+                    </div>
+
+                    <div class="flex justify-end gap-3 pt-4 border-t border-gray-100 dark:border-white/5">
+                        <button type="button" @click="show = false" class="px-6 py-3 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-slate-300 font-bold hover:bg-gray-200 dark:hover:bg-white/10 transition-all">İptal</button>
+                        <button type="submit" class="px-6 py-3 rounded-xl bg-gray-900 dark:bg-primary-600 text-white font-bold hover:bg-gray-800 dark:hover:bg-primary-500 shadow-lg shadow-gray-200/50 dark:shadow-primary-500/20 transition-all flex items-center gap-2">
+                            <span class="material-symbols-outlined">save</span>
+                            Kaydet
+                        </button>
                     </div>
                 </form>
             </div>

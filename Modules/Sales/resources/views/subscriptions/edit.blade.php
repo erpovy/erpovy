@@ -3,14 +3,14 @@
         <div class="relative overflow-hidden group">
             <div class="absolute inset-0 bg-gradient-to-r from-primary/5 via-purple-500/5 to-blue-500/5 animate-pulse"></div>
             <div class="relative flex items-center gap-6 py-2">
-                <a href="{{ route('sales.subscriptions.show', $subscription->id) }}" class="flex items-center justify-center w-12 h-12 rounded-2xl bg-white/5 border border-white/10 text-slate-400 hover:text-white hover:bg-white/10 hover:border-primary/30 transition-all group/back">
+                <a href="{{ route('sales.subscriptions.show', $subscription->id) }}" class="flex items-center justify-center w-12 h-12 rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/10 hover:border-primary/30 transition-all group/back">
                     <span class="material-symbols-outlined text-[24px] group-hover/back:-translate-x-1 transition-transform">arrow_back</span>
                 </a>
                 <div>
-                    <h2 class="font-black text-3xl text-white tracking-tight mb-1">
+                    <h2 class="font-black text-3xl text-gray-900 dark:text-white tracking-tight mb-1">
                         Aboneliği Düzenle
                     </h2>
-                    <p class="text-slate-400 text-sm font-medium flex items-center gap-2">
+                    <p class="text-gray-500 dark:text-slate-400 text-sm font-medium flex items-center gap-2">
                         <span class="material-symbols-outlined text-[16px]">edit</span>
                         Mevcut abonelik bilgilerini güncelleyin
                     </p>
@@ -42,7 +42,7 @@
                 
                 <!-- Left Column: Form -->
                 <div class="lg:col-span-2 space-y-6">
-                    <x-card class="p-8 !bg-[#0f172a]/40 border-white/5 backdrop-blur-3xl relative overflow-hidden shadow-2xl">
+                    <x-card class="p-8 !bg-white/40 dark:!bg-[#0f172a]/40 border-gray-200 dark:border-white/5 backdrop-blur-3xl relative overflow-hidden shadow-2xl">
                         <div class="absolute top-0 right-0 p-8 opacity-[0.03] pointer-events-none">
                             <span class="material-symbols-outlined text-[160px]">subscriptions</span>
                         </div>
@@ -72,23 +72,23 @@
                                         <span class="material-symbols-outlined text-primary text-[20px]">person_add</span>
                                     </div>
                                     <div>
-                                        <h3 class="text-sm font-black text-white uppercase tracking-widest">Müşteri ve Hizmet</h3>
-                                        <p class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Abonelik Temel Bilgileri</p>
+                                        <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-widest">Müşteri ve Hizmet</h3>
+                                        <p class="text-[10px] text-gray-500 dark:text-slate-500 font-bold uppercase tracking-wider">Abonelik Temel Bilgileri</p>
                                     </div>
                                 </div>
                                 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="space-y-3">
-                                        <label class="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest pl-1">
+                                        <label class="flex items-center gap-2 text-[11px] font-bold text-gray-500 dark:text-slate-400 uppercase tracking-widest pl-1">
                                             <span class="material-symbols-outlined text-[18px] text-primary">person</span>
                                             Müşteri Seçimi
                                         </label>
                                         <div class="relative">
                                             <select name="contact_id" 
-                                                    class="w-full bg-[#1e293b] text-white border border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none appearance-none font-medium" 
-                                                    style="background-color: #1e293b !important;" required>
+                                                    class="w-full bg-gray-50 dark:bg-[#1e293b] text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none appearance-none font-medium" 
+                                                    required>
                                                 @foreach($contacts as $contact)
-                                                    <option value="{{ $contact->id }}" {{ old('contact_id', $subscription->contact_id) == $contact->id ? 'selected' : '' }} class="bg-[#0f172a] text-white">{{ $contact->name }}</option>
+                                                    <option value="{{ $contact->id }}" {{ old('contact_id', $subscription->contact_id) == $contact->id ? 'selected' : '' }} class="bg-white dark:bg-[#0f172a] text-gray-900 dark:text-white">{{ $contact->name }}</option>
                                                 @endforeach
                                             </select>
                                             <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined pointer-events-none text-sm">expand_more</span>
@@ -96,14 +96,13 @@
                                     </div>
 
                                     <div class="space-y-3">
-                                        <label class="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest pl-1">
+                                        <label class="flex items-center gap-2 text-[11px] font-bold text-gray-500 dark:text-slate-400 uppercase tracking-widest pl-1">
                                             <span class="material-symbols-outlined text-[18px] text-primary">label</span>
                                             Abonelik Adı / Hizmet
                                         </label>
                                         <div class="relative">
                                             <input type="text" name="name" value="{{ old('name', $subscription->name) }}"
-                                                   class="w-full bg-[#1e293b] text-white border border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none font-medium"
-                                                   style="background-color: #1e293b !important;"
+                                                   class="w-full bg-gray-50 dark:bg-[#1e293b] text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none font-medium"
                                                    placeholder="Örn: Bulut Depolama Paketi" required>
                                         </div>
                                     </div>
@@ -111,78 +110,76 @@
                             </div>
 
                             <!-- Section: Pricing & Period -->
-                            <div class="space-y-6 pt-6 border-t border-white/5">
+                            <div class="space-y-6 pt-6 border-t border-gray-200 dark:border-white/5">
                                 <div class="flex items-center gap-3 mb-2">
                                     <div class="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20 shadow-inner">
                                         <span class="material-symbols-outlined text-emerald-500 text-[20px]">payments</span>
                                     </div>
                                     <div>
-                                        <h3 class="text-sm font-black text-white uppercase tracking-widest">Fiyatlandırma ve Periyot</h3>
-                                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">Maliyet ve Fatura Döngüsü</p>
+                                        <h3 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-widest">Fiyatlandırma ve Periyot</h3>
+                                        <p class="text-[10px] text-gray-500 dark:text-slate-400 font-bold uppercase tracking-wider">Maliyet ve Fatura Döngüsü</p>
                                     </div>
                                 </div>
 
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div class="space-y-3">
-                                        <label class="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest pl-1">
+                                        <label class="flex items-center gap-2 text-[11px] font-bold text-gray-500 dark:text-slate-400 uppercase tracking-widest pl-1">
                                             <span class="material-symbols-outlined text-[18px] text-emerald-500">payments</span>
                                             Birim Fiyat
                                         </label>
                                         <div class="relative">
                                             <input type="number" step="0.01" name="price" x-model.number="price"
-                                                   class="w-full bg-[#1e293b] text-white border border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all outline-none font-bold" 
-                                                   style="background-color: #1e293b !important;"
+                                                   class="w-full bg-gray-50 dark:bg-[#1e293b] text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all outline-none font-bold" 
                                                    placeholder="0,00" required>
                                             <span class="absolute right-4 top-1/2 -translate-y-1/2 text-emerald-500 font-black text-sm">₺</span>
                                         </div>
                                     </div>
 
                                     <div class="space-y-3">
-                                        <label class="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest pl-1">
+                                        <label class="flex items-center gap-2 text-[11px] font-bold text-gray-500 dark:text-slate-400 uppercase tracking-widest pl-1">
                                             <span class="material-symbols-outlined text-[18px] text-red-400">price_check</span>
                                             Maliyet
                                         </label>
                                         <div class="relative">
                                             <input type="number" step="0.01" name="cost" value="{{ old('cost', $subscription->cost) }}"
-                                                   class="w-full bg-[#1e293b] text-white border border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-all outline-none font-bold" 
-                                                   style="background-color: #1e293b !important;"
+                                                   class="w-full bg-gray-50 dark:bg-[#1e293b] text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-red-500/50 focus:border-red-500 transition-all outline-none font-bold" 
                                                    placeholder="0,00">
                                             <span class="absolute right-4 top-1/2 -translate-y-1/2 text-red-500 font-black text-sm">₺</span>
                                         </div>
                                     </div>
 
                                     <div class="space-y-3">
-                                        <label class="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest pl-1">
+                                        <label class="flex items-center gap-2 text-[11px] font-bold text-gray-500 dark:text-slate-400 uppercase tracking-widest pl-1">
                                             <span class="material-symbols-outlined text-[18px] text-primary">event_repeat</span>
                                             Fatura Periyodu
                                         </label>
                                         <div class="relative">
                                             <select name="billing_interval" x-model="billing_interval"
-                                                    class="w-full bg-[#1e293b] text-white border border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none appearance-none font-medium" 
-                                                    style="background-color: #1e293b !important;" required>
-                                                <option value="monthly" class="bg-[#0f172a] text-white">Aylık</option>
-                                                <option value="quarterly" class="bg-[#0f172a] text-white">3 Aylık</option>
-                                                <option value="yearly" class="bg-[#0f172a] text-white">Yıllık</option>
+                                                    class="w-full bg-gray-50 dark:bg-[#1e293b] text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none appearance-none font-medium" 
+                                                    required>
+                                                <option value="monthly" class="bg-white dark:bg-[#0f172a] text-gray-900 dark:text-white">Aylık</option>
+                                                <option value="quarterly" class="bg-white dark:bg-[#0f172a] text-gray-900 dark:text-white">3 Aylık</option>
+                                                <option value="yearly" class="bg-white dark:bg-[#0f172a] text-gray-900 dark:text-white">Yıllık</option>
                                             </select>
                                             <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 material-symbols-outlined pointer-events-none text-sm">expand_more</span>
                                         </div>
                                     </div>
 
                                     <div class="space-y-3">
-                                        <label class="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest pl-1">
+                                        <label class="flex items-center gap-2 text-[11px] font-bold text-gray-500 dark:text-slate-400 uppercase tracking-widest pl-1">
                                             <span class="material-symbols-outlined text-[18px] text-slate-400">calendar_today</span>
                                             Başlangıç Tarihi
                                         </label>
                                         <div class="relative">
                                             <input type="date" name="start_date" x-model="start_date"
-                                                   class="w-full bg-[#1e293b] text-white border border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none font-medium" 
-                                                   style="background-color: #1e293b !important; color-scheme: dark;" required>
+                                                   class="w-full bg-gray-50 dark:bg-[#1e293b] text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-5 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none font-medium" 
+                                                   required>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="space-y-4 pt-6 border-t border-white/5">
-                                    <label class="text-[11px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 block">
+                                <div class="space-y-4 pt-6 border-t border-gray-200 dark:border-white/5">
+                                    <label class="text-[11px] font-black text-gray-500 dark:text-slate-500 uppercase tracking-[0.3em] mb-4 block">
                                         DURUM
                                     </label>
                                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -191,7 +188,7 @@
                                             <input type="radio" name="status" id="status_active" value="active" 
                                                    class="sr-only" x-model="status" @change="status = 'active'">
                                             <label for="status_active" 
-                                                   :class="status === 'active' ? 'bg-emerald-600 border-emerald-400 text-white shadow-[0_0_25px_rgba(16,185,129,0.5)] scale-[1.05]' : 'bg-white/5 border-white/10 text-slate-500 hover:bg-white/10'"
+                                                   :class="status === 'active' ? 'bg-emerald-600 border-emerald-400 text-white shadow-[0_0_25px_rgba(16,185,129,0.5)] scale-[1.05]' : 'bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-500 dark:text-slate-500 hover:bg-gray-50 dark:hover:bg-white/10'"
                                                    class="w-full h-16 flex items-center justify-center gap-3 rounded-2xl border-2 font-black text-[11px] uppercase tracking-widest cursor-pointer transition-all duration-300 relative overflow-hidden">
                                                 <span class="material-symbols-outlined text-[24px]" x-show="status === 'active'" x-transition:enter="animate-bounce">check_circle</span>
                                                 <span class="relative z-10">AKTİF</span>
@@ -203,7 +200,7 @@
                                             <input type="radio" name="status" id="status_suspended" value="suspended" 
                                                    class="sr-only" x-model="status" @change="status = 'suspended'">
                                             <label for="status_suspended" 
-                                                   :class="status === 'suspended' ? 'bg-amber-600 border-amber-400 text-white shadow-[0_0_25px_rgba(245,158,11,0.5)] scale-[1.05]' : 'bg-white/5 border-white/10 text-slate-500 hover:bg-white/10'"
+                                                   :class="status === 'suspended' ? 'bg-amber-600 border-amber-400 text-white shadow-[0_0_25px_rgba(245,158,11,0.5)] scale-[1.05]' : 'bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-500 dark:text-slate-500 hover:bg-gray-50 dark:hover:bg-white/10'"
                                                    class="w-full h-16 flex items-center justify-center gap-3 rounded-2xl border-2 font-black text-[11px] uppercase tracking-widest cursor-pointer transition-all duration-300 relative overflow-hidden">
                                                 <span class="material-symbols-outlined text-[24px]" x-show="status === 'suspended'" x-transition:enter="animate-bounce">pause_circle</span>
                                                 <span class="relative z-10">ASKIDA</span>
@@ -215,7 +212,7 @@
                                             <input type="radio" name="status" id="status_cancelled" value="cancelled" 
                                                    class="sr-only" x-model="status" @change="status = 'cancelled'">
                                             <label for="status_cancelled" 
-                                                   :class="status === 'cancelled' ? 'bg-red-600 border-red-400 text-white shadow-[0_0_25px_rgba(239,68,68,0.5)] scale-[1.05]' : 'bg-white/5 border-white/10 text-slate-500 hover:bg-white/10'"
+                                                   :class="status === 'cancelled' ? 'bg-red-600 border-red-400 text-white shadow-[0_0_25px_rgba(239,68,68,0.5)] scale-[1.05]' : 'bg-white dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-500 dark:text-slate-500 hover:bg-gray-50 dark:hover:bg-white/10'"
                                                    class="w-full h-16 flex items-center justify-center gap-3 rounded-2xl border-2 font-black text-[11px] uppercase tracking-widest cursor-pointer transition-all duration-300 relative overflow-hidden">
                                                 <span class="material-symbols-outlined text-[24px]" x-show="status === 'cancelled'" x-transition:enter="animate-bounce">cancel</span>
                                                 <span class="relative z-10">İPTAL</span>
@@ -225,24 +222,23 @@
                                 </div>
                             </div>
 
-                            <div class="space-y-3 pt-6 border-t border-white/5">
-                                <label class="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest pl-1">
-                                    <span class="material-symbols-outlined text-[18px] text-slate-400">description</span>
+                            <div class="space-y-3 pt-6 border-t border-gray-200 dark:border-white/5">
+                                <label class="flex items-center gap-2 text-[11px] font-bold text-gray-500 dark:text-slate-400 uppercase tracking-widest pl-1">
+                                    <span class="material-symbols-outlined text-[18px] text-gray-400 dark:text-slate-400">description</span>
                                     Ek Notlar
                                 </label>
                                 <textarea name="notes" rows="4" 
-                                          class="w-full bg-[#1e293b] text-white border border-white/10 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none resize-none font-medium" 
-                                          style="background-color: #1e293b !important;"
+                                          class="w-full bg-gray-50 dark:bg-[#1e293b] text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all outline-none resize-none font-medium" 
                                           placeholder="Abonelik ile ilgili detaylı açıklamalar...">{{ old('notes', $subscription->notes) }}</textarea>
                             </div>
 
-                            <div class="pt-10 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
-                                <p class="hidden lg:block text-[11px] text-slate-500 font-bold uppercase tracking-widest italic leading-relaxed max-w-[300px]">
+                            <div class="pt-10 border-t border-gray-200 dark:border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+                                <p class="hidden lg:block text-[11px] text-gray-500 dark:text-slate-500 font-bold uppercase tracking-widest italic leading-relaxed max-w-[300px]">
                                     * Yapılan değişiklikler abonelik periyotlarını etkileyebilir.
                                 </p>
                                 <div class="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
                                     <a href="{{ route('sales.subscriptions.show', $subscription->id) }}" 
-                                       class="w-full md:w-40 h-14 flex items-center justify-center rounded-2xl border border-white/10 text-slate-400 font-bold text-[11px] uppercase tracking-widest hover:bg-white/5 hover:text-white transition-all text-center">
+                                       class="w-full md:w-40 h-14 flex items-center justify-center rounded-2xl border border-gray-300 dark:border-white/10 text-gray-500 dark:text-slate-400 font-bold text-[11px] uppercase tracking-widest hover:bg-gray-100 dark:hover:bg-white/5 hover:text-gray-900 dark:hover:text-white transition-all text-center">
                                         VAZGEÇ
                                     </a>
                                     <button type="submit" 
@@ -258,31 +254,31 @@
 
                 <!-- Right Column: Summary Card -->
                 <div class="space-y-6">
-                    <x-card class="p-6 !bg-[#0f172a]/40 border-white/5 backdrop-blur-3xl sticky top-24 overflow-hidden group shadow-2xl">
+                    <x-card class="p-6 !bg-white/40 dark:!bg-[#0f172a]/40 border-gray-200 dark:border-white/5 backdrop-blur-3xl sticky top-24 overflow-hidden group shadow-2xl">
                         <!-- Background Glow -->
                         <div class="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl group-hover:bg-primary/20 transition-all duration-700"></div>
 
                         <div class="relative space-y-6 text-center">
-                            <label class="text-[11px] font-black text-slate-500 uppercase tracking-[0.3em] mb-4 block">
+                            <label class="text-[11px] font-black text-gray-500 dark:text-slate-500 uppercase tracking-[0.3em] mb-4 block">
                                 DURUM
                             </label>
                             
-                            <div class="py-10 px-4 rounded-3xl !bg-[#0f172a]/60 border border-white/5 backdrop-blur-md shadow-inner">
-                                <div class="text-4xl font-black text-white mb-2 flex items-center justify-center gap-1">
+                            <div class="py-10 px-4 rounded-3xl !bg-white/60 dark:!bg-[#0f172a]/60 border border-gray-200 dark:border-white/5 backdrop-blur-md shadow-inner">
+                                <div class="text-4xl font-black text-gray-900 dark:text-white mb-2 flex items-center justify-center gap-1">
                                     <span class="text-xl text-emerald-500 font-bold">₺</span>
                                     <span x-text="annual_value">0,00</span>
                                 </div>
-                                <div class="text-[10px] text-slate-500 font-black uppercase tracking-widest">Tahmini Yıllık Değer</div>
+                                <div class="text-[10px] text-gray-500 dark:text-slate-500 font-black uppercase tracking-widest">Tahmini Yıllık Değer</div>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
-                                <div class="p-4 rounded-2xl !bg-[#0f172a]/60 border border-white/5">
-                                    <div class="text-xl font-black text-white mb-1">₺<span x-text="mrr_formatted">0,00</span></div>
-                                    <div class="text-[10px] text-slate-500 font-bold uppercase tracking-tight">Aylık Değer (MRR)</div>
+                                <div class="p-4 rounded-2xl !bg-white/60 dark:!bg-[#0f172a]/60 border border-gray-200 dark:border-white/5">
+                                    <div class="text-xl font-black text-gray-900 dark:text-white mb-1">₺<span x-text="mrr_formatted">0,00</span></div>
+                                    <div class="text-[10px] text-gray-500 dark:text-slate-500 font-bold uppercase tracking-tight">Aylık Değer (MRR)</div>
                                 </div>
-                                <div class="p-4 rounded-2xl !bg-[#0f172a]/60 border border-white/5">
-                                    <div class="text-xl font-black text-white mb-1" x-text="billing_interval === 'monthly' ? 'Aylık' : (billing_interval === 'quarterly' ? '3 Aylık' : 'Yıllık')">Aylık</div>
-                                    <div class="text-[10px] text-slate-500 font-bold uppercase tracking-tight">Periyot</div>
+                                <div class="p-4 rounded-2xl !bg-white/60 dark:!bg-[#0f172a]/60 border border-gray-200 dark:border-white/5">
+                                    <div class="text-xl font-black text-gray-900 dark:text-white mb-1" x-text="billing_interval === 'monthly' ? 'Aylık' : (billing_interval === 'quarterly' ? '3 Aylık' : 'Yıllık')">Aylık</div>
+                                    <div class="text-[10px] text-gray-500 dark:text-slate-500 font-bold uppercase tracking-tight">Periyot</div>
                                 </div>
                             </div>
                         </div>

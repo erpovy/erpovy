@@ -1,27 +1,27 @@
-<tr class="hover:bg-white/5 transition-colors group">
+<tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="flex items-center" style="padding-left: {{ $level * 24 }}px;">
             @if($category->icon)
-                <span class="material-symbols-outlined text-primary-400 text-2xl">{{ $category->icon }}</span>
+                <span class="material-symbols-outlined text-primary-500 dark:text-primary-400 text-2xl">{{ $category->icon }}</span>
             @else
-                <span class="material-symbols-outlined text-slate-600 text-2xl">folder</span>
+                <span class="material-symbols-outlined text-gray-500 dark:text-slate-600 text-2xl">folder</span>
             @endif
         </div>
     </td>
     <td class="px-6 py-4 whitespace-nowrap">
         <div class="flex items-center gap-2">
             @if($level > 0)
-                <span class="text-slate-600">└─</span>
+                <span class="text-gray-500 dark:text-slate-600">└─</span>
             @endif
             <div>
-                <div class="text-sm font-medium text-white">{{ $category->name }}</div>
+                <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $category->name }}</div>
                 @if($category->parent)
-                    <div class="text-xs text-slate-500">{{ $category->path }}</div>
+                    <div class="text-xs text-gray-500 dark:text-slate-500">{{ $category->path }}</div>
                 @endif
             </div>
         </div>
     </td>
-    <td class="px-6 py-4 text-sm text-slate-400">
+    <td class="px-6 py-4 text-sm text-gray-600 dark:text-slate-400">
         {{ Str::limit($category->description, 50) }}
     </td>
     <td class="px-6 py-4 text-center">
@@ -30,7 +30,7 @@
                 {{ $category->children->count() }}
             </span>
         @else
-            <span class="text-slate-600">-</span>
+            <span class="text-gray-500 dark:text-slate-600">-</span>
         @endif
     </td>
     <td class="px-6 py-4 text-center">
@@ -39,7 +39,7 @@
                 {{ $category->products->count() }}
             </span>
         @else
-            <span class="text-slate-600">0</span>
+            <span class="text-gray-500 dark:text-slate-600">0</span>
         @endif
     </td>
     <td class="px-6 py-4 text-center">
@@ -52,7 +52,7 @@
     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
         <div class="flex items-center justify-end gap-2">
             <a href="{{ route('inventory.categories.edit', $category) }}" 
-               class="p-2 rounded-lg bg-slate-500/10 text-slate-400 hover:bg-slate-500/20 hover:text-white border border-slate-500/20 transition-all">
+               class="p-2 rounded-lg bg-gray-100 dark:bg-slate-500/10 text-gray-600 dark:text-slate-400 hover:bg-gray-200 dark:hover:bg-slate-500/20 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-slate-500/20 transition-all">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                 </svg>

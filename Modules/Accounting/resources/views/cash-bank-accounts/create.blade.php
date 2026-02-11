@@ -5,15 +5,15 @@
             
             <div class="relative flex items-center justify-between py-2">
                 <div>
-                    <h2 class="font-black text-3xl text-white tracking-tight mb-1">
+                    <h2 class="font-black text-3xl text-gray-900 dark:text-white tracking-tight mb-1">
                         Yeni Kasa/Banka Hesabı
                     </h2>
-                    <p class="text-slate-400 text-sm font-medium flex items-center gap-2">
+                    <p class="text-gray-600 dark:text-slate-400 text-sm font-medium flex items-center gap-2">
                         <span class="material-symbols-outlined text-[16px]">add_circle</span>
                         Nakit veya Banka Hesabı Oluşturun
                     </p>
                 </div>
-                <a href="{{ route('accounting.cash-bank-accounts.index') }}" class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white text-sm font-medium transition-all">
+                <a href="{{ route('accounting.cash-bank-accounts.index') }}" class="px-4 py-2 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-900 dark:text-white text-sm font-medium transition-all">
                     <span class="material-symbols-outlined text-[18px] align-middle">arrow_back</span>
                     Geri Dön
                 </a>
@@ -27,32 +27,32 @@
             <form action="{{ route('accounting.cash-bank-accounts.store') }}" method="POST">
                 @csrf
                 
-                <x-card class="p-8 border-white/10 bg-white/5 backdrop-blur-2xl">
+                <x-card class="p-8 border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/5 backdrop-blur-2xl">
                     
                     <!-- Hesap Tipi -->
                     <div class="mb-6">
-                        <label class="block text-sm font-semibold text-white mb-3">Hesap Tipi *</label>
+                        <label class="block text-sm font-semibold text-gray-900 dark:text-white mb-3">Hesap Tipi *</label>
                         <div class="grid grid-cols-2 gap-4">
                             <label class="relative cursor-pointer">
                                 <input type="radio" name="type" value="cash" class="peer sr-only" checked>
-                                <div class="p-6 rounded-xl border-2 border-white/10 bg-white/5 peer-checked:border-green-500 peer-checked:bg-green-500/10 transition-all">
+                                <div class="p-6 rounded-xl border-2 border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/5 peer-checked:border-green-500 peer-checked:bg-green-500/10 transition-all">
                                     <div class="flex items-center gap-3">
                                         <span class="material-symbols-outlined text-[32px] text-green-400">payments</span>
                                         <div>
-                                            <p class="font-bold text-white">Kasa</p>
-                                            <p class="text-xs text-slate-400">Nakit para</p>
+                                            <p class="font-bold text-gray-900 dark:text-white">Kasa</p>
+                                            <p class="text-xs text-gray-600 dark:text-slate-400">Nakit para</p>
                                         </div>
                                     </div>
                                 </div>
                             </label>
                             <label class="relative cursor-pointer">
                                 <input type="radio" name="type" value="bank" class="peer sr-only">
-                                <div class="p-6 rounded-xl border-2 border-white/10 bg-white/5 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 transition-all">
+                                <div class="p-6 rounded-xl border-2 border-gray-200 dark:border-white/10 bg-white/80 dark:bg-white/5 peer-checked:border-blue-500 peer-checked:bg-blue-500/10 transition-all">
                                     <div class="flex items-center gap-3">
                                         <span class="material-symbols-outlined text-[32px] text-blue-400">account_balance</span>
                                         <div>
-                                            <p class="font-bold text-white">Banka</p>
-                                            <p class="text-xs text-slate-400">Banka hesabı</p>
+                                            <p class="font-bold text-gray-900 dark:text-white">Banka</p>
+                                            <p class="text-xs text-gray-600 dark:text-slate-400">Banka hesabı</p>
                                         </div>
                                     </div>
                                 </div>
@@ -62,39 +62,39 @@
 
                     <!-- Hesap Adı -->
                     <div class="mb-6">
-                        <label for="name" class="block text-sm font-semibold text-white mb-2">Hesap Adı *</label>
+                        <label for="name" class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Hesap Adı *</label>
                         <input type="text" id="name" name="name" required
-                               class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
+                               class="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all"
                                placeholder="Örn: Ana Kasa, Ziraat Bankası TL">
                     </div>
 
                     <!-- Banka Bilgileri (Sadece Banka seçildiğinde göster) -->
                     <div id="bank-fields" class="hidden space-y-6 mb-6">
                         <div>
-                            <label for="bank_name" class="block text-sm font-semibold text-white mb-2">Banka Adı</label>
+                            <label for="bank_name" class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Banka Adı</label>
                             <input type="text" id="bank_name" name="bank_name"
-                                   class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                   class="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                    placeholder="Örn: Ziraat Bankası">
                         </div>
 
                         <div>
-                            <label for="branch" class="block text-sm font-semibold text-white mb-2">Şube</label>
+                            <label for="branch" class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Şube</label>
                             <input type="text" id="branch" name="branch"
-                                   class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                   class="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                                    placeholder="Örn: Ankara Kızılay Şubesi">
                         </div>
 
                         <div>
-                            <label for="account_number" class="block text-sm font-semibold text-white mb-2">Hesap Numarası</label>
+                            <label for="account_number" class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Hesap Numarası</label>
                             <input type="text" id="account_number" name="account_number"
-                                   class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-mono"
+                                   class="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-mono"
                                    placeholder="Örn: 12345678">
                         </div>
 
                         <div>
-                            <label for="iban" class="block text-sm font-semibold text-white mb-2">IBAN</label>
+                            <label for="iban" class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">IBAN</label>
                             <input type="text" id="iban" name="iban"
-                                   class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-mono"
+                                   class="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all font-mono"
                                    placeholder="TR00 0000 0000 0000 0000 0000 00"
                                    maxlength="32">
                         </div>
@@ -102,9 +102,9 @@
 
                     <!-- Para Birimi -->
                     <div class="mb-6">
-                        <label for="currency" class="block text-sm font-semibold text-white mb-2">Para Birimi *</label>
+                        <label for="currency" class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Para Birimi *</label>
                         <select id="currency" name="currency" required
-                                class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all overflow-hidden">
+                                class="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all overflow-hidden">
                             <option value="TRY" selected class="bg-slate-900">TRY - Türk Lirası</option>
                             <option value="USD" class="bg-slate-900">USD - Amerikan Doları</option>
                             <option value="EUR" class="bg-slate-900">EUR - Euro</option>
@@ -114,32 +114,32 @@
 
                     <!-- Açılış Bakiyesi -->
                     <div class="mb-6">
-                        <label for="opening_balance" class="block text-sm font-semibold text-white mb-2">Açılış Bakiyesi *</label>
+                        <label for="opening_balance" class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Açılış Bakiyesi *</label>
                         <div class="relative">
-                            <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500">account_balance_wallet</span>
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-500 dark:text-slate-500">account_balance_wallet</span>
                             <input type="number" id="opening_balance" name="opening_balance" step="0.01" required
-                                   class="w-full pl-12 pr-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all font-mono"
+                                   class="w-full pl-12 pr-4 py-3 rounded-xl bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all font-mono"
                                    placeholder="0.00" value="0.00">
                         </div>
-                        <p class="text-xs text-slate-400 mt-2">Hesabın sisteme giriş tarihindeki mevcut bakiye tutarı.</p>
+                        <p class="text-xs text-gray-600 dark:text-slate-400 mt-2">Hesabın sisteme giriş tarihindeki mevcut bakiye tutarı.</p>
                     </div>
 
                     <!-- Açıklama -->
                     <div class="mb-6">
-                        <label for="description" class="block text-sm font-semibold text-white mb-2">Açıklama</label>
+                        <label for="description" class="block text-sm font-semibold text-gray-900 dark:text-white mb-2">Açıklama</label>
                         <textarea id="description" name="description" rows="3"
-                                  class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none"
+                                  class="w-full px-4 py-3 rounded-xl bg-white/80 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all resize-none"
                                   placeholder="Hesap hakkında notlar..."></textarea>
                     </div>
 
                     <!-- Butonlar -->
-                    <div class="flex items-center justify-end gap-3 pt-6 border-t border-white/10">
+                    <div class="flex items-center justify-end gap-3 pt-6 border-t border-gray-200 dark:border-white/10">
                         <a href="{{ route('accounting.cash-bank-accounts.index') }}" 
-                           class="px-6 py-3 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white font-medium transition-all">
+                           class="px-6 py-3 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-900 dark:text-white font-medium transition-all">
                             İptal
                         </a>
                         <button type="submit" 
-                                class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white font-medium transition-all shadow-lg shadow-emerald-500/30">
+                                class="px-6 py-3 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-gray-900 dark:text-white font-medium transition-all shadow-lg shadow-emerald-500/30">
                             <span class="material-symbols-outlined text-[18px] align-middle">save</span>
                             Hesabı Oluştur
                         </button>

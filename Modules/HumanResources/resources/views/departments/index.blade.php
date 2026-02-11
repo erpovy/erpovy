@@ -4,11 +4,11 @@
     </x-slot>
 
     <x-card>
-        <div class="p-6 border-b border-white/5">
+        <div class="p-6 border-b border-gray-200 dark:border-white/5">
             <div class="flex justify-between items-center mb-6">
                 <!-- Wrapper for Title -->
                 <div class="flex items-center gap-6">
-                    <h2 class="text-xl font-bold text-white">Departman Listesi</h2>
+                    <h2 class="text-xl font-bold text-gray-900 dark:text-white">Departman Listesi</h2>
                 </div>
 
                 <a href="{{ route('hr.departments.create') }}" class="bg-primary hover:bg-primary/80 text-white font-bold py-2 px-4 rounded-lg shadow-neon transition-all flex items-center gap-2">
@@ -18,23 +18,23 @@
             </div>
 
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-white/5">
-                    <thead class="bg-white/5">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-white/5">
+                    <thead class="bg-gray-100 dark:bg-white/5">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Departman Adı</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Açıklama</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Durum</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">İşlem</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-slate-400 uppercase tracking-wider">Departman Adı</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-slate-400 uppercase tracking-wider">Açıklama</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-slate-400 uppercase tracking-wider">Durum</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-slate-400 uppercase tracking-wider">İşlem</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-transparent divide-y divide-white/5">
+                    <tbody class="bg-transparent divide-y divide-gray-200 dark:divide-white/5">
                         @forelse($departments as $department)
-                            <tr class="hover:bg-white/5 transition-colors group">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-white">{{ $department->name }}</div>
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $department->name }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-slate-300">{{ Str::limit($department->description, 50) ?? '-' }}</div>
+                                    <div class="text-sm text-gray-700 dark:text-slate-300">{{ Str::limit($department->description, 50) ?? '-' }}</div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($department->is_active)
@@ -55,7 +55,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="px-6 py-10 text-center text-slate-500">
+                                <td colspan="4" class="px-6 py-10 text-center text-gray-500 dark:text-slate-500">
                                     Henüz kayıtlı departman bulunmamaktadır.
                                 </td>
                             </tr>

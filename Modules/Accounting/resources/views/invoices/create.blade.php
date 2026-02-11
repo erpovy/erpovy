@@ -57,7 +57,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-slate-400 mb-1">Senaryo</label>
-                        <select name="invoice_scenario" class="w-full rounded-lg bg-slate-900/50 border border-white/10 text-white focus:border-primary-500 focus:ring-primary-500">
+                        <select name="invoice_scenario" x-model="invoiceScenario" class="w-full rounded-lg bg-slate-900/50 border border-white/10 text-white focus:border-primary-500 focus:ring-primary-500">
                             <option value="EARSIV" selected>e-Arşiv Fatura</option>
                             <option value="KAGIT">Kağıt Fatura</option>
                         </select>
@@ -73,6 +73,24 @@
                         <input type="date" name="due_date" x-model="dueDate" class="w-full rounded-lg bg-slate-900/50 border border-white/10 text-white focus:border-primary-500 focus:ring-primary-500">
                     </div>
                 </div>
+
+                <!-- e-Invoice / Receiver Details -->
+                <div class="mt-6 pt-4 border-t border-white/5 grid grid-cols-1 md:grid-cols-2 gap-6" x-show="invoiceScenario == 'EARSIV'">
+                   <div>
+                       <label class="block text-sm font-medium text-slate-400 mb-1">Sevk Adresi (Boş ise Cari Adresi kullanılır)</label>
+                       <textarea name="receiver_info[address]" class="w-full rounded-lg bg-slate-900/50 border border-white/10 text-white focus:border-primary-500 focus:ring-primary-500" rows="2"></textarea>
+                   </div>
+                   <div class="grid grid-cols-2 gap-4">
+                       <div>
+                           <label class="block text-sm font-medium text-slate-400 mb-1">Şehir</label>
+                           <input type="text" name="receiver_info[city]" placeholder="Örn: Ankara" class="w-full rounded-lg bg-slate-900/50 border border-white/10 text-white focus:border-primary-500 focus:ring-primary-500">
+                       </div>
+                       <div>
+                           <label class="block text-sm font-medium text-slate-400 mb-1">İlçe</label>
+                           <input type="text" name="receiver_info[district]" placeholder="Örn: Çankaya" class="w-full rounded-lg bg-slate-900/50 border border-white/10 text-white focus:border-primary-500 focus:ring-primary-500">
+                       </div>
+                   </div>
+                </div>
             </x-card>
 
             <!-- Items -->
@@ -84,8 +102,8 @@
                     </button>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-left">
+                <div class="overflow-visible min-h-[300px]">
+                    <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="text-xs text-slate-400 uppercase border-b border-white/5">
                                 <th class="py-2 w-1/3">Ürün / Hizmet</th>
@@ -98,21 +116,57 @@
                         </thead>
                         <tbody class="divide-y divide-white/5">
                             <template x-for="(item, index) in items" :key="index">
-                                <tr>
+                                <tr class="relative" :style="'z-index: ' + (50 - index)">
                                     <td class="py-2 pr-2">
                                         <input type="text" :name="'items['+index+'][description]'" x-model="item.description" placeholder="Açıklama girin" class="w-full bg-transparent border-none text-white focus:ring-0 p-0 placeholder-slate-600">
                                         
-                                        <!-- Optional Product Select Helper -->
-                                        <select x-model="item.product_id" @change="fillProduct(index)" class="mt-1 w-full text-xs bg-slate-900/50 border border-white/5 rounded text-slate-400 focus:text-white">
-                                            <option value="">...veya Ürün Seçin</option>
-                                            @foreach($products as $product)
-                                                <option value="{{ $product->id }}" 
-                                                        data-price="{{ $product->sale_price }}" 
-                                                        data-name="{{ $product->name }}">
-                                                    {{ $product->name }} ({{ number_format($product->sale_price, 2) }} ₺)
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <!-- Searchable Product Select Helper -->
+                                        <div x-data="{ 
+                                            dropOpen: false, 
+                                            pSearch: '', 
+                                            chooseProduct(prodId, prodName, prodPrice) {
+                                                item.product_id = prodId;
+                                                item.description = prodName;
+                                                item.unit_price = prodPrice;
+                                                this.dropOpen = false;
+                                                this.pSearch = '';
+                                                calculateTotal();
+                                            },
+                                            get filteredProducts() {
+                                                if (!this.pSearch) return allProducts;
+                                                return allProducts.filter(p => p.name.toLowerCase().includes(this.pSearch.toLowerCase()));
+                                            }
+                                        }" class="relative mt-1">
+                                            <button type="button" @click="dropOpen = !dropOpen" 
+                                                    class="w-full bg-slate-900/50 border border-white/10 rounded-lg py-1.5 px-3 text-xs text-slate-400 hover:text-white flex justify-between items-center transition-all">
+                                                <span x-text="item.product_id ? 'Ürün Seçildi' : '...veya Ürün Seçin'"></span>
+                                                <span class="material-symbols-outlined text-sm transition-transform" :class="dropOpen ? 'rotate-180' : ''">expand_more</span>
+                                            </button>
+
+                                            <!-- Dropdown Menu -->
+                                            <div x-show="dropOpen" @click.away="dropOpen = false" 
+                                                 x-transition:enter="transition ease-out duration-100"
+                                                 x-transition:enter-start="opacity-0 scale-95"
+                                                 x-transition:enter-end="opacity-100 scale-100"
+                                                 class="absolute z-50 w-full mt-1 bg-slate-900 border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden">
+                                                <div class="p-2 border-b border-white/5">
+                                                    <input type="text" x-model="pSearch" placeholder="Ürün ara..." 
+                                                           class="w-full bg-white/5 border border-white/10 rounded-lg py-1.5 px-3 text-xs text-white focus:ring-0 focus:border-primary-500">
+                                                </div>
+                                                <div class="max-h-60 overflow-y-auto custom-scrollbar">
+                                                    <template x-for="p in filteredProducts" :key="p.id">
+                                                        <button type="button" @click="chooseProduct(p.id, p.name, p.price)" 
+                                                                class="w-full text-left px-4 py-2 text-xs text-slate-300 hover:bg-primary-500/20 hover:text-white transition-colors border-b border-white/5 last:border-0 flex justify-between">
+                                                            <span x-text="p.name"></span>
+                                                            <span class="text-primary-400 font-bold" x-text="p.price + ' ₺'"></span>
+                                                        </button>
+                                                    </template>
+                                                    <div x-show="filteredProducts.length === 0" class="p-4 text-center text-slate-500 text-xs italic">
+                                                        Ürün bulunamadı...
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                         <input type="hidden" :name="'items['+index+'][product_id]'" x-model="item.product_id">
                                     </td>
                                     <td class="py-2">
@@ -122,7 +176,11 @@
                                         <input type="number" :name="'items['+index+'][unit_price]'" x-model="item.unit_price" @input="calculateTotal()" step="0.01" class="w-full bg-slate-900/50 border border-white/10 rounded text-right text-white focus:border-primary-500 focus:ring-primary-500 p-1">
                                     </td>
                                     <td class="py-2">
-                                        <input type="number" :name="'items['+index+'][tax_rate]'" x-model="item.tax_rate" @input="calculateTotal()" class="w-full bg-slate-900/50 border border-white/10 rounded text-right text-white focus:border-primary-500 focus:ring-primary-500 p-1">
+                                        <select :name="'items['+index+'][tax_rate]'" x-model="item.tax_rate" @change="calculateTotal()" class="w-full bg-slate-900/50 border border-white/10 rounded text-right text-white focus:border-primary-500 focus:ring-primary-500 p-1">
+                                            @foreach($vat_rates as $rate)
+                                                <option value="{{ (int)$rate->rate }}">%{{ (int)$rate->rate }}</option>
+                                            @endforeach
+                                        </select>
                                     </td>
                                     <td class="py-2 text-right text-white font-mono">
                                         <span x-text="formatMoney(item.line_total)"></span> ₺
@@ -170,6 +228,14 @@
     <script>
         function invoiceForm() {
             return {
+                issueDate: '{{ date('Y-m-d') }}',
+                dueDate: '{{ date('Y-m-d', strtotime('+7 days')) }}',
+                invoiceScenario: 'EARSIV',
+                allProducts: [
+                    @foreach($products as $product)
+                        { id: '{{ $product->id }}', name: '{{ addslashes($product->name) }}', price: '{{ $product->sale_price }}' },
+                    @endforeach
+                ],
                 items: [
                     { product_id: '', description: '', quantity: 1, unit_price: 0, tax_rate: 20, line_total: 0 }
                 ],
@@ -189,14 +255,13 @@
                 },
 
                 fillProduct(index) {
-                    let select = document.querySelectorAll('select[x-model="item.product_id"]')[index];
-                    let option = select.options[select.selectedIndex];
-                    
-                    if (option.value) {
-                        this.items[index].description = option.dataset.name;
-                        this.items[index].unit_price = parseFloat(option.dataset.price);
-                        this.calculateTotal();
-                    }
+                    // Deprecated: now using chooseProduct inside the searchable component
+                },
+
+                updateDueDate() {
+                    let date = new Date(this.issueDate);
+                    date.setDate(date.getDate() + 7);
+                    this.dueDate = date.toISOString().split('T')[0];
                 },
 
                 calculateTotal() {

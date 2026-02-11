@@ -7,10 +7,10 @@
             <!-- Content -->
             <div class="relative flex items-center justify-between py-2">
                 <div>
-                    <h2 class="font-black text-3xl text-white tracking-tight mb-1">
+                    <h2 class="font-black text-3xl text-gray-900 dark:text-white tracking-tight mb-1">
                         Hesap Planı
                     </h2>
-                    <p class="text-slate-400 text-sm font-medium flex items-center gap-2">
+                    <p class="text-gray-600 dark:text-slate-400 text-sm font-medium flex items-center gap-2">
                         <span class="material-symbols-outlined text-[16px]">account_tree</span>
                         Tek Düzen Hesap Planı Yönetimi
                         <span class="w-1 h-1 rounded-full bg-slate-600"></span>
@@ -23,7 +23,7 @@
                     <!-- Import Defaults Wrapper -->
                     <div x-data="{ showImportModal: false }">
                         <!-- Trigger Button -->
-                        <button @click="showImportModal = true" type="button" class="group relative px-6 py-3 overflow-hidden rounded-xl bg-slate-800 text-slate-300 font-bold text-sm uppercase tracking-widest transition-all hover:bg-slate-700 hover:text-white border border-white/10 hover:border-white/20">
+                        <button @click="showImportModal = true" type="button" class="group relative px-6 py-3 overflow-hidden rounded-xl bg-slate-800 text-gray-700 dark:text-slate-300 font-bold text-sm uppercase tracking-widest transition-all hover:bg-slate-700 hover:text-gray-900 dark:text-white border border-gray-200 dark:border-white/10 hover:border-white/20">
                             <div class="relative flex items-center gap-2">
                                 <span class="material-symbols-outlined text-[20px]">cloud_download</span>
                                 <span>Standart Hesapları Yükle</span>
@@ -61,11 +61,11 @@
                                         <span class="material-symbols-outlined text-[40px]">cloud_download</span>
                                     </div>
                                     
-                                    <h3 class="mb-3 text-2xl font-black text-white tracking-tight">Standart Hesap Planı</h3>
+                                    <h3 class="mb-3 text-2xl font-black text-gray-900 dark:text-white tracking-tight">Standart Hesap Planı</h3>
                                     
-                                    <div class="mb-8 space-y-3 text-sm leading-relaxed text-slate-400">
+                                    <div class="mb-8 space-y-3 text-sm leading-relaxed text-gray-600 dark:text-slate-400">
                                         <p>Tek Düzen Hesap Planı'na (TDHP) ait standart hesaplar şirket hesaplarınıza eklenecektir.</p>
-                                        <ul class="text-left bg-white/5 p-4 rounded-xl space-y-2 border border-white/5">
+                                        <ul class="text-left bg-white/5 p-4 rounded-xl space-y-2 border border-gray-200 dark:border-white/5">
                                             <li class="flex items-center gap-2">
                                                 <span class="material-symbols-outlined text-green-500 text-[18px]">check_circle</span>
                                                 <span>100-900 arası ana hesaplar</span>
@@ -76,19 +76,19 @@
                                             </li>
                                             <li class="flex items-center gap-2">
                                                 <span class="material-symbols-outlined text-blue-400 text-[18px]">info</span>
-                                                <span>Mevcut hesaplarınız bu işlemden <strong class="text-white">etkilenmez</strong></span>
+                                                <span>Mevcut hesaplarınız bu işlemden <strong class="text-gray-900 dark:text-white">etkilenmez</strong></span>
                                             </li>
                                         </ul>
                                     </div>
                                     
                                     <div class="flex flex-col gap-3 sm:flex-row sm:justify-center">
-                                        <button @click="showImportModal = false" type="button" class="flex-1 rounded-xl bg-white/5 px-6 py-4 text-sm font-bold text-slate-300 hover:bg-white/10 hover:text-white transition-colors uppercase tracking-wider">
+                                        <button @click="showImportModal = false" type="button" class="flex-1 rounded-xl bg-white/5 px-6 py-4 text-sm font-bold text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:bg-white/10 hover:text-gray-900 dark:text-white transition-colors uppercase tracking-wider">
                                             Vazgeç
                                         </button>
                                         
                                         <form action="{{ route('accounting.accounts.import-defaults') }}" method="POST" class="flex-1">
                                             @csrf
-                                            <button type="submit" class="w-full h-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 text-sm font-black text-white shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-1 active:scale-95 transition-all uppercase tracking-wider flex items-center justify-center gap-2">
+                                            <button type="submit" class="w-full h-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4 text-sm font-black text-gray-900 dark:text-white shadow-lg shadow-blue-600/30 hover:shadow-blue-600/50 hover:-translate-y-1 active:scale-95 transition-all uppercase tracking-wider flex items-center justify-center gap-2">
                                                 <span>Yüklemeyi Başlat</span>
                                                 <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
                                             </button>
@@ -99,7 +99,7 @@
                         </div>
                     </div>
 
-                    <a href="{{ route('accounting.accounts.create') }}" class="group relative px-6 py-3 overflow-hidden rounded-xl bg-primary text-white font-black text-sm uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(var(--color-primary),0.3)]">
+                    <a href="{{ route('accounting.accounts.create') }}" class="group relative px-6 py-3 overflow-hidden rounded-xl bg-primary text-gray-900 dark:text-white font-black text-sm uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(var(--color-primary),0.3)]">
                         <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                         <div class="relative flex items-center gap-2">
                             <span class="material-symbols-outlined text-[20px]">add_circle</span>
@@ -124,31 +124,31 @@
                 ] as $stat)
                 <div class="group relative">
                     <div class="absolute inset-0 bg-gradient-to-br from-{{ $stat['color'] }}-500/20 to-{{ $stat['color'] }}-500/5 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <x-card class="h-full relative p-6 border-white/10 bg-white/5 backdrop-blur-2xl hover:border-{{ $stat['color'] }}-500/30 transition-all duration-300 group-hover:-translate-y-1">
+                    <x-card class="h-full relative p-6 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl hover:border-{{ $stat['color'] }}-500/30 transition-all duration-300 group-hover:-translate-y-1">
                         <div class="flex items-center justify-between mb-4">
                             <div class="p-2 rounded-xl bg-{{ $stat['color'] }}-500/10 text-{{ $stat['color'] }}-400">
                                 <span class="material-symbols-outlined text-[24px]">{{ $stat['icon'] }}</span>
                             </div>
                         </div>
-                        <div class="text-3xl font-black text-white mb-1">{{ number_format($stat['value']) }}</div>
-                        <div class="text-xs text-slate-500 font-bold uppercase tracking-wider">{{ $stat['label'] }}</div>
+                        <div class="text-3xl font-black text-gray-900 dark:text-white mb-1">{{ number_format($stat['value']) }}</div>
+                        <div class="text-xs text-gray-600 dark:text-slate-500 font-bold uppercase tracking-wider">{{ $stat['label'] }}</div>
                     </x-card>
                 </div>
                 @endforeach
             </div>
 
             <!-- Filters & Search -->
-            <x-card class="p-4 border-white/10 bg-white/5 backdrop-blur-2xl">
+            <x-card class="p-4 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl">
                 <form action="{{ route('accounting.accounts.index') }}" method="GET" class="flex flex-col md:flex-row gap-4">
                     <div class="flex-1 relative">
-                        <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500">search</span>
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-600 dark:text-slate-500">search</span>
                         <input type="text" name="search" value="{{ request('search') }}" placeholder="Hesap kodu veya adı ile ara..." 
-                               class="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:border-primary/50 focus:ring-0 transition-all">
+                               class="w-full pl-12 pr-4 py-3 bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white placeholder-slate-500 focus:border-primary/50 focus:ring-0 transition-all">
                     </div>
                     <div class="w-full md:w-64 relative">
-                        <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500">filter_list</span>
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-600 dark:text-slate-500">filter_list</span>
                         <select name="type" onchange="this.form.submit()" 
-                                class="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white appearance-none focus:border-primary/50 focus:ring-0 transition-all">
+                                class="w-full pl-12 pr-4 py-3 bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white appearance-none focus:border-primary/50 focus:ring-0 transition-all">
                             <option value="">Tüm Türler</option>
                             @foreach(\Modules\Accounting\Models\Account::getTypes() as $key => $label)
                                 <option value="{{ $key }}" {{ request('type') == $key ? 'selected' : '' }}>{{ $label }}</option>
@@ -159,36 +159,36 @@
             </x-card>
 
             <!-- Accounts Table -->
-            <x-card class="p-0 border-white/10 bg-white/5 overflow-hidden">
+            <x-card class="p-0 border-gray-200 dark:border-white/10 bg-white/5 overflow-hidden">
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
-                            <tr class="bg-white/[0.02] border-b border-white/5">
-                                <th class="p-4 text-[11px] font-black text-slate-500 uppercase tracking-widest text-center w-24">Kod</th>
-                                <th class="p-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Hesap Adı</th>
-                                <th class="p-4 text-[11px] font-black text-slate-500 uppercase tracking-widest">Tür</th>
-                                <th class="p-4 text-[11px] font-black text-slate-500 uppercase tracking-widest text-right">Bakiye</th>
-                                <th class="p-4 text-[11px] font-black text-slate-500 uppercase tracking-widest text-center">İşlem</th>
+                            <tr class="bg-gray-50 dark:bg-white/[0.02] border-b border-gray-200 dark:border-white/5">
+                                <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-center w-24">Kod</th>
+                                <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest">Hesap Adı</th>
+                                <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest">Tür</th>
+                                <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-right">Bakiye</th>
+                                <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-center">İşlem</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-white/5">
+                        <tbody class="divide-y divide-gray-200 dark:divide-white/5">
                             @forelse($accounts as $account)
-                            <tr class="hover:bg-white/5 transition-colors group">
+                            <tr class="hover:bg-gray-100 dark:hover:bg-white/5 transition-colors group">
                                 <td class="p-4 text-center">
-                                    <span class="px-2 py-1 bg-white/10 rounded text-xs font-mono font-bold text-primary group-hover:bg-primary/20 transition-colors">
+                                    <span class="px-2 py-1 bg-gray-100 dark:bg-white/10 rounded text-xs font-mono font-bold text-primary group-hover:bg-primary/20 transition-colors">
                                         {{ $account->code }}
                                     </span>
                                 </td>
                                 <td class="p-4">
-                                    <div class="text-sm font-bold text-white group-hover:text-primary transition-colors">{{ $account->name }}</div>
+                                    <div class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">{{ $account->name }}</div>
                                 </td>
                                 <td class="p-4">
-                                    <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-slate-800 text-slate-400 border border-white/5">
+                                    <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 border border-gray-200 dark:border-white/5">
                                         {{ $account->type_label }}
                                     </span>
                                 </td>
                                 <td class="p-4 text-right">
-                                    <div class="text-sm font-black {{ $account->current_balance < 0 ? 'text-red-400' : 'text-white' }}">
+                                    <div class="text-sm font-black {{ $account->current_balance < 0 ? 'text-red-400' : 'text-gray-900 dark:text-white' }}">
                                         {{ number_format($account->current_balance ?? 0, 2, ',', '.') }} ₺
                                     </div>
                                 </td>
@@ -209,7 +209,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="5" class="p-12 text-center text-slate-500 italic">
+                                <td colspan="5" class="p-12 text-center text-gray-600 dark:text-slate-500 italic">
                                     Kayıt bulunamadı.
                                 </td>
                             </tr>
@@ -219,7 +219,7 @@
                 </div>
 
                 @if($accounts->hasPages())
-                <div class="p-6 border-t border-white/5 bg-white/[0.01]">
+                <div class="p-6 border-t border-gray-200 dark:border-white/5 bg-white/[0.01]">
                     {{ $accounts->links() }}
                 </div>
                 @endif
@@ -240,3 +240,4 @@
         setInterval(updateClock, 1000);
     </script>
 </x-app-layout>
+

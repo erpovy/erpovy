@@ -7,15 +7,15 @@
             <!-- Content -->
             <div class="relative flex items-center justify-between py-2">
                 <div>
-                    <h2 class="font-black text-3xl text-white tracking-tight mb-1">
+                    <h2 class="font-black text-3xl text-gray-900 dark:text-white tracking-tight mb-1">
                         Mizan
                     </h2>
-                    <p class="text-slate-400 text-sm font-medium flex items-center gap-2">
+                    <p class="text-gray-600 dark:text-slate-400 text-sm font-medium flex items-center gap-2">
                         <span class="material-symbols-outlined text-[16px]">balance</span>
                         Tüm Hesapların Borç/Alacak Toplamları
                     </p>
                 </div>
-                <a href="{{ route('accounting.reports.index') }}" class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 text-white text-sm font-medium transition-all">
+                <a href="{{ route('accounting.reports.index') }}" class="px-4 py-2 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-900 dark:text-white text-sm font-medium transition-all">
                     <span class="material-symbols-outlined text-[18px] align-middle">arrow_back</span>
                     Raporlara Dön
                 </a>
@@ -29,56 +29,56 @@
             <!-- Özet Kartları -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <!-- Toplam Borç -->
-                <x-card class="p-6 border-white/10 bg-white/5 backdrop-blur-2xl">
+                <x-card class="p-6 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-2xl">
                     <div class="flex items-start justify-between mb-4">
                         <div class="p-3 rounded-2xl bg-gradient-to-br from-red-500/20 to-orange-500/20 text-red-400">
                             <span class="material-symbols-outlined text-[32px]">remove_circle</span>
                         </div>
                     </div>
-                    <h3 class="text-sm font-medium text-slate-400 mb-1">Toplam Borç</h3>
+                    <h3 class="text-sm font-medium text-gray-600 dark:text-slate-400 mb-1">Toplam Borç</h3>
                     <p class="text-3xl font-black text-red-400">{{ number_format($total_debit, 2) }}₺</p>
                 </x-card>
 
                 <!-- Toplam Alacak -->
-                <x-card class="p-6 border-white/10 bg-white/5 backdrop-blur-2xl">
+                <x-card class="p-6 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-2xl">
                     <div class="flex items-start justify-between mb-4">
                         <div class="p-3 rounded-2xl bg-gradient-to-br from-green-500/20 to-emerald-500/20 text-green-400">
                             <span class="material-symbols-outlined text-[32px]">add_circle</span>
                         </div>
                     </div>
-                    <h3 class="text-sm font-medium text-slate-400 mb-1">Toplam Alacak</h3>
+                    <h3 class="text-sm font-medium text-gray-600 dark:text-slate-400 mb-1">Toplam Alacak</h3>
                     <p class="text-3xl font-black text-green-400">{{ number_format($total_credit, 2) }}₺</p>
                 </x-card>
             </div>
 
             <!-- Mizan Tablosu -->
-            <x-card class="p-6 border-white/10 bg-white/5 backdrop-blur-2xl">
+            <x-card class="p-6 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-2xl">
                 <div class="flex items-center justify-between mb-6">
-                    <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                    <h3 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                         <span class="material-symbols-outlined text-purple-400">table_chart</span>
                         Hesap Hareketleri
                     </h3>
-                    <span class="text-sm text-slate-400">{{ $start_date }} - {{ $end_date }}</span>
+                    <span class="text-sm text-gray-500 dark:text-slate-400">{{ $start_date }} - {{ $end_date }}</span>
                 </div>
 
                 @if($accounts->count() > 0)
                     <div class="overflow-x-auto">
                         <table class="w-full">
                             <thead>
-                                <tr class="border-b border-white/10">
-                                    <th class="text-left py-3 px-4 text-sm font-semibold text-slate-400">Kod</th>
-                                    <th class="text-left py-3 px-4 text-sm font-semibold text-slate-400">Hesap Adı</th>
-                                    <th class="text-center py-3 px-4 text-sm font-semibold text-slate-400">Tip</th>
-                                    <th class="text-right py-3 px-4 text-sm font-semibold text-slate-400">Borç</th>
-                                    <th class="text-right py-3 px-4 text-sm font-semibold text-slate-400">Alacak</th>
-                                    <th class="text-right py-3 px-4 text-sm font-semibold text-slate-400">Bakiye</th>
+                                <tr class="border-b border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-transparent">
+                                    <th class="text-left py-3 px-4 text-sm font-semibold text-gray-600 dark:text-slate-400">Kod</th>
+                                    <th class="text-left py-3 px-4 text-sm font-semibold text-gray-600 dark:text-slate-400">Hesap Adı</th>
+                                    <th class="text-center py-3 px-4 text-sm font-semibold text-gray-600 dark:text-slate-400">Tip</th>
+                                    <th class="text-right py-3 px-4 text-sm font-semibold text-gray-600 dark:text-slate-400">Borç</th>
+                                    <th class="text-right py-3 px-4 text-sm font-semibold text-gray-600 dark:text-slate-400">Alacak</th>
+                                    <th class="text-right py-3 px-4 text-sm font-semibold text-gray-600 dark:text-slate-400">Bakiye</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($accounts as $account)
-                                    <tr class="border-b border-white/5 hover:bg-white/5 transition-colors">
-                                        <td class="py-3 px-4 text-sm text-slate-300 font-mono">{{ $account['code'] }}</td>
-                                        <td class="py-3 px-4 text-sm text-white">{{ $account['name'] }}</td>
+                                    <tr class="border-b border-gray-100 dark:border-white/5 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                        <td class="py-3 px-4 text-sm text-gray-700 dark:text-slate-300 font-mono">{{ $account['code'] }}</td>
+                                        <td class="py-3 px-4 text-sm text-gray-900 dark:text-white">{{ $account['name'] }}</td>
                                         <td class="py-3 px-4 text-center">
                                             <span class="inline-flex items-center px-2 py-1 rounded-lg text-xs font-medium
                                                 @if($account['type'] == 'asset') bg-green-500/20 text-green-400
@@ -114,16 +114,16 @@
                                     </tr>
                                 @endforeach
                                 <tr class="bg-purple-500/10 border-t-2 border-purple-500/30">
-                                    <td colspan="3" class="py-3 px-4 text-sm font-bold text-white">TOPLAM</td>
+                                    <td colspan="3" class="py-3 px-4 text-sm font-bold text-gray-900 dark:text-white">TOPLAM</td>
                                     <td class="py-3 px-4 text-lg font-black text-red-400 text-right">{{ number_format($total_debit, 2) }}₺</td>
                                     <td class="py-3 px-4 text-lg font-black text-green-400 text-right">{{ number_format($total_credit, 2) }}₺</td>
-                                    <td class="py-3 px-4 text-lg font-black text-slate-400 text-right">-</td>
+                                    <td class="py-3 px-4 text-lg font-black text-gray-500 dark:text-slate-400 text-right">-</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 @else
-                    <div class="text-center py-8 text-slate-400">
+                    <div class="text-center py-8 text-gray-500 dark:text-slate-400">
                         <span class="material-symbols-outlined text-[48px] opacity-50">inbox</span>
                         <p class="mt-2">Bu dönemde hesap hareketi bulunamadı.</p>
                     </div>
@@ -131,14 +131,14 @@
             </x-card>
 
             <!-- Mizan Dengesi -->
-            <x-card class="p-6 border-white/10 bg-gradient-to-br from-{{ $total_debit == $total_credit ? 'green' : 'red' }}-500/10 to-{{ $total_debit == $total_credit ? 'emerald' : 'orange' }}-500/10 backdrop-blur-2xl border-{{ $total_debit == $total_credit ? 'green' : 'red' }}-500/30">
+            <x-card class="p-6 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-2xl border-{{ $total_debit == $total_credit ? 'green' : 'red' }}-500/30">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="text-center">
-                        <h3 class="text-lg font-semibold text-slate-300 mb-2">Toplam Borç</h3>
+                        <h3 class="text-lg font-semibold text-gray-600 dark:text-slate-300 mb-2">Toplam Borç</h3>
                         <p class="text-4xl font-black text-red-400">{{ number_format($total_debit, 2) }}₺</p>
                     </div>
                     <div class="text-center">
-                        <h3 class="text-lg font-semibold text-slate-300 mb-2">Toplam Alacak</h3>
+                        <h3 class="text-lg font-semibold text-gray-600 dark:text-slate-300 mb-2">Toplam Alacak</h3>
                         <p class="text-4xl font-black text-green-400">{{ number_format($total_credit, 2) }}₺</p>
                     </div>
                 </div>
@@ -154,17 +154,17 @@
                             <span class="text-red-400 font-semibold">Mizan Dengesiz! Fark: {{ number_format(abs($total_debit - $total_credit), 2) }}₺</span>
                         </div>
                     @endif
-                    <p class="text-sm text-slate-400 mt-2">{{ $start_date }} - {{ $end_date }} dönemi</p>
+                    <p class="text-sm text-gray-500 dark:text-slate-400 mt-2">{{ $start_date }} - {{ $end_date }} dönemi</p>
                 </div>
             </x-card>
 
             <!-- Açıklama -->
-            <x-card class="p-6 border-white/10 bg-white/5 backdrop-blur-2xl">
+            <x-card class="p-6 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-2xl">
                 <div class="flex items-start gap-3">
                     <span class="material-symbols-outlined text-blue-400 text-[24px]">info</span>
                     <div class="flex-1">
-                        <h4 class="text-sm font-semibold text-white mb-2">Mizan Hakkında</h4>
-                        <p class="text-sm text-slate-400 leading-relaxed">
+                        <h4 class="text-sm font-semibold text-gray-900 dark:text-white mb-2">Mizan Hakkında</h4>
+                        <p class="text-sm text-gray-600 dark:text-slate-400 leading-relaxed">
                             Mizan, belirli bir dönemde tüm hesapların borç ve alacak hareketlerini gösteren bir rapordur. 
                             Bakiye sütununda <span class="text-blue-400 font-semibold">(B)</span> borç bakiyesini, 
                             <span class="text-orange-400 font-semibold">(A)</span> alacak bakiyesini ifade eder. 

@@ -88,6 +88,40 @@ class RentalController extends Controller
     }
 
     /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit($id)
+    {
+        $rental = Rental::findOrFail($id);
+        $contacts = Contact::where('type', 'customer')->orderBy('name')->get();
+        $products = Product::whereHas('productType', function($q) {
+            $q->where('code', 'good');
+        })->orderBy('name')->get();
+        return view('sales::rentals.edit', compact('rental', 'contacts', 'products'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'contact_id' => 'required|exists:contacts,id',
+            'product_id' => 'nullable|exists:products,id',
+            'daily_price' => 'required|numeric|min:0',
+            'start_date' => 'required|date',
+            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'status' => 'required|in:active,completed,overdue,cancelled',
+            'notes' => 'nullable|string',
+        ]);
+
+        $rental = Rental::findOrFail($id);
+        $rental->update($validated);
+
+        return redirect()->route('sales.rentals.index')->with('success', 'Kiralama kaydı başarıyla güncellendi.');
+    }
+
+    /**
      * Remove the specified resource from storage.
      */
     public function destroy($id)

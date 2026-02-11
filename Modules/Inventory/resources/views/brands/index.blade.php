@@ -4,9 +4,9 @@
     </x-slot>
 
     <x-card>
-        <div class="p-6 border-b border-white/5">
+        <div class="p-6 border-b border-gray-200 dark:border-white/5">
             <div class="flex justify-between items-center mb-6">
-                <h2 class="text-xl font-bold text-white">Marka Listesi</h2>
+                <h2 class="text-xl font-bold text-gray-900 dark:text-white">Marka Listesi</h2>
                 <a href="{{ route('inventory.brands.create') }}" class="bg-primary-600 hover:bg-primary-500 text-white font-bold py-2 px-4 rounded-lg shadow-neon transition-all flex items-center gap-2 text-sm">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
                     Yeni Marka
@@ -22,33 +22,33 @@
             @endif
 
             <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-white/5">
-                    <thead class="bg-white/5">
+                <table class="min-w-full divide-y divide-gray-200 dark:divide-white/5">
+                    <thead class="bg-gray-50 dark:bg-white/5">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase">Logo</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase">Marka Adı</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase">Açıklama</th>
-                            <th class="px-6 py-3 text-center text-xs font-medium text-slate-400 uppercase">Ürün Sayısı</th>
-                            <th class="px-6 py-3 text-center text-xs font-medium text-slate-400 uppercase">Durum</th>
-                            <th class="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase">İşlem</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-slate-400 uppercase">Logo</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-slate-400 uppercase">Marka Adı</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 dark:text-slate-400 uppercase">Açıklama</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-600 dark:text-slate-400 uppercase">Ürün Sayısı</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-600 dark:text-slate-400 uppercase">Durum</th>
+                            <th class="px-6 py-3 text-right text-xs font-medium text-gray-600 dark:text-slate-400 uppercase">İşlem</th>
                         </tr>
                     </thead>
-                    <tbody class="bg-transparent divide-y divide-white/5">
+                    <tbody class="bg-transparent divide-y divide-gray-200 dark:divide-white/5">
                         @forelse($brands as $brand)
-                            <tr class="hover:bg-white/5 transition-colors">
+                            <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($brand->logo_path)
                                         <img src="{{ $brand->logo_url }}" alt="{{ $brand->name }}" class="h-10 w-10 rounded-lg object-cover">
                                     @else
-                                        <div class="h-10 w-10 rounded-lg bg-slate-800 flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-slate-600">image</span>
+                                        <div class="h-10 w-10 rounded-lg bg-gray-200 dark:bg-slate-800 flex items-center justify-center">
+                                            <span class="material-symbols-outlined text-gray-500 dark:text-slate-600">image</span>
                                         </div>
                                     @endif
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm font-medium text-white">{{ $brand->name }}</div>
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $brand->name }}</div>
                                 </td>
-                                <td class="px-6 py-4 text-sm text-slate-400">{{ Str::limit($brand->description, 50) }}</td>
+                                <td class="px-6 py-4 text-sm text-gray-600 dark:text-slate-400">{{ Str::limit($brand->description, 50) }}</td>
                                 <td class="px-6 py-4 text-center">
                                     <span class="px-2 py-1 text-xs font-semibold rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
                                         {{ $brand->products_count }}
@@ -63,7 +63,7 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                     <div class="flex items-center justify-end gap-2">
-                                        <a href="{{ route('inventory.brands.edit', $brand) }}" class="p-2 rounded-lg bg-slate-500/10 text-slate-400 hover:bg-slate-500/20 hover:text-white border border-slate-500/20 transition-all">
+                                        <a href="{{ route('inventory.brands.edit', $brand) }}" class="p-2 rounded-lg bg-gray-100 dark:bg-slate-500/10 text-gray-600 dark:text-slate-400 hover:bg-gray-200 dark:hover:bg-slate-500/20 hover:text-gray-900 dark:hover:text-white border border-gray-300 dark:border-slate-500/20 transition-all">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                         </a>
                                         <form action="{{ route('inventory.brands.destroy', $brand) }}" method="POST" class="inline" onsubmit="return confirm('Bu markayı silmek istediğinizden emin misiniz?');">
@@ -76,7 +76,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="6" class="px-6 py-10 text-center text-slate-500">Henüz marka tanımlanmamış.</td></tr>
+                            <tr><td colspan="6" class="px-6 py-10 text-center text-gray-500 dark:text-slate-500">Henüz marka tanımlanmamış.</td></tr>
                         @endforelse
                     </tbody>
                 </table>

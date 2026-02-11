@@ -10,6 +10,7 @@ use Modules\Accounting\Models\Transaction;
 use Modules\Accounting\Models\Account;
 use Modules\Accounting\Models\FiscalPeriod;
 use Modules\Accounting\Models\LedgerEntry;
+use Modules\Accounting\Models\VatRate;
 use Modules\Accounting\Services\AccountTransactionService;
 use Modules\CRM\Models\Contact;
 use Modules\Inventory\Models\Product;
@@ -110,10 +111,11 @@ class InvoiceController extends Controller
     public function create()
     {
         $contacts = Contact::where('type', 'customer')->orderBy('name')->get();
-        $products = Product::whereHas('productType', function($q) {
+            $products = Product::where('is_active', true)->whereHas('productType', function($q) {
             $q->whereIn('code', ['good', 'service']);
         })->orderBy('name')->get();
-        return view('accounting::invoices.create', compact('contacts', 'products'));
+        $vat_rates = VatRate::where('is_active', true)->orderBy('rate')->get();
+        return view('accounting::invoices.create', compact('contacts', 'products', 'vat_rates'));
     }
 
     /**
@@ -139,16 +141,18 @@ class InvoiceController extends Controller
             DB::beginTransaction();
 
             // 1. Calculate Totals
-            $totalAmount = 0;
-            $totalTax = 0;
+            $subtotal = 0;
+            $vatTotal = 0;
 
             foreach ($validated['items'] as $item) {
-                $lineTotal = $item['quantity'] * $item['unit_price'];
-                $lineTax = $lineTotal * ($item['tax_rate'] / 100);
+                $lineAmount = $item['quantity'] * $item['unit_price'];
+                $lineVat = $lineAmount * ($item['tax_rate'] / 100);
                 
-                $totalAmount += $lineTotal + $lineTax;
-                $totalTax += $lineTax;
+                $subtotal += $lineAmount;
+                $vatTotal += $lineVat;
             }
+
+            $grandTotal = $subtotal + $vatTotal;
 
             // 2. Create Invoice
             $invoice = Invoice::create([
@@ -159,8 +163,11 @@ class InvoiceController extends Controller
                 'invoice_number' => 'INV-' . date('Ymd') . '-' . rand(100, 999), 
                 'issue_date' => $validated['issue_date'],
                 'due_date' => $validated['due_date'],
-                'total_amount' => $totalAmount,
-                'tax_amount' => $totalTax,
+                'subtotal' => $subtotal,
+                'vat_total' => $vatTotal,
+                'grand_total' => $grandTotal,
+                'total_amount' => $grandTotal, // Legacy
+                'tax_amount' => $vatTotal, // Legacy
                 'status' => 'sent',
             ]);
 
@@ -224,7 +231,7 @@ class InvoiceController extends Controller
                 'company_id' => auth()->user()->company_id,
                 'transaction_id' => $transaction->id,
                 'account_id' => $debtorAccount->id,
-                'debit' => $totalAmount,
+                'debit' => $grandTotal,
                 'credit' => 0,
                 'description' => 'Fatura Toplam Tutarı',
             ]);
@@ -238,12 +245,12 @@ class InvoiceController extends Controller
                 'transaction_id' => $transaction->id,
                 'account_id' => $salesAccount->id,
                 'debit' => 0,
-                'credit' => $totalAmount - $totalTax,
+                'credit' => $subtotal,
                 'description' => 'Net Satış Tutarı',
             ]);
 
             // Entry 3: Credit VAT (391) if exists
-            if ($totalTax > 0) {
+            if ($vatTotal > 0) { // Changed $totalTax to $vatTotal
                 $vatAccount = Account::where('company_id', auth()->user()->company_id)->where('code', '391')->first()
                                  ?? Account::where('code', '391')->first();
                 if ($vatAccount) {
@@ -252,7 +259,7 @@ class InvoiceController extends Controller
                         'transaction_id' => $transaction->id,
                         'account_id' => $vatAccount->id,
                         'debit' => 0,
-                        'credit' => $totalTax,
+                        'credit' => $vatTotal,
                         'description' => 'KDV Tutarı',
                     ]);
                 }
@@ -262,7 +269,7 @@ class InvoiceController extends Controller
 
             // Update Contact Balance (Simple MVP logic)
             $contact = Contact::find($validated['contact_id']);
-            $contact->increment('current_balance', $totalAmount);
+            $contact->increment('current_balance', $grandTotal); // Changed $totalAmount to $grandTotal
 
             // 5. Cari Hesap Hareketi (Account Transaction)
             $this->accountTransactionService->syncFromInvoice($invoice);
@@ -295,8 +302,11 @@ class InvoiceController extends Controller
     {
         $invoice = Invoice::with(['items'])->findOrFail($id);
         $contacts = Contact::all();
-        $products = Product::where('status', true)->get();
-        return view('accounting::invoices.edit', compact('invoice', 'contacts', 'products'));
+        $products = Product::where('is_active', true)->whereHas('productType', function($q) {
+        $q->whereIn('code', ['good', 'service']);
+    })->orderBy('name')->get();
+        $vat_rates = VatRate::where('is_active', true)->orderBy('rate')->get();
+        return view('accounting::invoices.edit', compact('invoice', 'contacts', 'products', 'vat_rates'));
     }
 
     /**
@@ -321,24 +331,29 @@ class InvoiceController extends Controller
             DB::beginTransaction();
 
             // 1. Calculate New Totals
-            $totalAmount = 0;
-            $totalTax = 0;
+            $subtotal = 0;
+            $vatTotal = 0;
 
             foreach ($validated['items'] as $item) {
-                $lineTotal = $item['quantity'] * $item['unit_price'];
-                $lineTax = $lineTotal * ($item['tax_rate'] / 100);
+                $lineAmount = $item['quantity'] * $item['unit_price'];
+                $lineVat = $lineAmount * ($item['tax_rate'] / 100);
                 
-                $totalAmount += $lineTotal + $lineTax;
-                $totalTax += $lineTax;
+                $subtotal += $lineAmount;
+                $vatTotal += $lineVat;
             }
+
+            $grandTotal = $subtotal + $vatTotal;
 
             // 2. Update Invoice
             $invoice->update([
                 'contact_id' => $validated['contact_id'],
                 'issue_date' => $validated['issue_date'],
                 'due_date' => $validated['due_date'],
-                'total_amount' => $totalAmount,
-                'tax_amount' => $totalTax,
+                'subtotal' => $subtotal,
+                'vat_total' => $vatTotal,
+                'grand_total' => $grandTotal,
+                'total_amount' => $grandTotal, // Legacy
+                'tax_amount' => $vatTotal, // Legacy
             ]);
 
             // 3. Update/Replace Items
@@ -392,7 +407,7 @@ class InvoiceController extends Controller
                     'company_id' => auth()->user()->company_id,
                     'transaction_id' => $transaction->id,
                     'account_id' => $debtorAccount->id,
-                    'debit' => $totalAmount,
+                    'debit' => $grandTotal,
                     'credit' => 0,
                     'description' => 'Fatura Toplam Tutarı (Güncel)',
                 ]);
@@ -406,7 +421,7 @@ class InvoiceController extends Controller
                     'transaction_id' => $transaction->id,
                     'account_id' => $salesAccount->id,
                     'debit' => 0,
-                    'credit' => $totalAmount - $totalTax,
+                    'credit' => $subtotal,
                     'description' => 'Net Satış Tutarı (Güncel)',
                 ]);
 
@@ -420,7 +435,7 @@ class InvoiceController extends Controller
                             'transaction_id' => $transaction->id,
                             'account_id' => $vatAccount->id,
                             'debit' => 0,
-                            'credit' => $totalTax,
+                            'credit' => $vatTotal,
                             'description' => 'KDV Tutarı (Güncel)',
                         ]);
                     }

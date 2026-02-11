@@ -4,40 +4,40 @@
     </x-slot>
 
     <x-card>
-        <div class="p-6 border-b border-white/5 flex justify-between items-center">
-            <h2 class="text-xl font-bold text-white">Tüm Şirketler</h2>
+        <div class="p-6 border-b border-gray-200 dark:border-white/5 flex justify-between items-center">
+            <h2 class="text-xl font-bold text-gray-900 dark:text-white">Tüm Şirketler</h2>
             <button class="bg-primary-600 hover:bg-primary-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all shadow-neon">
                 + Yeni Şirket Ekle
             </button>
         </div>
 
         <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-white/5">
-                <thead class="bg-white/5">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-white/5">
+                <thead class="bg-gray-100 dark:bg-white/5">
                     <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Şirket Adı</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Durum</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Kullanıcı</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-slate-400 uppercase tracking-wider">Aktif Modüller</th>
-                        <th class="px-6 py-3 text-right text-xs font-medium text-slate-400 uppercase tracking-wider">İşlem</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-slate-400 uppercase tracking-wider">Şirket Adı</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-slate-400 uppercase tracking-wider">Durum</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-slate-400 uppercase tracking-wider">Kullanıcı</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-700 dark:text-slate-400 uppercase tracking-wider">Aktif Modüller</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-700 dark:text-slate-400 uppercase tracking-wider">İşlem</th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-white/5 bg-transparent">
+                <tbody class="divide-y divide-gray-200 dark:divide-white/5 bg-transparent">
                     @foreach($companies as $company)
-                        <tr class="hover:bg-white/5 transition-colors group">
+                        <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-white">{{ $company->name }}</div>
-                                <div class="text-xs text-slate-500">{{ $company->domain ?? 'Alt alan adı yok' }}</div>
+                                <div class="text-sm font-medium text-gray-900 dark:text-white">{{ $company->name }}</div>
+                                <div class="text-xs text-gray-500 dark:text-slate-500">{{ $company->domain ?? 'Alt alan adı yok' }}</div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 py-1 text-xs font-semibold rounded-full {{ $company->status === 'active' ? 'bg-green-900/30 text-green-400 border border-green-800/50' : 'bg-red-900/30 text-red-400 border border-red-800/50' }}">
                                     {{ $company->status === 'active' ? 'Aktif' : 'Pasif' }}
                                 </span>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-300">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700 dark:text-slate-300">
                                 {{ $company->users_count }} Kayıtlı
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-400">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-slate-400">
                                 <div class="flex gap-1 flex-wrap">
                                     @php 
                                         $activeModules = $company->settings['modules'] ?? ['Accounting', 'CRM', 'Inventory'];
@@ -48,7 +48,7 @@
                                         ];
                                     @endphp
                                     @foreach($activeModules as $mod)
-                                        <span class="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-[10px] text-slate-300">
+                                        <span class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-white/5 border border-gray-300 dark:border-white/10 text-[10px] text-gray-700 dark:text-slate-300">
                                             {{ $moduleNames[$mod] ?? $mod }}
                                         </span>
                                     @endforeach
@@ -82,7 +82,7 @@
             </table>
         </div>
         
-        <div class="p-6 border-t border-white/5">
+        <div class="p-6 border-t border-gray-200 dark:border-white/5">
             {{ $companies->links() }}
         </div>
     </x-card>

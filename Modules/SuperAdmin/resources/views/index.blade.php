@@ -6,11 +6,11 @@
     <!-- Stats Row -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         <!-- Toplam Şirket -->
-        <div class="bg-[#1a2332]/40 border border-white/5 rounded-[2rem] p-6 backdrop-blur-xl relative overflow-hidden group hover:border-blue-500/30 transition-all duration-500 shadow-xl">
+        <div class="bg-white dark:bg-[#1a2332]/40 border border-gray-200 dark:border-white/5 rounded-[2rem] p-6 backdrop-blur-xl relative overflow-hidden group hover:border-blue-500/30 transition-all duration-500 shadow-xl">
             <div class="flex justify-between items-start mb-6">
                 <div>
-                    <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest mb-2">Toplam Şirket</p>
-                    <h3 class="text-4xl font-extrabold text-white tracking-tight">{{ number_format($stats['total_companies']) }}</h3>
+                    <p class="text-gray-600 dark:text-slate-400 text-[11px] font-bold uppercase tracking-widest mb-2">Toplam Şirket</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">{{ number_format($stats['total_companies']) }}</h3>
                 </div>
                 <div class="bg-blue-600/20 w-12 h-12 flex items-center justify-center rounded-2xl text-blue-400 shadow-[inset_0_0_15px_rgba(37,99,235,0.2)] border border-blue-500/20">
                     <span class="material-symbols-outlined text-[28px] icon-filled">corporate_fare</span>
@@ -21,16 +21,16 @@
                     <span class="material-symbols-outlined text-[14px] mr-1">{{ $stats['company_growth'] >= 0 ? 'trending_up' : 'trending_down' }}</span>
                     {{ $stats['company_growth'] >= 0 ? '+' : '' }}{{ $stats['company_growth'] }}%
                 </div>
-                <span class="text-slate-500 text-[10px]">geçen aya göre</span>
+                <span class="text-gray-500 dark:text-slate-500 text-[10px]">geçen aya göre</span>
             </div>
         </div>
 
         <!-- Aylık Gelir -->
-        <div class="bg-[#1a2332]/40 border border-white/5 rounded-[2rem] p-6 backdrop-blur-xl relative overflow-hidden group hover:border-purple-500/30 transition-all duration-500 shadow-xl">
+        <div class="bg-white dark:bg-[#1a2332]/40 border border-gray-200 dark:border-white/5 rounded-[2rem] p-6 backdrop-blur-xl relative overflow-hidden group hover:border-purple-500/30 transition-all duration-500 shadow-xl">
             <div class="flex justify-between items-start mb-6">
                 <div>
-                    <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest mb-2">Aylık Toplam Gelir</p>
-                    <h3 class="text-4xl font-extrabold text-white tracking-tight">
+                    <p class="text-gray-600 dark:text-slate-400 text-[11px] font-bold uppercase tracking-widest mb-2">Aylık Toplam Gelir</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
                         {{ $stats['monthly_revenue'] > 10000 ? '₺' . number_format($stats['monthly_revenue'] / 1000, 1) . 'K' : '₺' . number_format($stats['monthly_revenue'], 2) }}
                     </h3>
                 </div>
@@ -43,16 +43,16 @@
                     <span class="material-symbols-outlined text-[14px] mr-1">{{ $stats['revenue_growth'] >= 0 ? 'trending_up' : 'trending_down' }}</span>
                      {{ $stats['revenue_growth'] >= 0 ? '+' : '' }}{{ $stats['revenue_growth'] }}%
                 </div>
-                <span class="text-slate-500 text-[10px]">geçen aya göre</span>
+                <span class="text-gray-500 dark:text-slate-500 text-[10px]">geçen aya göre</span>
             </div>
         </div>
 
         <!-- Aktif Kullanıcı -->
-        <div class="bg-[#1a2332]/40 border border-white/5 rounded-[2rem] p-6 backdrop-blur-xl relative overflow-hidden group hover:border-orange-500/30 transition-all duration-500 shadow-xl">
+        <div class="bg-white dark:bg-[#1a2332]/40 border border-gray-200 dark:border-white/5 rounded-[2rem] p-6 backdrop-blur-xl relative overflow-hidden group hover:border-orange-500/30 transition-all duration-500 shadow-xl">
             <div class="flex justify-between items-start mb-6">
                 <div>
-                    <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest mb-2">Toplam Kullanıcı</p>
-                    <h3 class="text-4xl font-extrabold text-white tracking-tight">{{ number_format($stats['total_users']) }}</h3>
+                    <p class="text-gray-600 dark:text-slate-400 text-[11px] font-bold uppercase tracking-widest mb-2">Toplam Kullanıcı</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">{{ number_format($stats['total_users']) }}</h3>
                 </div>
                 <div class="bg-orange-600/20 w-12 h-12 flex items-center justify-center rounded-2xl text-orange-400 shadow-[inset_0_0_15px_rgba(234,88,12,0.2)] border border-orange-500/20">
                     <span class="material-symbols-outlined text-[28px] icon-filled">group</span>
@@ -63,16 +63,16 @@
                     <span class="material-symbols-outlined text-[14px] mr-1">{{ $stats['user_growth'] >= 0 ? 'trending_up' : 'trending_down' }}</span>
                     {{ $stats['user_growth'] >= 0 ? '+' : '' }}{{ $stats['user_growth'] }}%
                 </div>
-                <span class="text-slate-500 text-[10px]">geçen haftaya göre</span>
+                <span class="text-gray-500 dark:text-slate-500 text-[10px]">geçen haftaya göre</span>
             </div>
         </div>
 
         <!-- Sunucu Durumu -->
-        <div class="bg-[#1a2332]/40 border border-white/5 rounded-[2rem] p-6 backdrop-blur-xl relative overflow-hidden group hover:border-emerald-500/30 transition-all duration-500 shadow-xl">
+        <div class="bg-white dark:bg-[#1a2332]/40 border border-gray-200 dark:border-white/5 rounded-[2rem] p-6 backdrop-blur-xl relative overflow-hidden group hover:border-emerald-500/30 transition-all duration-500 shadow-xl">
             <div class="flex justify-between items-start mb-6">
                 <div>
-                    <p class="text-slate-400 text-[11px] font-bold uppercase tracking-widest mb-2">Sunucu Durumu</p>
-                    <h3 class="text-4xl font-extrabold text-white tracking-tight">%99.9</h3>
+                    <p class="text-gray-600 dark:text-slate-400 text-[11px] font-bold uppercase tracking-widest mb-2">Sunucu Durumu</p>
+                    <h3 class="text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">%99.9</h3>
                 </div>
                 <div class="bg-emerald-600/20 w-12 h-12 flex items-center justify-center rounded-2xl text-emerald-400 shadow-[inset_0_0_15px_rgba(16,185,129,0.2)] border border-emerald-500/20">
                     <span class="material-symbols-outlined text-[28px] icon-filled">dns</span>
@@ -87,20 +87,20 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
         <!-- Map Area -->
-        <div class="lg:col-span-8 bg-[#1a2332]/40 border border-white/5 rounded-[2.5rem] backdrop-blur-xl overflow-hidden flex flex-col shadow-2xl">
+        <div class="lg:col-span-8 bg-white dark:bg-[#1a2332]/40 border border-gray-200 dark:border-white/5 rounded-[2.5rem] backdrop-blur-xl overflow-hidden flex flex-col shadow-2xl">
             <div class="p-8 flex justify-between items-center">
-                <h2 class="text-xl font-extrabold text-white tracking-tight">Abone Dağılımı</h2>
-                <div class="flex bg-black/40 rounded-full p-1.5 border border-white/5 shadow-inner">
-                    <button class="px-5 py-2 rounded-full text-xs font-bold text-slate-400 hover:text-white transition-colors">Dünya</button>
+                <h2 class="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">Abone Dağılımı</h2>
+                <div class="flex bg-gray-100 dark:bg-black/40 rounded-full p-1.5 border border-gray-200 dark:border-white/5 shadow-inner">
+                    <button class="px-5 py-2 rounded-full text-xs font-bold text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white transition-colors">Dünya</button>
                     <button class="px-5 py-2 rounded-full text-xs font-bold text-white bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.4)]">Türkiye</button>
                 </div>
             </div>
             <div class="relative h-[500px] px-8 pb-8">
                 <!-- Map Search Overlay -->
                 <div class="absolute top-4 left-12 z-[1000] w-72">
-                    <div class="flex items-center rounded-2xl bg-black/50 border border-white/10 px-4 py-3 focus-within:bg-black/70 focus-within:border-blue-500/50 transition-all shadow-xl backdrop-blur-md">
-                        <span class="material-symbols-outlined text-slate-500 text-[20px]">search</span>
-                        <input class="ml-3 w-full bg-transparent text-sm text-white placeholder-slate-600 focus:outline-none border-none p-0" placeholder="Bölge ara..." type="text"/>
+                    <div class="flex items-center rounded-2xl bg-white/90 dark:bg-black/50 border border-gray-300 dark:border-white/10 px-4 py-3 focus-within:bg-white dark:focus-within:bg-black/70 focus-within:border-blue-500/50 transition-all shadow-xl backdrop-blur-md">
+                        <span class="material-symbols-outlined text-gray-500 dark:text-slate-500 text-[20px]">search</span>
+                        <input class="ml-3 w-full bg-transparent text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-600 focus:outline-none border-none p-0" placeholder="Bölge ara..." type="text"/>
                     </div>
                 </div>
                 <!-- Map Selection Tool -->
@@ -208,9 +208,9 @@
         </div>
 
         <!-- Recent Registrations Area -->
-        <div class="lg:col-span-4 bg-[#1a2332]/40 border border-white/5 rounded-[2.5rem] backdrop-blur-xl flex flex-col shadow-2xl">
-            <div class="p-8 flex justify-between items-center border-b border-white/5">
-                <h2 class="text-xl font-extrabold text-white tracking-tight">Son Kayıtlar</h2>
+        <div class="lg:col-span-4 bg-white dark:bg-[#1a2332]/40 border border-gray-200 dark:border-white/5 rounded-[2.5rem] backdrop-blur-xl flex flex-col shadow-2xl">
+            <div class="p-8 flex justify-between items-center border-b border-gray-200 dark:border-white/5">
+                <h2 class="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight">Son Kayıtlar</h2>
                 <a href="#" class="text-blue-500 hover:text-blue-400 text-[11px] font-black uppercase tracking-[0.1em] transition-colors">Tümünü Gör</a>
             </div>
             <div class="flex-1 p-8 space-y-6">
@@ -221,19 +221,19 @@
                                 {{ $rc['init'] }}
                             </div>
                             <div>
-                                <div class="text-white text-sm font-bold group-hover:text-blue-400 transition-colors">{{ $rc['n'] }}</div>
-                                <div class="text-[10px] text-slate-500 flex items-center gap-2 mt-0.5">
-                                    <span class="font-bold uppercase tracking-wider text-slate-400">{{ $rc['p'] }}</span> 
-                                    <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                                <div class="text-gray-900 dark:text-white text-sm font-bold group-hover:text-blue-400 transition-colors">{{ $rc['n'] }}</div>
+                                <div class="text-[10px] text-gray-500 dark:text-slate-500 flex items-center gap-2 mt-0.5">
+                                    <span class="font-bold uppercase tracking-wider text-gray-600 dark:text-slate-400">{{ $rc['p'] }}</span> 
+                                    <span class="w-1 h-1 rounded-full bg-gray-400 dark:bg-slate-700"></span>
                                     <span class="font-medium">{{ $rc['t'] }}</span>
                                 </div>
                             </div>
                         </div>
-                        <span class="material-symbols-outlined text-slate-700 group-hover:text-white transition-all text-[20px]">chevron_right</span>
+                        <span class="material-symbols-outlined text-gray-400 dark:text-slate-700 group-hover:text-gray-900 dark:group-hover:text-white transition-all text-[20px]">chevron_right</span>
                     </div>
                 @endforeach
             </div>
-            <div class="p-8 border-t border-white/5 bg-white/[0.02]">
+            <div class="p-8 border-t border-gray-200 dark:border-white/5 bg-gray-50 dark:bg-white/[0.02]">
                 <button class="w-full bg-blue-600/10 hover:bg-blue-600 hover:text-white text-blue-500 border border-blue-600/20 py-4 rounded-[1.5rem] text-sm font-black uppercase tracking-widest transition-all shadow-xl active:scale-[0.98]">
                     Rapor İndir
                 </button>

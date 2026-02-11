@@ -1,5 +1,8 @@
 <!DOCTYPE html>
-<html class="dark" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html x-data="{ darkMode: localStorage.getItem('theme') === 'dark' || !localStorage.getItem('theme') }" 
+      :class="darkMode ? 'dark' : ''" 
+      x-init="$watch('darkMode', value => document.documentElement.classList.toggle('dark', value))"
+      lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,41 +25,68 @@
                 font-family: 'Plus Jakarta Sans', sans-serif;
             }
 
+            /* Theme-aware glass card */
             .glass-card {
-                background: rgba(13, 17, 23, 0.4);
                 backdrop-filter: blur(20px);
-                border: 1px solid rgba(255, 255, 255, 0.05);
                 border-radius: 1.5rem;
                 padding: 2rem;
+            }
+            .dark .glass-card {
+                background: rgba(13, 17, 23, 0.4);
+                border: 1px solid rgba(255, 255, 255, 0.05);
                 box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.3);
             }
+            html:not(.dark) .glass-card {
+                background: rgba(255, 255, 255, 0.7);
+                border: 1px solid rgba(0, 0, 0, 0.05);
+                box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.1);
+            }
 
+            /* Theme-aware custom input */
             .custom-input {
                 width: 100%;
-                background-color: rgba(255, 255, 255, 0.03) !important;
-                border: 1px solid rgba(255, 255, 255, 0.1) !important;
                 border-radius: 12px !important;
                 padding: 0.75rem 1rem !important;
-                color: white !important;
                 font-size: 14px !important;
                 transition: all 0.3s ease;
             }
-
-            .custom-input:focus {
+            .dark .custom-input {
+                background-color: rgba(255, 255, 255, 0.03) !important;
+                border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                color: white !important;
+            }
+            html:not(.dark) .custom-input {
+                background-color: rgba(0, 0, 0, 0.02) !important;
+                border: 1px solid rgba(0, 0, 0, 0.1) !important;
+                color: #1f2937 !important;
+            }
+            .dark .custom-input:focus {
                 background-color: rgba(255, 255, 255, 0.05) !important;
                 border-color: #5c67ff !important;
                 box-shadow: 0 0 0 1px rgba(92, 103, 255, 0.3) !important;
                 outline: none !important;
             }
+            html:not(.dark) .custom-input:focus {
+                background-color: white !important;
+                border-color: #5c67ff !important;
+                box-shadow: 0 0 0 1px rgba(92, 103, 255, 0.3) !important;
+                outline: none !important;
+            }
 
+            /* Theme-aware input label */
             .input-label {
                 font-size: 11px;
                 font-weight: 700;
-                color: #94a3b8;
                 text-transform: uppercase;
                 letter-spacing: 0.05em;
                 margin-bottom: 0.5rem;
                 display: block;
+            }
+            .dark .input-label {
+                color: #94a3b8;
+            }
+            html:not(.dark) .input-label {
+                color: #6b7280;
             }
 
             .btn-primary {
@@ -96,30 +126,44 @@
 
             [x-cloak] { display: none !important; }
 
-            /* Custom Thin Scrollbar */
+            /* Theme-aware Custom Thin Scrollbar */
             .custom-scrollbar::-webkit-scrollbar {
                 width: 4px;
                 height: 4px;
             }
-            .custom-scrollbar::-webkit-scrollbar-track {
+            .dark .custom-scrollbar::-webkit-scrollbar-track {
                 background: rgba(255, 255, 255, 0.02);
             }
-            .custom-scrollbar::-webkit-scrollbar-thumb {
+            html:not(.dark) .custom-scrollbar::-webkit-scrollbar-track {
+                background: rgba(0, 0, 0, 0.02);
+            }
+            .dark .custom-scrollbar::-webkit-scrollbar-thumb {
                 background: rgba(255, 255, 255, 0.1);
                 border-radius: 10px;
             }
-            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            html:not(.dark) .custom-scrollbar::-webkit-scrollbar-thumb {
+                background: rgba(0, 0, 0, 0.15);
+                border-radius: 10px;
+            }
+            .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
                 background: rgba(255, 255, 255, 0.2);
             }
-            .custom-scrollbar {
+            html:not(.dark) .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: rgba(0, 0, 0, 0.25);
+            }
+            .dark .custom-scrollbar {
                 scrollbar-width: thin;
                 scrollbar-color: rgba(255, 255, 255, 0.1) rgba(255, 255, 255, 0.02);
             }
+            html:not(.dark) .custom-scrollbar {
+                scrollbar-width: thin;
+                scrollbar-color: rgba(0, 0, 0, 0.15) rgba(0, 0, 0, 0.02);
+            }
         </style>
     </head>
-    <body class="font-display bg-[#0f172a] text-gray-100 antialiased overflow-hidden">
+    <body class="font-display bg-background-light dark:bg-[#0f172a] text-gray-900 dark:text-gray-100 antialiased overflow-hidden">
         <!-- Background ambiance wrapper -->
-        <div class="relative flex h-screen w-full bg-deep-space bg-[#0f172a] overflow-hidden">
+        <div class="relative flex h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100 dark:bg-deep-space dark:bg-[#0f172a] overflow-hidden">
             <!-- Abstract gradient blob for depth behind glass -->
             <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-primary/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
             <div class="absolute bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-purple-900/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
@@ -145,17 +189,20 @@
                 @endif
 
                 <!-- Top Navbar - Floating Glass -->
-                <header class="sticky top-0 z-40 mx-6 mt-4 mb-6 rounded-2xl border border-white/10 bg-[#0f172a]/70 backdrop-blur-md shadow-lg pointer-events-none">
+                <header class="sticky top-0 z-40 mx-6 mt-4 mb-6 rounded-2xl border 
+                               border-gray-200 dark:border-white/10 
+                               bg-white/80 dark:bg-[#0f172a]/70 
+                               backdrop-blur-md shadow-lg pointer-events-none">
                     <div class="flex items-center justify-between px-6 py-3 pointer-events-auto">
                         <div class="flex items-center gap-4">
-                            <button type="button" class="md:hidden text-white">
+                            <button type="button" class="md:hidden text-gray-900 dark:text-white">
                                 <span class="material-symbols-outlined">menu</span>
                             </button>
                             <!-- Search - Global with Alpine -->
                             <div x-data="{
                                 query: '',
                                 results: [],
-                                loading: false,
+                                isSearching: false,
                                 open: false,
                                 selectedIndex: -1,
                                 async fetchResults() {
@@ -165,7 +212,7 @@
                                         return;
                                     }
                                     
-                                    this.loading = true;
+                                    this.isSearching = true;
                                     this.open = true;
                                     
                                     try {
@@ -175,7 +222,7 @@
                                     } catch (e) {
                                         console.error('Search failed', e);
                                     } finally {
-                                        this.loading = false;
+                                        this.isSearching = false;
                                     }
                                 },
                                 selectResult(index) {
@@ -187,10 +234,7 @@
                             @click.away="open = false"
                             class="hidden md:block relative w-96">
                                 <div class="relative flex items-center rounded-lg bg-white/5 border border-white/5 px-3 py-2 focus-within:bg-white/10 focus-within:border-primary/50 transition-all">
-                                    <span class="material-symbols-outlined text-gray-400 text-[20px]" :class="loading ? 'animate-spin text-primary' : ''">
-                                        <template x-if="typeof loading !== 'undefined' && loading">sync</template>
-                                        <template x-if="typeof loading !== 'undefined' && !loading">search</template>
-                                    </span>
+                                    <span class="material-symbols-outlined text-gray-500 dark:text-gray-400 text-[20px]" :class="isSearching ? 'animate-spin text-primary' : ''" x-text="isSearching ? 'sync' : 'search'"></span>
                                     <input 
                                         x-model="query"
                                         @input.debounce.300ms="fetchResults()"
@@ -198,7 +242,7 @@
                                         @keydown.up.prevent="selectedIndex = Math.max(selectedIndex - 1, 0)"
                                         @keydown.enter.prevent="selectResult(selectedIndex)"
                                         @focus="if(query.length >= 2) open = true"
-                                        class="ml-2 w-full bg-transparent text-sm text-white placeholder-gray-500 focus:outline-none border-none p-0 focus:ring-0" 
+                                        class="ml-2 w-full bg-transparent text-sm text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none border-none p-0 focus:ring-0" 
                                         placeholder="Ara: Kişi, Fatura, Ürün..." 
                                         type="text"
                                         autocomplete="off"
@@ -216,7 +260,7 @@
                                      x-transition:enter-end="opacity-100 translate-y-0"
                                      class="absolute top-full left-0 w-full mt-2 bg-[#0f172a] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50 ring-1 ring-white/5">
                                     
-                                    <template x-if="results.length === 0 && !loading">
+                                    <template x-if="results.length === 0 && !isSearching">
                                         <div class="p-4 text-center text-slate-400 text-sm">
                                             Sonuç bulunamadı...
                                         </div>
@@ -244,10 +288,27 @@
                             </div>
                         </div>
                         <div class="flex items-center gap-4 md:gap-6">
+                            <!-- Theme Toggle Switch -->
+                            <div x-data="{ darkMode: localStorage.getItem('theme') === 'dark' || !localStorage.getItem('theme') }" 
+                                 x-init="$watch('darkMode', value => { localStorage.setItem('theme', value ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', value); })"
+                                 class="relative">
+                                <button @click="darkMode = !darkMode"
+                                        class="relative w-16 h-8 rounded-full transition-all duration-300 backdrop-blur-md border border-white/10 shadow-lg hover:shadow-xl"
+                                        :class="darkMode ? 'bg-slate-800/80' : 'bg-slate-200/80'">
+                                    <!-- Toggle Circle -->
+                                    <div class="absolute top-1 left-1 w-6 h-6 rounded-full transition-all duration-300 flex items-center justify-center shadow-md"
+                                         :class="darkMode ? 'translate-x-8 bg-white' : 'translate-x-0 bg-slate-800'">
+                                        <!-- Icons -->
+                                        <span x-show="darkMode" x-transition class="material-symbols-outlined text-[14px] text-slate-800">dark_mode</span>
+                                        <span x-show="!darkMode" x-transition class="material-symbols-outlined text-[14px] text-white">light_mode</span>
+                                    </div>
+                                </button>
+                            </div>
+                            
                             <!-- Modern Minimalist Weather Widget -->
                             <div x-data="{ 
                                 weather: null, 
-                                loading: true,
+                                isWeatherLoading: true,
                                 showDetails: false,
                                 async fetchWeather() {
                                     try {
@@ -256,7 +317,7 @@
                                     } catch (error) {
                                         console.error('Weather fetch failed:', error);
                                     } finally {
-                                        this.loading = false;
+                                        this.isWeatherLoading = false;
                                     }
                                 },
                             }" 
@@ -265,28 +326,28 @@
                             @mouseleave="showDetails = false"
                             class="hidden lg:block relative">
                                 <!-- Loading State -->
-                                <template x-if="typeof loading !== 'undefined' && loading">
-                                    <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10">
-                                        <span class="material-symbols-outlined text-white text-[20px] animate-pulse">partly_cloudy_day</span>
-                                        <span class="text-xs text-slate-400 font-bold">Yükleniyor...</span>
+                                <template x-if="isWeatherLoading">
+                                    <div class="flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-100 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10">
+                                        <span class="material-symbols-outlined text-gray-900 dark:text-white text-[20px] animate-pulse">partly_cloudy_day</span>
+                                        <span class="text-xs text-gray-600 dark:text-slate-400 font-bold">Yükleniyor...</span>
                                     </div>
                                 </template>
                                 
                                 <!-- Weather Display -->
-                                <template x-if="typeof loading !== 'undefined' && !loading && weather">
+                                <template x-if="!isWeatherLoading && weather">
                                     <div class="relative">
                                         <!-- Main Widget -->
-                                        <div class="flex items-center gap-3 px-4 py-2 rounded-xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer group">
+                                        <div class="flex items-center gap-3 px-4 py-2 rounded-xl bg-gray-100 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 hover:border-gray-300 dark:hover:border-white/20 transition-all duration-300 cursor-pointer group">
                                             <!-- Weather Icon -->
                                             <div class="relative">
-                                                <span class="material-symbols-outlined text-[28px] text-white transition-all duration-300" 
+                                                <span class="material-symbols-outlined text-[28px] text-gray-900 dark:text-white transition-all duration-300" 
                                                       x-text="weather.icon || 'wb_cloudy'"></span>
                                             </div>
                                             
                                             <!-- Temperature & City -->
                                             <div class="flex items-baseline gap-2">
-                                                <span class="text-3xl font-black text-white leading-none" x-text="weather.temp_c + '°'"></span>
-                                                <span class="text-sm text-slate-300 font-bold" x-text="weather.city"></span>
+                                                <span class="text-3xl font-black text-gray-900 dark:text-white leading-none" x-text="weather.temp_c + '°'"></span>
+                                                <span class="text-sm text-gray-700 dark:text-slate-300 font-bold" x-text="weather.city"></span>
                                             </div>
                                         </div>
                                         
@@ -298,9 +359,9 @@
                                              x-transition:leave="transition ease-in duration-150"
                                              x-transition:leave-start="opacity-100 translate-y-0"
                                              x-transition:leave-end="opacity-0 translate-y-1"
-                                             class="absolute top-full right-0 mt-2 w-64 p-4 rounded-xl bg-slate-900/95 backdrop-blur-xl border border-white/10 shadow-2xl z-50">
+                                             class="absolute top-full right-0 mt-2 w-64 p-4 rounded-xl bg-white dark:bg-slate-900/95 backdrop-blur-xl border border-gray-200 dark:border-white/10 shadow-2xl z-50">
                                             <!-- Weather Description -->
-                                            <div class="text-sm font-bold text-white mb-3" x-text="weather.weather_desc"></div>
+                                            <div class="text-sm font-bold text-gray-900 dark:text-white mb-3" x-text="weather.weather_desc"></div>
                                             
                                             <!-- Details Grid -->
                                             <div class="space-y-2">
@@ -308,20 +369,20 @@
                                                 
                                                 <!-- Humidity -->
                                                 <div class="flex items-center justify-between text-xs">
-                                                    <div class="flex items-center gap-2 text-slate-400">
+                                                    <div class="flex items-center gap-2 text-gray-600 dark:text-slate-400">
                                                         <span class="material-symbols-outlined text-[16px] text-cyan-400">water_drop</span>
                                                         <span class="font-bold">Nem</span>
                                                     </div>
-                                                    <span class="font-black text-white" x-text="'%' + weather.humidity"></span>
+                                                    <span class="font-black text-gray-900 dark:text-white" x-text="'%' + weather.humidity"></span>
                                                 </div>
                                                 
                                                 <!-- Wind -->
                                                 <div class="flex items-center justify-between text-xs">
-                                                    <div class="flex items-center gap-2 text-slate-400">
+                                                    <div class="flex items-center gap-2 text-gray-600 dark:text-slate-400">
                                                         <span class="material-symbols-outlined text-[16px] text-sky-400">air</span>
                                                         <span class="font-bold">Rüzgar</span>
                                                     </div>
-                                                    <span class="font-black text-white" x-text="weather.wind_speed_kmph + ' km/h'"></span>
+                                                    <span class="font-black text-gray-900 dark:text-white" x-text="weather.wind_speed_kmph + ' km/h'"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -448,3 +509,4 @@
         </style>
     </body>
 </html>
+

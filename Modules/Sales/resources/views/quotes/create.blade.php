@@ -4,10 +4,10 @@
             <div class="absolute inset-0 bg-gradient-to-r from-primary/5 via-purple-500/5 to-blue-500/5 animate-pulse"></div>
             <div class="relative flex items-center justify-between py-2">
                 <div>
-                    <h2 class="font-black text-3xl text-white tracking-tight mb-1">
+                    <h2 class="font-black text-3xl text-gray-900 dark:text-white tracking-tight mb-1">
                         Yeni Teklif Hazırla 📝
                     </h2>
-                    <p class="text-slate-400 text-sm font-medium flex items-center gap-2">
+                    <p class="text-gray-600 dark:text-slate-400 text-sm font-medium flex items-center gap-2">
                         <span class="material-symbols-outlined text-[16px]">edit_note</span>
                         Müşteriniz için profesyonel bir teklif oluşturun
                     </p>
@@ -33,15 +33,15 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <!-- Left Side: Main Info -->
                     <div class="lg:col-span-2 space-y-8">
-                        <x-card class="p-8 border-white/10 bg-white/5 backdrop-blur-2xl relative z-20">
-                            <h3 class="text-lg font-black text-white mb-6 uppercase tracking-widest flex items-center gap-2 border-b border-white/10 pb-4">
+                        <x-card class="p-8 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-2xl relative z-20">
+                            <h3 class="text-lg font-black text-gray-900 dark:text-white mb-6 uppercase tracking-widest flex items-center gap-2 border-b border-gray-200 dark:border-white/10 pb-4">
                                 <span class="material-symbols-outlined text-primary">person</span>
                                 Müşteri ve Tarih Bilgileri
                             </h3>
                             
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Müşteri Seçin</label>
+                                    <label class="block text-xs font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest mb-2">Müşteri Seçin</label>
                                     <div x-data="{ 
                                         open: false, 
                                         search: '', 
@@ -65,8 +65,8 @@
                                     }" class="relative">
                                         <input type="hidden" name="contact_id" :value="selectedId" required>
                                         <button type="button" @click="open = !open" 
-                                                class="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 text-left text-white focus:border-primary/50 flex justify-between items-center transition-all">
-                                            <span x-text="selectedName" :class="selectedId ? 'text-white' : 'text-slate-500'"></span>
+                                                class="w-full bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl py-3 px-4 text-left text-gray-900 dark:text-white focus:border-primary/50 flex justify-between items-center transition-all">
+                                            <span x-text="selectedName" :class="selectedId ? 'text-gray-900 dark:text-white' : 'text-gray-500 dark:text-slate-500'"></span>
                                             <span class="material-symbols-outlined transition-transform duration-200" :class="open ? 'rotate-180' : ''">expand_more</span>
                                         </button>
 
@@ -75,20 +75,20 @@
                                              x-transition:enter="transition ease-out duration-100"
                                              x-transition:enter-start="opacity-0 scale-95"
                                              x-transition:enter-end="opacity-100 scale-100"
-                                             class="absolute z-50 w-full mt-2 bg-[#0f172a] border border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden">
-                                            <div class="p-2 border-b border-white/5">
+                                             class="absolute z-50 w-full mt-2 bg-white dark:bg-[#0f172a] border border-gray-300 dark:border-white/10 rounded-2xl shadow-2xl backdrop-blur-xl overflow-hidden">
+                                            <div class="p-2 border-b border-gray-200 dark:border-white/5">
                                                 <input type="text" x-model="search" placeholder="Müşteri ara..." 
-                                                       class="w-full bg-white/5 border border-white/10 rounded-xl py-2 px-3 text-sm text-white focus:border-primary/50 focus:ring-0">
+                                                       class="w-full bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-xl py-2 px-3 text-sm text-gray-900 dark:text-white focus:border-primary/50 focus:ring-0">
                                             </div>
                                             <div class="max-h-64 overflow-y-auto custom-scrollbar">
                                                 <template x-for="contact in filteredContacts" :key="contact.id">
                                                     <button type="button" @click="select(contact)" 
-                                                            class="w-full text-left px-4 py-3 text-sm text-slate-300 hover:bg-primary/10 hover:text-white transition-colors flex items-center justify-between">
+                                                            class="w-full text-left px-4 py-3 text-sm text-gray-700 dark:text-slate-300 hover:bg-primary/10 hover:text-gray-900 dark:hover:text-white transition-colors flex items-center justify-between">
                                                         <span x-text="contact.name"></span>
                                                         <span x-show="selectedId == contact.id" class="material-symbols-outlined text-primary text-sm">check_circle</span>
                                                     </button>
                                                 </template>
-                                                <div x-show="filteredContacts.length === 0" class="px-4 py-8 text-center text-slate-500 italic text-xs">
+                                                <div x-show="filteredContacts.length === 0" class="px-4 py-8 text-center text-gray-500 dark:text-slate-500 italic text-xs">
                                                     Müşteri bulunamadı...
                                                 </div>
                                             </div>
@@ -97,20 +97,20 @@
                                 </div>
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Teklif Tarihi</label>
-                                        <input type="date" name="date" required value="{{ date('Y-m-d') }}" class="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 text-white focus:border-primary/50 focus:ring-0 transition-all">
+                                        <label class="block text-xs font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest mb-2">Teklif Tarihi</label>
+                                        <input type="date" name="date" required value="{{ date('Y-m-d') }}" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl py-3 px-4 text-gray-900 dark:text-white focus:border-primary/50 focus:ring-0 transition-all">
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-black text-slate-500 uppercase tracking-widest mb-2">Geçerlilik</label>
-                                        <input type="date" name="expiry_date" value="{{ date('Y-m-d', strtotime('+30 days')) }}" class="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 text-white focus:border-primary/50 focus:ring-0 transition-all">
+                                        <label class="block text-xs font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest mb-2">Geçerlilik</label>
+                                        <input type="date" name="expiry_date" value="{{ date('Y-m-d', strtotime('+30 days')) }}" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl py-3 px-4 text-gray-900 dark:text-white focus:border-primary/50 focus:ring-0 transition-all">
                                     </div>
                                 </div>
                             </div>
                         </x-card>
 
-                        <x-card class="p-8 border-white/10 bg-white/5 backdrop-blur-2xl relative z-10">
-                            <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
-                                <h3 class="text-lg font-black text-white uppercase tracking-widest flex items-center gap-2">
+                        <x-card class="p-8 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-2xl relative z-10">
+                            <div class="flex justify-between items-center mb-6 border-b border-gray-200 dark:border-white/10 pb-4">
+                                <h3 class="text-lg font-black text-gray-900 dark:text-white uppercase tracking-widest flex items-center gap-2">
                                     <span class="material-symbols-outlined text-purple-400">inventory_2</span>
                                     Teklif İçeriği
                                 </h3>
@@ -121,16 +121,16 @@
 
                             <div class="space-y-4">
                                 <template x-for="(item, index) in items" :key="index">
-                                    <div class="p-6 rounded-3xl bg-white/[0.02] border border-white/5 hover:border-white/10 transition-all relative group" 
+                                    <div class="p-6 rounded-3xl bg-gray-50 dark:bg-white/[0.02] border border-gray-200 dark:border-white/5 hover:border-gray-300 dark:hover:border-white/10 transition-all relative group" 
                                          :style="'z-index: ' + (50 - index)">
-                                        <button type="button" @click="removeItem(index)" class="absolute top-4 right-4 text-slate-500 hover:text-red-500 transition-colors">
+                                        <button type="button" @click="removeItem(index)" class="absolute top-4 right-4 text-gray-500 dark:text-slate-500 hover:text-red-500 transition-colors">
                                             <span class="material-symbols-outlined">delete</span>
                                         </button>
                                         
                                         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
                                             <div class="md:col-span-12 lg:col-span-5">
-                                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Ürün / Açıklama</label>
-                                                <input type="text" :name="'items['+index+'][description]'" x-model="item.description" placeholder="Açıklama giriniz..." class="w-full bg-white/5 border border-white/10 rounded-xl py-2 px-3 text-sm text-white focus:border-primary/50 focus:ring-0">
+                                                <label class="block text-[10px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest mb-2">Ürün / Açıklama</label>
+                                                <input type="text" :name="'items['+index+'][description]'" x-model="item.description" placeholder="Açıklama giriniz..." class="w-full bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-xl py-2 px-3 text-sm text-gray-900 dark:text-white focus:border-primary/50 focus:ring-0">
                                                 
                                                 <div x-data="{ 
                                                     dropOpen: false, 
@@ -154,21 +154,21 @@
                                                     }
                                                 }" class="relative mt-2">
                                                     <button type="button" @click="dropOpen = !dropOpen" 
-                                                            class="w-full bg-white/5 border border-white/10 rounded-xl py-1.5 px-3 text-[11px] text-slate-400 hover:text-white flex justify-between items-center transition-all">
+                                                            class="w-full bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-xl py-1.5 px-3 text-[11px] text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:hover:text-white flex justify-between items-center transition-all">
                                                         <span x-text="item.product_id ? 'Ürün Seçildi' : '-- Ürün Kataloğundan Seç --'"></span>
                                                         <span class="material-symbols-outlined text-sm transition-transform" :class="dropOpen ? 'rotate-180' : ''">expand_more</span>
                                                     </button>
 
                                                     <div x-show="dropOpen" @click.away="dropOpen = false" 
-                                                         class="absolute z-50 w-full mt-1 bg-[#0f172a] border border-white/10 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden">
-                                                        <div class="p-1.5 border-b border-white/5">
+                                                         class="absolute z-50 w-full mt-1 bg-white dark:bg-[#0f172a] border border-gray-300 dark:border-white/10 rounded-xl shadow-2xl backdrop-blur-xl overflow-hidden">
+                                                        <div class="p-1.5 border-b border-gray-200 dark:border-white/5">
                                                             <input type="text" x-model="pSearch" placeholder="Ürün ara..." 
-                                                                   class="w-full bg-white/5 border border-white/10 rounded-lg py-1 px-2 text-[11px] text-white focus:ring-0">
+                                                                   class="w-full bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-lg py-1 px-2 text-[11px] text-gray-900 dark:text-white focus:ring-0">
                                                         </div>
                                                         <div class="max-h-48 overflow-y-auto custom-scrollbar">
                                                             <template x-for="p in filteredProducts" :key="p.id">
                                                                 <button type="button" @click="chooseProduct(p)" 
-                                                                        class="w-full text-left px-3 py-2 text-[11px] text-slate-300 hover:bg-primary/10 hover:text-white transition-colors">
+                                                                        class="w-full text-left px-3 py-2 text-[11px] text-gray-700 dark:text-slate-300 hover:bg-primary/10 hover:text-gray-900 dark:hover:text-white transition-colors">
                                                                     <div class="flex justify-between items-center">
                                                                         <span x-text="p.name"></span>
                                                                         <span class="text-primary font-bold">₺<span x-text="p.price"></span></span>
@@ -189,23 +189,23 @@
     </style>
                                             
                                             <div class="md:col-span-4 lg:col-span-2">
-                                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Miktar</label>
-                                                <input type="number" step="0.01" :name="'items['+index+'][quantity]'" x-model="item.quantity" @input="calculateTotal()" class="w-full bg-white/5 border border-white/10 rounded-xl py-2 px-3 text-sm text-white text-center">
+                                                <label class="block text-[10px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest mb-2">Miktar</label>
+                                                <input type="number" step="0.01" :name="'items['+index+'][quantity]'" x-model="item.quantity" @input="calculateTotal()" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-xl py-2 px-3 text-sm text-gray-900 dark:text-white text-center">
                                             </div>
                                             
                                             <div class="md:col-span-4 lg:col-span-2">
-                                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Birim Fiyat</label>
-                                                <input type="number" step="0.01" :name="'items['+index+'][unit_price]'" x-model="item.unit_price" @input="calculateTotal()" class="w-full bg-white/5 border border-white/10 rounded-xl py-2 px-3 text-sm text-white text-right">
+                                                <label class="block text-[10px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest mb-2">Birim Fiyat</label>
+                                                <input type="number" step="0.01" :name="'items['+index+'][unit_price]'" x-model="item.unit_price" @input="calculateTotal()" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-xl py-2 px-3 text-sm text-gray-900 dark:text-white text-right">
                                             </div>
 
                                             <div class="md:col-span-2 lg:col-span-1">
-                                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">KDV%</label>
-                                                <input type="number" :name="'items['+index+'][tax_rate]'" x-model="item.tax_rate" @input="calculateTotal()" class="w-full bg-white/5 border border-white/10 rounded-xl py-2 px-3 text-sm text-white text-center">
+                                                <label class="block text-[10px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest mb-2">KDV%</label>
+                                                <input type="number" :name="'items['+index+'][tax_rate]'" x-model="item.tax_rate" @input="calculateTotal()" class="w-full bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-xl py-2 px-3 text-sm text-gray-900 dark:text-white text-center">
                                             </div>
 
                                             <div class="md:col-span-2 lg:col-span-2 text-right">
-                                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2">Satır Toplamı</label>
-                                                <div class="text-sm font-black text-white h-10 flex items-center justify-end pr-2 bg-primary/5 rounded-xl border border-primary/10">
+                                                <label class="block text-[10px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest mb-2">Satır Toplamı</label>
+                                                <div class="text-sm font-black text-gray-900 dark:text-white h-10 flex items-center justify-end pr-2 bg-primary/5 rounded-xl border border-primary/10">
                                                     ₺<span x-text="formatMoney(item.line_total)"></span>
                                                 </div>
                                             </div>
@@ -218,24 +218,24 @@
 
                     <!-- Right Side: Summary & Notes -->
                     <div class=" space-y-8">
-                        <x-card class="p-8 border-white/10 bg-white/5 backdrop-blur-2xl">
-                            <h3 class="text-lg font-black text-white mb-6 uppercase tracking-widest flex items-center gap-2 border-b border-white/10 pb-4">
+                        <x-card class="p-8 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-2xl">
+                            <h3 class="text-lg font-black text-gray-900 dark:text-white mb-6 uppercase tracking-widest flex items-center gap-2 border-b border-gray-200 dark:border-white/10 pb-4">
                                 <span class="material-symbols-outlined text-orange-400">calculate</span>
                                 Teklif Özeti
                             </h3>
                             
                             <div class="space-y-4">
                                 <div class="flex justify-between items-center">
-                                    <span class="text-xs font-bold text-slate-500 uppercase">Ara Toplam</span>
-                                    <span class="text-sm font-black text-white">₺<span x-text="formatMoney(subTotal)"></span></span>
+                                    <span class="text-xs font-bold text-gray-600 dark:text-slate-500 uppercase">Ara Toplam</span>
+                                    <span class="text-sm font-black text-gray-900 dark:text-white">₺<span x-text="formatMoney(subTotal)"></span></span>
                                 </div>
                                 <div class="flex justify-between items-center">
-                                    <span class="text-xs font-bold text-slate-500 uppercase">Vergi Toplamı</span>
-                                    <span class="text-sm font-black text-white">₺<span x-text="formatMoney(taxTotal)"></span></span>
+                                    <span class="text-xs font-bold text-gray-600 dark:text-slate-500 uppercase">Vergi Toplamı</span>
+                                    <span class="text-sm font-black text-gray-900 dark:text-white">₺<span x-text="formatMoney(taxTotal)"></span></span>
                                 </div>
-                                <div class="pt-4 border-t border-white/10 flex justify-between items-center">
+                                <div class="pt-4 border-t border-gray-200 dark:border-white/10 flex justify-between items-center">
                                     <span class="text-sm font-black text-primary uppercase tracking-widest">Genel Toplam</span>
-                                    <span class="text-2xl font-black text-white">₺<span x-text="formatMoney(grandTotal)"></span></span>
+                                    <span class="text-2xl font-black text-gray-900 dark:text-white">₺<span x-text="formatMoney(grandTotal)"></span></span>
                                 </div>
                             </div>
 
@@ -247,18 +247,18 @@
                                 </div>
                             </button>
                             
-                            <a href="{{ route('sales.quotes.index') }}" class="w-full mt-4 flex items-center justify-center py-4 text-xs font-black text-slate-500 hover:text-white transition-colors uppercase tracking-widest">
+                            <a href="{{ route('sales.quotes.index') }}" class="w-full mt-4 flex items-center justify-center py-4 text-xs font-black text-gray-500 dark:text-slate-500 hover:text-gray-900 dark:hover:text-white transition-colors uppercase tracking-widest">
                                 İşlemi İptal Et
                             </a>
                         </x-card>
 
-                        <x-card class="p-8 border-white/10 bg-white/5 backdrop-blur-2xl">
-                            <h3 class="text-lg font-black text-white mb-6 uppercase tracking-widest flex items-center gap-2 border-b border-white/10 pb-4">
+                        <x-card class="p-8 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 backdrop-blur-2xl">
+                            <h3 class="text-lg font-black text-gray-900 dark:text-white mb-6 uppercase tracking-widest flex items-center gap-2 border-b border-gray-200 dark:border-white/10 pb-4">
                                 <span class="material-symbols-outlined text-blue-400">notes</span>
                                 Teklif Notları
                             </h3>
-                            <textarea name="notes" rows="4" placeholder="Müşteriye özel notlar..." class="w-full bg-white/5 border border-white/10 rounded-2xl py-3 px-4 text-sm text-white focus:border-primary/50 focus:ring-0 transition-all"></textarea>
-                            <p class="text-[10px] text-slate-500 mt-2 italic">* Bu notlar teklif belgesinde görüntülenecektir.</p>
+                            <textarea name="notes" rows="4" placeholder="Müşteriye özel notlar..." class="w-full bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/10 rounded-2xl py-3 px-4 text-sm text-gray-900 dark:text-white focus:border-primary/50 focus:ring-0 transition-all"></textarea>
+                            <p class="text-[10px] text-gray-600 dark:text-slate-500 mt-2 italic">* Bu notlar teklif belgesinde görüntülenecektir.</p>
                         </x-card>
                     </div>
                 </div>

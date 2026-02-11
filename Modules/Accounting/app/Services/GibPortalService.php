@@ -92,27 +92,30 @@ class GibPortalService
     {
         $items = [];
         foreach ($invoice->items as $item) {
+            $lineAmount = round($item->quantity * $item->unit_price, 2);
+            $lineVat = round($lineAmount * ($item->tax_rate / 100), 2);
+            
             $items[] = [
                 'malHizmet' => $item->description,
                 'miktar' => $item->quantity,
-                'birim' => 'C62', // Adet (Varsayılan) - Geliştirilebilir
+                'birim' => 'C62', // Adet
                 'birimFiyat' => $item->unit_price,
-                'fiyat' => $item->quantity * $item->unit_price,
+                'fiyat' => $lineAmount,
                 'iskontoOrani' => 0,
                 'iskontoTutari' => 0,
                 'iskontoNedeni' => '',
-                'malHizmetTutari' => $item->quantity * $item->unit_price,
-                'kdvOrani' => $item->tax_rate,
-                'kdvTutari' => ($item->quantity * $item->unit_price) * ($item->tax_rate / 100),
+                'malHizmetTutari' => $lineAmount,
+                'kdvOrani' => (int)$item->tax_rate,
+                'kdvTutari' => $lineVat,
                 'vergininKdvTutari' => 0,
                 'ozelMatrahTutari' => 0,
                 'hesaplananotvtevkifatabitutari' => 0
             ];
         }
 
-        $grandTotal = $invoice->grand_total;
-        $taxAmount = $invoice->tax_amount; // vat_total actually
-        $subtotal = $invoice->subtotal;
+        $grandTotal = round($invoice->grand_total, 2);
+        $taxAmount = round($invoice->vat_total, 2);
+        $subtotal = round($invoice->subtotal, 2);
 
         // Tutar yazıyla
         $totalText = 'YALNIZ ' . $grandTotal . ' TRY'; // Basit
@@ -136,9 +139,9 @@ class GibPortalService
             'kasabaKoy' => '',
             'vergiDairesi' => $invoice->contact->tax_office ?? '',
             'ulke' => 'Türkiye',
-            'bulvarcaddesokak' => $invoice->contact->address ?? 'Adres Bulunamadı',
-            'mahalleSemtIlce' => '',
-            'sehir' => 'Ankara', // Adres ayrıştırması olmadığı için varsayılan
+            'bulvarcaddesokak' => $invoice->receiver_info['address'] ?? ($invoice->contact->address ?? 'Adres Bulunamadı'),
+            'mahalleSemtIlce' => $invoice->receiver_info['district'] ?? '',
+            'sehir' => $invoice->receiver_info['city'] ?? 'Ankara', 
             'postaKodu' => '',
             'tel' => $invoice->contact->phone ?? '',
             'fax' => '',

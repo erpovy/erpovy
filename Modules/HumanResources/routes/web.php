@@ -20,6 +20,9 @@ use Modules\HumanResources\Http\Controllers\VehicleController;
 */
 
 Route::middleware(['auth', 'verified'])->prefix('hr')->name('hr.')->group(function () {
+    // Dashboard
+    Route::get('/', [\Modules\HumanResources\Http\Controllers\HRController::class, 'index'])->name('index');
+    
     Route::resource('employees', EmployeeController::class);
     Route::resource('leaves', LeaveController::class)->only(['index', 'store']);
     

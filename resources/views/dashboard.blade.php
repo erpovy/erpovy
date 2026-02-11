@@ -7,10 +7,10 @@
             <!-- Content -->
             <div class="relative flex items-center justify-between py-2">
                 <div>
-                    <h2 class="font-black text-3xl text-white tracking-tight mb-1">
+                    <h2 class="font-black text-3xl text-gray-900 dark:text-white tracking-tight mb-1">
                         {{ __('Hoş Geldiniz') }}, {{ auth()->user()->name }}! 👋
                     </h2>
-                    <p class="text-slate-400 text-sm font-medium flex items-center gap-2">
+                    <p class="text-gray-600 dark:text-slate-400 text-sm font-medium flex items-center gap-2">
                         <span class="material-symbols-outlined text-[16px]">calendar_today</span>
                         {{ now()->translatedFormat('d F Y, l') }}
                         <span class="w-1 h-1 rounded-full bg-slate-600"></span>
@@ -19,17 +19,18 @@
                     </p>
                 </div>
                 
+                
                 <!-- Weather Widget -->
 
                 
                 <!-- Quick Mini Stats -->
                 <div class="hidden lg:flex items-center gap-3">
-                    <div class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col items-end">
-                        <span class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Bu Ay Ciro</span>
+                    <div class="px-4 py-2 rounded-xl bg-white/5 border border-gray-200 dark:border-white/10 backdrop-blur-md flex flex-col items-end">
+                        <span class="text-[10px] text-gray-600 dark:text-slate-500 uppercase tracking-wider font-bold">Bu Ay Ciro</span>
                         <span class="text-lg font-black text-primary leading-none">+{{ number_format($monthlyRevenue, 0) }}₺</span>
                     </div>
-                    <div class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 backdrop-blur-md flex flex-col items-end">
-                        <span class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Bekleyen Fatura</span>
+                    <div class="px-4 py-2 rounded-xl bg-white/5 border border-gray-200 dark:border-white/10 backdrop-blur-md flex flex-col items-end">
+                        <span class="text-[10px] text-gray-600 dark:text-slate-500 uppercase tracking-wider font-bold">Bekleyen Fatura</span>
                         <span class="text-lg font-black text-yellow-400 leading-none">{{ $pendingInvoicesCount }}</span>
                     </div>
                 </div>
@@ -45,7 +46,7 @@
                 <!-- Stat 1 -->
                 <div class="group relative">
                     <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-blue-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <x-card class="h-full relative p-6 border-white/10 bg-white/5 backdrop-blur-2xl hover:border-primary/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
+                    <x-card class="h-full relative p-6 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl hover:border-primary/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-4">
                                 <div class="p-2 rounded-xl bg-primary/10 text-primary">
@@ -55,8 +56,8 @@
                                     <span class="material-symbols-outlined text-[12px]">trending_up</span>+15%
                                 </div>
                             </div>
-                            <div class="text-4xl font-black text-white tracking-tight mb-1">₺{{ number_format($monthlyRevenue, 0, ',', '.') }}</div>
-                            <div class="text-xs text-slate-500 font-medium">Aylık Toplam Gelir</div>
+                            <div class="text-4xl font-black text-gray-900 dark:text-white tracking-tight mb-1">₺{{ number_format($monthlyRevenue, 0, ',', '.') }}</div>
+                            <div class="text-xs text-gray-600 dark:text-slate-500 font-medium">Aylık Toplam Gelir</div>
                         </div>
                         <div class="h-8 flex items-end gap-1 mt-4 opacity-50 group-hover:opacity-100 transition-opacity">
                             <div class="flex-1 bg-primary/50 rounded-t-sm" style="height: 40%"></div>
@@ -73,7 +74,7 @@
                 <!-- Stat 2 -->
                 <div class="group relative">
                     <div class="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <x-card class="h-full relative p-6 border-white/10 bg-white/5 backdrop-blur-2xl hover:border-yellow-500/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
+                    <x-card class="h-full relative p-6 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl hover:border-yellow-500/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-4">
                                 <div class="p-2 rounded-xl bg-yellow-500/10 text-yellow-500">
@@ -83,8 +84,8 @@
                                     <span class="material-symbols-outlined text-[12px]">pending</span>Acil
                                 </div>
                             </div>
-                            <div class="text-4xl font-black text-white tracking-tight mb-1">{{ $pendingInvoicesCount }}</div>
-                            <div class="text-xs text-slate-500 font-medium">Bekleyen Tahsilat Adedi</div>
+                            <div class="text-4xl font-black text-gray-900 dark:text-white tracking-tight mb-1">{{ $pendingInvoicesCount }}</div>
+                            <div class="text-xs text-gray-600 dark:text-slate-500 font-medium">Bekleyen Tahsilat Adedi</div>
                         </div>
                         <div class="h-8 flex items-end gap-1 mt-4 opacity-50 group-hover:opacity-100 transition-opacity">
                             <div class="flex-1 bg-yellow-500/50 rounded-t-sm" style="height: 50%"></div>
@@ -98,7 +99,7 @@
                 <!-- Stat 3 -->
                 <div class="group relative">
                     <div class="absolute inset-0 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <x-card class="h-full relative p-6 border-white/10 bg-white/5 backdrop-blur-2xl hover:border-red-500/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
+                    <x-card class="h-full relative p-6 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl hover:border-red-500/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-4">
                                 <div class="p-2 rounded-xl bg-red-500/10 text-red-500">
@@ -108,8 +109,8 @@
                                     <span class="material-symbols-outlined text-[12px]">warning</span>Kritik
                                 </div>
                             </div>
-                            <div class="text-4xl font-black text-white tracking-tight mb-1">{{ $lowStockProducts }}</div>
-                            <div class="text-xs text-slate-500 font-medium">Stoktaki Kritik Ürün</div>
+                            <div class="text-4xl font-black text-gray-900 dark:text-white tracking-tight mb-1">{{ $lowStockProducts }}</div>
+                            <div class="text-xs text-gray-600 dark:text-slate-500 font-medium">Stoktaki Kritik Ürün</div>
                         </div>
                         <div class="h-8 flex items-end gap-1 mt-4 opacity-50 group-hover:opacity-100 transition-opacity">
                             <div class="flex-1 bg-red-500/50 rounded-t-sm" style="height: 30%"></div>
@@ -123,7 +124,7 @@
                 <!-- Stat 4 -->
                 <div class="group relative">
                     <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-fuchsia-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <x-card class="h-full relative p-6 border-white/10 bg-white/5 backdrop-blur-2xl hover:border-purple-500/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
+                    <x-card class="h-full relative p-6 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl hover:border-purple-500/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
                         <div>
                             <div class="flex items-center justify-between mb-4">
                                 <div class="p-2 rounded-xl bg-purple-500/10 text-purple-500">
@@ -133,8 +134,8 @@
                                     <span class="material-symbols-outlined text-[12px]">trending_up</span>+8%
                                 </div>
                             </div>
-                            <div class="text-4xl font-black text-white tracking-tight mb-1">{{ $totalContacts }}</div>
-                            <div class="text-xs text-slate-500 font-medium">CRM Rehber Kaydı</div>
+                            <div class="text-4xl font-black text-gray-900 dark:text-white tracking-tight mb-1">{{ $totalContacts }}</div>
+                            <div class="text-xs text-gray-600 dark:text-slate-500 font-medium">CRM Rehber Kaydı</div>
                         </div>
                         <div class="h-8 flex items-end gap-1 mt-4 opacity-50 group-hover:opacity-100 transition-opacity">
                             <div class="flex-1 bg-purple-500/50 rounded-t-sm" style="height: 50%"></div>
@@ -150,16 +151,16 @@
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Revenue Chart (Spans 2) -->
                 <div class="lg:col-span-2">
-                    <x-card class="h-80 p-8 border-white/10 bg-white/5 backdrop-blur-2xl flex flex-col">
+                    <x-card class="h-80 p-8 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl flex flex-col">
                         <div class="flex items-center justify-between mb-8">
                             <div>
-                                <h3 class="text-lg font-black text-white flex items-center gap-2">
+                                <h3 class="text-lg font-black text-gray-900 dark:text-white flex items-center gap-2">
                                     <span class="material-symbols-outlined text-primary">trending_up</span>
                                     Gelir Trendi
                                 </h3>
-                                <p class="text-xs text-slate-500">Son 6 aylık performans analizi</p>
+                                <p class="text-xs text-gray-600 dark:text-slate-500">Son 6 aylık performans analizi</p>
                             </div>
-                            <div class="px-3 py-1 bg-white/5 rounded-lg border border-white/10 text-xs font-bold text-slate-400">
+                            <div class="px-3 py-1 bg-white/5 rounded-lg border border-gray-200 dark:border-white/10 text-xs font-bold text-gray-600 dark:text-slate-400">
                                 6 Aylık
                             </div>
                         </div>
@@ -173,7 +174,7 @@
                                         style="height: {{ $data['percentage'] }}%">
                                         
                                         <!-- Tooltip -->
-                                        <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-white/10 pointer-events-none z-10">
+                                        <div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-slate-800 text-gray-900 dark:text-white text-[10px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap border border-gray-200 dark:border-white/10 pointer-events-none z-10">
                                             ₺{{ number_format($data['revenue'], 0, ',', '.') }}
                                         </div>
                                     </div>
@@ -188,9 +189,9 @@
 
                 <!-- Timeline (Spans 1) -->
                 <div class="lg:col-span-1">
-                    <x-card class="h-80 p-8 border-white/10 bg-white/5 backdrop-blur-2xl flex flex-col">
+                    <x-card class="h-80 p-8 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl flex flex-col">
                         <div class="flex items-center justify-between mb-6">
-                            <h3 class="text-lg font-black text-white flex items-center gap-2">
+                            <h3 class="text-lg font-black text-gray-900 dark:text-white flex items-center gap-2">
                                 <span class="material-symbols-outlined text-blue-400">history</span>
                                 Son Aktiviteler
                             </h3>
@@ -203,13 +204,13 @@
                                     <span class="material-symbols-outlined text-[18px]">{{ $activity['icon'] }}</span>
                                 </div>
                                 <div class="flex-1 min-w-0">
-                                    <div class="text-sm text-white font-medium truncate">{{ $activity['text'] }}</div>
-                                    <div class="text-xs text-slate-500">{{ $activity['time'] }}</div>
+                                    <div class="text-sm text-gray-900 dark:text-white font-medium truncate">{{ $activity['text'] }}</div>
+                                    <div class="text-xs text-gray-600 dark:text-slate-500">{{ $activity['time'] }}</div>
                                 </div>
                                 <span class="material-symbols-outlined text-slate-600 text-[16px] opacity-0 group-hover:opacity-100 transition-opacity">chevron_right</span>
                             </a>
                             @empty
-                            <div class="flex flex-col items-center justify-center h-full text-slate-500 py-8">
+                            <div class="flex flex-col items-center justify-center h-full text-gray-600 dark:text-slate-500 py-8">
                                 <span class="material-symbols-outlined text-4xl mb-2 opacity-50">history</span>
                                 <div class="text-sm">Henüz aktivite bulunmuyor.</div>
                             </div>
@@ -217,7 +218,7 @@
                         </div>
                         
                         <div class="mt-4 pt-4 border-t border-white/5">
-                            <a href="{{ route('activities.index') }}" class="block text-center w-full text-xs text-slate-400 hover:text-white font-bold uppercase tracking-wider py-2 transition-colors">
+                            <a href="{{ route('activities.index') }}" class="block text-center w-full text-xs text-gray-600 dark:text-slate-400 hover:text-gray-900 dark:text-white font-bold uppercase tracking-wider py-2 transition-colors">
                                 Tümünü Gör
                             </a>
                         </div>
@@ -235,7 +236,7 @@
                 ] as $action)
                     <a href="{{ $action['route'] }}" class="group relative overflow-hidden rounded-2xl p-1 {{ isset($action['disabled']) ? 'cursor-not-allowed opacity-80' : '' }}">
                         <!-- Background Glass -->
-                        <div class="absolute inset-0 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-xl transition-all duration-300 {{ !isset($action['disabled']) ? 'group-hover:bg-white/10 group-hover:border-'.$action['color'].'-500/30 group-hover:shadow-[0_0_30px_rgba(0,0,0,0.3)]' : '' }}"></div>
+                        <div class="absolute inset-0 bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl backdrop-blur-xl transition-all duration-300 {{ !isset($action['disabled']) ? 'group-hover:bg-white/10 group-hover:border-'.$action['color'].'-500/30 group-hover:shadow-[0_0_30px_rgba(0,0,0,0.3)]' : '' }}"></div>
                         
                         <!-- Content -->
                         <div class="relative p-6 flex flex-col items-start gap-4 h-full">
@@ -247,11 +248,11 @@
 
                                 <!-- Arrow or Badge -->
                                 @if(isset($action['disabled']))
-                                    <span class="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                                    <span class="px-2 py-1 rounded-md bg-white/5 border border-gray-200 dark:border-white/10 text-[10px] font-bold text-gray-600 dark:text-slate-400 uppercase tracking-wider">
                                         YAKINDA
                                     </span>
                                 @else
-                                    <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-slate-500 group-hover:bg-{{ $action['color'] }}-500 group-hover:text-white transition-all duration-300 -mr-2 -mt-2">
+                                    <div class="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-600 dark:text-slate-500 group-hover:bg-{{ $action['color'] }}-500 group-hover:text-gray-900 dark:text-white transition-all duration-300 -mr-2 -mt-2">
                                         <span class="material-symbols-outlined text-sm">arrow_outward</span>
                                     </div>
                                 @endif
@@ -259,10 +260,10 @@
                             
                             <!-- Text -->
                             <div>
-                                <h3 class="font-black text-white text-lg tracking-tight group-hover:text-{{ $action['color'] }}-400 transition-colors">
+                                <h3 class="font-black text-gray-900 dark:text-white text-lg tracking-tight group-hover:text-{{ $action['color'] }}-400 transition-colors">
                                     {{ $action['label'] }}
                                 </h3>
-                                <p class="text-sm text-slate-400 mt-1 font-medium leading-snug">
+                                <p class="text-sm text-gray-600 dark:text-slate-400 mt-1 font-medium leading-snug">
                                     {{ $action['desc'] }}
                                 </p>
                             </div>
@@ -277,30 +278,30 @@
             <!-- Row 4: Lists (2 Cols) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Recent Invoices -->
-                <x-card class="h-full p-0 border-white/10 bg-white/5 overflow-hidden flex flex-col">
-                    <div class="p-6 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
-                        <h3 class="text-lg font-black text-white flex items-center gap-2">
+                <x-card class="h-full p-0 border-gray-200 dark:border-white/10 bg-white/5 overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-gray-200 dark:border-white/10 flex items-center justify-between bg-white/[0.02]">
+                        <h3 class="text-lg font-black text-gray-900 dark:text-white flex items-center gap-2">
                             <span class="material-symbols-outlined text-primary">description</span>
                             Son Faturalar
                         </h3>
-                        <a href="{{ route('accounting.invoices.index') }}" class="text-xs text-primary font-bold uppercase tracking-wider hover:text-white transition-colors">Tümünü Gör</a>
+                        <a href="{{ route('accounting.invoices.index') }}" class="text-xs text-primary font-bold uppercase tracking-wider hover:text-gray-900 dark:text-white transition-colors">Tümünü Gör</a>
                     </div>
                     <div class="flex-1 overflow-auto divide-y divide-white/5 max-h-[400px] custom-scrollbar">
                         @forelse($recentInvoices as $invoice)
                         <div class="p-4 flex items-center justify-between hover:bg-white/5 transition-colors group cursor-pointer">
                             <div class="flex items-center gap-4">
-                                <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-white/10 text-primary group-hover:border-primary/30 transition-colors">
+                                <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-gray-200 dark:border-white/10 text-primary group-hover:border-primary/30 transition-colors">
                                     <span class="material-symbols-outlined text-[20px]">receipt</span>
                                 </div>
                                 <div>
-                                    <div class="text-sm font-bold text-white group-hover:text-primary transition-colors">{{ $invoice->invoice_number }}</div>
-                                    <div class="text-[11px] text-slate-500 font-bold uppercase tracking-wider">
+                                    <div class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">{{ $invoice->invoice_number }}</div>
+                                    <div class="text-[11px] text-gray-600 dark:text-slate-500 font-bold uppercase tracking-wider">
                                         {{ Str::limit($invoice->contact->name ?? 'Müşteri Yok', 20) }}
                                     </div>
                                 </div>
                             </div>
                             <div class="text-right">
-                                <div class="text-sm font-black text-white">₺{{ number_format($invoice->total_amount, 2, ',', '.') }}</div>
+                                <div class="text-sm font-black text-gray-900 dark:text-white">₺{{ number_format($invoice->total_amount, 2, ',', '.') }}</div>
                                 <!-- Standardized Badge -->
                                 <div class="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-md border mt-1 inline-block
                                     {{ $invoice->is_paid_status ? 'bg-green-900/30 text-green-400 border-green-500/30' : 'bg-yellow-900/30 text-yellow-400 border-yellow-500/30' }}">
@@ -309,19 +310,19 @@
                             </div>
                         </div>
                         @empty
-                        <div class="p-12 text-center text-slate-500">Kayıt yok.</div>
+                        <div class="p-12 text-center text-gray-600 dark:text-slate-500">Kayıt yok.</div>
                         @endforelse
                     </div>
                 </x-card>
 
                 <!-- Recent Contacts -->
-                <x-card class="h-full p-0 border-white/10 bg-white/5 overflow-hidden flex flex-col">
-                    <div class="p-6 border-b border-white/10 flex items-center justify-between bg-white/[0.02]">
-                        <h3 class="text-lg font-black text-white flex items-center gap-2">
+                <x-card class="h-full p-0 border-gray-200 dark:border-white/10 bg-white/5 overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-gray-200 dark:border-white/10 flex items-center justify-between bg-white/[0.02]">
+                        <h3 class="text-lg font-black text-gray-900 dark:text-white flex items-center gap-2">
                             <span class="material-symbols-outlined text-purple-400">group</span>
                             Son Kişiler
                         </h3>
-                        <a href="{{ route('crm.contacts.index') }}" class="text-xs text-purple-400 font-bold uppercase tracking-wider hover:text-white transition-colors">Rehbere Git</a>
+                        <a href="{{ route('crm.contacts.index') }}" class="text-xs text-purple-400 font-bold uppercase tracking-wider hover:text-gray-900 dark:text-white transition-colors">Rehbere Git</a>
                     </div>
                     <div class="flex-1 overflow-auto divide-y divide-white/5 max-h-[400px] custom-scrollbar">
                         @forelse($recentContacts as $contact)
@@ -331,24 +332,24 @@
                                     {{ substr($contact->name, 0, 1) }}
                                 </div>
                                 <div>
-                                    <div class="text-sm font-bold text-white group-hover:text-purple-400 transition-colors">{{ $contact->name }}</div>
-                                    <div class="text-[11px] text-slate-500 font-bold flex items-center gap-1">
+                                    <div class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-purple-400 transition-colors">{{ $contact->name }}</div>
+                                    <div class="text-[11px] text-gray-600 dark:text-slate-500 font-bold flex items-center gap-1">
                                         {{ $contact->email }}
                                     </div>
                                 </div>
                             </div>
                             <div class="text-right">
-                                <div class="text-[10px] text-slate-400 font-bold uppercase flex items-center justify-end gap-1 mb-1">
+                                <div class="text-[10px] text-gray-600 dark:text-slate-400 font-bold uppercase flex items-center justify-end gap-1 mb-1">
                                     <span class="material-symbols-outlined text-[12px]">schedule</span>
                                     {{ $contact->created_at->diffForHumans(null, true, true) }}
                                 </div>
-                                <div class="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-md border inline-block bg-slate-800/50 text-slate-400 border-white/5">
+                                <div class="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-md border inline-block bg-slate-800/50 text-gray-600 dark:text-slate-400 border-white/5">
                                     {{ Str::limit($contact->company_name ?? 'Bireysel', 15) }}
                                 </div>
                             </div>
                         </div>
                         @empty
-                        <div class="p-12 text-center text-slate-500">Kayıt yok.</div>
+                        <div class="p-12 text-center text-gray-600 dark:text-slate-500">Kayıt yok.</div>
                         @endforelse
                     </div>
                 </x-card>
@@ -368,3 +369,4 @@
         setInterval(updateClock, 1000);
     </script>
 </x-app-layout>
+
