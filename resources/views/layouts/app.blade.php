@@ -290,8 +290,7 @@
                         </div>
                         <div class="flex items-center gap-4 md:gap-6">
                             <!-- Enhanced Theme Toggle Switch -->
-                            <div x-data="{ darkMode: localStorage.getItem('theme') === 'dark' || !localStorage.getItem('theme') }" 
-                                 x-init="$watch('darkMode', value => { localStorage.setItem('theme', value ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', value); })"
+                            <div x-init="$watch('darkMode', value => { localStorage.setItem('theme', value ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', value); })"
                                  class="relative group">
                                 <button @click="darkMode = !darkMode"
                                         class="relative w-20 h-10 rounded-full transition-all duration-500 backdrop-blur-xl border-2 shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95"

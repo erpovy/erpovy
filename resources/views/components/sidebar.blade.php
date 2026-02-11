@@ -31,14 +31,14 @@
                     <img src="{{ $lightUrl }}" 
                          alt="Erpovy" 
                          class="h-10 w-auto flex-shrink-0 transition-all duration-200"
-                         :class="!isCollapsed && !darkMode ? 'block opacity-100' : 'hidden opacity-0'"
+                         x-show="!isCollapsed && !darkMode"
                     >
 
                     <!-- Expanded Logo (Dark Theme) -->
                     <img src="{{ $darkUrl }}" 
                          alt="Erpovy" 
                          class="h-10 w-auto flex-shrink-0 transition-all duration-200"
-                         :class="!isCollapsed && darkMode ? 'block opacity-100' : 'hidden opacity-0'"
+                         x-show="!isCollapsed && darkMode"
                     >
 
                     <div class="flex flex-col transition-opacity duration-200" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">
