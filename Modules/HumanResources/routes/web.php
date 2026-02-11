@@ -17,7 +17,7 @@ use Modules\HumanResources\Http\Controllers\VehicleController;
 |
 */
 
-Route::middleware(['auth', 'verified'])->prefix('hr')->name('hr.')->group(function () {
+Route::middleware(['auth', 'verified', 'module_access:HumanResources', 'readonly'])->prefix('hr')->name('hr.')->group(function () {
     // Dashboard
     Route::get('/', [\Modules\HumanResources\Http\Controllers\HRController::class, 'index'])->name('index');
     

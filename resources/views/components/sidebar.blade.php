@@ -64,6 +64,7 @@
         <div class="flex flex-col gap-2">
                 
                 <!-- Dashboard -->
+                @if(auth()->user()->hasModuleAccess('dashboard'))
                 <a href="{{ route('dashboard') }}" class="group relative flex items-center gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('dashboard') ? 'text-gray-900 dark:text-white' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
                     @if(request()->routeIs('dashboard'))
                         <div class="absolute inset-0 rounded-xl bg-neon-active opacity-100 pointer-events-none"></div>
@@ -72,10 +73,12 @@
                     <span class="material-symbols-outlined {{ request()->routeIs('dashboard') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">dashboard</span>
                     <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Özet (Dashboard)</span>
                 </a>
+                @endif
 
 
 
                 <!-- Accounting Group -->
+                @if(auth()->user()->hasModuleAccess('Accounting'))
                 <div>
                     <button type="button" @click.stop.prevent="toggle('accounting')" 
                         class="w-full group relative flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('accounting.*') ? 'text-gray-900 dark:text-white' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
@@ -91,50 +94,72 @@
                     </button>
                     
                     <div x-show="isOpen('accounting')" x-cloak class="mt-1 space-y-1 pl-4">
+                        @if(auth()->user()->hasModuleAccess('accounting.dashboard'))
                         <a href="{{ route('accounting.dashboard') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.dashboard') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.dashboard') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Özet (Dashboard)
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('accounting.accounts'))
                         <a href="{{ route('accounting.accounts.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.accounts.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.accounts.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Hesap Planı
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('accounting.transactions'))
                         <a href="{{ route('accounting.transactions.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.transactions.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.transactions.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Fiş İşlemleri
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('accounting.invoices'))
                         <a href="{{ route('accounting.invoices.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.invoices.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.invoices.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Faturalar
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('accounting.templates'))
                         <a href="{{ route('accounting.invoice-templates.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.invoice-templates.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.invoice-templates.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Fatura Şablonları
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('accounting.cash_bank'))
                         <a href="{{ route('accounting.cash-bank-accounts.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.cash-bank-accounts.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.cash-bank-accounts.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Kasa/Banka
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('accounting.portfolio'))
                         <a href="{{ route('accounting.portfolio.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.portfolio.*') || request()->routeIs('accounting.cheques.*') || request()->routeIs('accounting.promissory-notes.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.portfolio.*') || request()->routeIs('accounting.cheques.*') || request()->routeIs('accounting.promissory-notes.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Çek/Senet
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('accounting.collections'))
                         <a href="{{ route('accounting.cash-bank-transactions.create', ['type' => 'collection']) }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request('type') == 'collection' ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request('type') == 'collection' ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Ödeme Al (Tahsilat)
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('accounting.payments'))
                         <a href="{{ route('accounting.cash-bank-transactions.create', ['type' => 'payment']) }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request('type') == 'payment' ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request('type') == 'payment' ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Ödeme Yap (Tediye)
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('accounting.reports'))
                         <a href="{{ route('accounting.reports.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.reports.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.reports.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Finansal Raporlar
                         </a>
+                        @endif
                     </div>
                 </div>
+                @endif
 
                 <!-- Sales Group -->
+                @if(auth()->user()->hasModuleAccess('Sales'))
                 <div>
                     <button type="button" @click.stop.prevent="toggle('sales')" 
                         class="w-full group relative flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('sales.*') ? 'text-gray-900 dark:text-white' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
@@ -150,34 +175,48 @@
                     </button>
                     
                     <div x-show="isOpen('sales')" x-cloak class="mt-1 space-y-1 pl-4">
+                        @if(auth()->user()->hasModuleAccess('sales.crm_sync'))
                         <a href="{{ route('crm.contacts.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('crm.contacts.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('crm.contacts.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Müşteri İlişkileri Yönetimi
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('sales.list'))
                         <a href="{{ route('sales.sales.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('sales.sales.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('sales.sales.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Satışlar
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('sales.quotes'))
                         <a href="{{ route('sales.quotes.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('sales.quotes.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('sales.quotes.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Teklif Hazırla
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('sales.pos'))
                         <a href="{{ route('sales.pos.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('sales.pos.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('sales.pos.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Satış Noktası
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('sales.subscriptions'))
                         <a href="{{ route('sales.subscriptions.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('sales.subscriptions.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('sales.subscriptions.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Abonelikler
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('sales.rentals'))
                         <a href="{{ route('sales.rentals.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('sales.rentals.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('sales.rentals.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Kiralama
                         </a>
+                        @endif
                     </div>
                 </div>
+                @endif
 
                 <!-- CRM Group -->
+                @if(auth()->user()->hasModuleAccess('CRM'))
                 <div>
                     <button type="button" @click.stop.prevent="toggle('crm')" 
                         class="w-full group relative flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('crm.*') ? 'text-gray-900 dark:text-white' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
@@ -193,26 +232,36 @@
                     </button>
                     
                     <div x-show="isOpen('crm')" x-cloak class="mt-1 space-y-1 pl-4">
+                        @if(auth()->user()->hasModuleAccess('crm.contacts'))
                         <a href="{{ route('crm.contacts.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('crm.contacts.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('crm.contacts.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Kişiler & Firmalar
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('crm.leads'))
                         <a href="{{ route('crm.leads.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('crm.leads.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('crm.leads.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Potansiyel Müşteriler
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('crm.deals'))
                         <a href="{{ route('crm.deals.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('crm.deals.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('crm.deals.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Anlaşmalar
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('crm.contracts'))
                         <a href="{{ route('crm.contracts.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('crm.contracts.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('crm.contracts.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Sözleşmeler
                         </a>
+                        @endif
                     </div>
                 </div>
+                @endif
 
                 <!-- Inventory Group -->
+                @if(auth()->user()->hasModuleAccess('Inventory'))
                 <div>
                     <button type="button" @click.stop.prevent="toggle('inventory')" 
                         class="w-full group relative flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('inventory.*') ? 'text-gray-900 dark:text-white' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
@@ -228,34 +277,48 @@
                     </button>
                     
                     <div x-show="isOpen('inventory')" x-cloak class="mt-1 space-y-1 pl-4">
+                        @if(auth()->user()->hasModuleAccess('inventory.analytics'))
                         <a href="{{ route('inventory.analytics.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('inventory.analytics.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('inventory.analytics.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Stok Analitik
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('inventory.products'))
                         <a href="{{ route('inventory.products.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('inventory.products.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('inventory.products.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Ürünler
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('inventory.categories'))
                         <a href="{{ route('inventory.categories.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('inventory.categories.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('inventory.categories.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Kategoriler
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('inventory.brands'))
                         <a href="{{ route('inventory.brands.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('inventory.brands.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('inventory.brands.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Markalar
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('inventory.units'))
                         <a href="{{ route('inventory.units.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('inventory.units.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('inventory.units.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Ölçü Birimleri
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('inventory.warehouses'))
                         <a href="{{ route('inventory.warehouses.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('inventory.warehouses.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('inventory.warehouses.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Depolar
                         </a>
+                        @endif
                     </div>
                 </div>
+                @endif
 
                 <!-- Manufacturing Group -->
+                @if(auth()->user()->hasModuleAccess('Manufacturing'))
                 <div>
                     <button type="button" @click.stop.prevent="toggle('manufacturing')" 
                         class="w-full group relative flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('manufacturing.*') ? 'text-gray-900 dark:text-white' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
@@ -271,42 +334,60 @@
                     </button>
                     
                     <div x-show="isOpen('manufacturing')" x-cloak class="mt-1 space-y-1 pl-4">
+                        @if(auth()->user()->hasModuleAccess('manufacturing.dashboard'))
                         <a href="{{ route('manufacturing.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('manufacturing.index') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('manufacturing.index') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Özet (Dashboard)
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('manufacturing.orders'))
                         <a href="{{ route('manufacturing.create') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('manufacturing.create') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('manufacturing.create') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Yeni İş Emri
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('manufacturing.boms'))
                         <a href="{{ route('manufacturing.mrp.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('manufacturing.mrp.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('manufacturing.mrp.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Malzeme İhtiyaç Planlaması (MRP)
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('manufacturing.mes'))
                         <a href="{{ route('manufacturing.mes.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('manufacturing.mes.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('manufacturing.mes.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Üretim Yönetim Sistemi (MES)
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('manufacturing.plm'))
                         <a href="{{ route('manufacturing.plm.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('manufacturing.plm.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('manufacturing.plm.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Ürün Yaşam Döngüsü (PLM)
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('manufacturing.quality'))
                         <a href="{{ route('manufacturing.quality.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('manufacturing.quality.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('manufacturing.quality.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Kalite Kontrol
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('manufacturing.shopfloor'))
                         <a href="{{ route('manufacturing.shopfloor.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('manufacturing.shopfloor.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('manufacturing.shopfloor.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Üretim Alanı
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('manufacturing.maintenance'))
                         <a href="{{ route('manufacturing.maintenance.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('manufacturing.maintenance.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('manufacturing.maintenance.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Bakım Yönetimi
                         </a>
+                        @endif
                     </div>
                 </div>
+                @endif
 
                 <!-- Human Resources Group -->
+                @if(auth()->user()->hasModuleAccess('HumanResources'))
                 <div>
                     <button type="button" @click.stop.prevent="toggle('hr')" 
                         class="w-full group relative flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('hr.*') ? 'text-gray-900 dark:text-white' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
@@ -322,36 +403,50 @@
                     </button>
                     
                     <div x-show="isOpen('hr')" x-cloak class="mt-1 space-y-1 pl-4">
+                        @if(auth()->user()->hasModuleAccess('hr.dashboard'))
                         <a href="{{ route('hr.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.index') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.index') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Özet (Dashboard)
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('hr.departments'))
                         <a href="{{ route('hr.departments.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.departments.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.departments.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Departmanlar
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('hr.employees'))
                         <a href="{{ route('hr.employees.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.employees.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.employees.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Personel Listesi
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('hr.leave'))
                         <a href="{{ route('hr.leaves.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.leaves.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.leaves.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             İzin Takvimi
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('hr.fleet'))
                         <a href="{{ route('hr.fleet.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.fleet.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.fleet.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Filo Yönetimi
                         </a>
+                        @endif
                         
                         <!-- User Management Submenu Items -->
+                        @if(auth()->user()->hasModuleAccess('hr.users'))
                         <a href="{{ route('hr.users.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.users.*') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.users.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Kullanıcılar
                         </a>
+                        @endif
                     </div>
                 </div>
+                @endif
 
                 <!-- Activities -->
+                @if(auth()->user()->hasModuleAccess('activities'))
                 <a href="{{ route('activities.index') }}" class="group relative flex items-center gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('activities.index') ? 'text-white' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">
                     @if(request()->routeIs('activities.index'))
                         <div class="absolute inset-0 rounded-xl bg-neon-active opacity-100 pointer-events-none"></div>
@@ -360,8 +455,10 @@
                     <span class="material-symbols-outlined {{ request()->routeIs('activities.index') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">history</span>
                     <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Aktiviteler</span>
                 </a>
+                @endif
 
                 <!-- Setup Group -->
+                @if(auth()->user()->hasModuleAccess('Setup'))
                 <div>
                      <button type="button" @click.stop.prevent="toggle('setup')" 
                         class="w-full group relative flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('setup.*') ? 'text-gray-900 dark:text-white' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
@@ -377,20 +474,27 @@
                     </button>
                     
                     <div x-show="isOpen('setup')" x-cloak class="mt-1 space-y-1 pl-4">
-                        <a href="{{ route('setup.accounting') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('setup.accounting') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                        @if(auth()->user()->hasModuleAccess('setup.accounting'))
+                        <a href="{{ route('setup.accounting') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('setup.accounting') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('setup.accounting') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Muhasebe Kurulumu
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('setup.invoice'))
                         <a href="{{ route('setup.invoice') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('setup.invoice') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('setup.invoice') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Fatura Kurulumu
                         </a>
+                        @endif
+                        @if(auth()->user()->hasModuleAccess('setup.crm'))
                         <a href="{{ route('setup.crm') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('setup.crm') ? 'text-white bg-gray-200 dark:bg-white/10' : 'text-gray-400 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('setup.crm') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             CRM Kurulumu
                         </a>
+                        @endif
                     </div>
                 </div>
+                @endif
 
                 <!-- Module Market (Visible to all admins) -->
                 <a href="{{ route('superadmin.market.index') }}" class="group relative flex items-center gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('superadmin.market.index') ? 'text-white' : 'text-gray-400 hover:text-gray-900 dark:hover:text-white' }}">

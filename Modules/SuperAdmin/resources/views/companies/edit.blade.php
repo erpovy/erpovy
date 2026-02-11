@@ -132,9 +132,10 @@
                             
                             <div class="flex items-center gap-4">
                                 <!-- Master Toggle for Group -->
+                                @if(!($group['is_core'] ?? false))
                                 <form action="{{ route('superadmin.companies.toggle-module', $company) }}" method="POST" @click.stop>
                                     @csrf
-                                    <input type="hidden" name="module" value="{{ implode(',', $groupItems) }}">
+                                    <input type="hidden" name="module" value="{{ implode(',', $groupItems) . ',' . $groupId }}">
                                     <input type="hidden" name="is_group" value="1">
                                     <button type="submit" 
                                             class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 focus:outline-none {{ $isGroupAllActive ? 'bg-primary' : ($isGroupPartiallyActive ? 'bg-primary/40' : 'bg-slate-700') }}">
@@ -142,6 +143,11 @@
                                               class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ $isGroupAllActive ? 'translate-x-5' : 'translate-x-0' }}"></span>
                                     </button>
                                 </form>
+                                @else
+                                    <span class="px-2 py-1 rounded-md bg-white/5 border border-white/10 text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                        ÇEKİRDEK
+                                    </span>
+                                @endif
                                 <span class="material-symbols-outlined text-slate-500 transition-transform duration-300" 
                                       :class="openGroup === '{{ $groupId }}' ? 'rotate-180' : ''">expand_more</span>
                             </div>

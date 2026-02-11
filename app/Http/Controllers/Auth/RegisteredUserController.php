@@ -41,7 +41,13 @@ class RegisteredUserController extends Controller
             'name' => $request->company_name,
             'status' => 'active',
             'settings' => [
-                'modules' => ['Accounting', 'CRM', 'Inventory'], // Default active modules
+                'modules' => [
+                    'dashboard',
+                    'accounting.dashboard', 'accounting.accounts', 'accounting.transactions', 'accounting.invoices', 'accounting.cash_bank',
+                    'crm.contacts', 'crm.leads', 'crm.deals',
+                    'inventory.products', 'inventory.categories', 'inventory.warehouses',
+                    'activities'
+                ],
             ],
         ]);
 

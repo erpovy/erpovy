@@ -71,4 +71,62 @@ class User extends Authenticatable
     {
         return $this->hasOne(\Modules\HumanResources\Models\Employee::class);
     }
+
+    /**
+     * Check if the user has access to a specific module or menu item.
+     * 
+     * @param string $module
+     * @return bool
+     */
+    public function hasModuleAccess(string $module): bool
+    {
+        // 1. Check for inspection mode (SuperAdmin viewing a company)
+        if (session()->has('is_inspecting') && session()->has('inspected_company_id')) {
+            $company = \App\Models\Company::find(session('inspected_company_id'));
+            if (!$company) return false;
+            
+            return $this->checkCompanyModuleAccess($company, $module);
+        }
+
+        // 2. Regular SuperAdmin access (not inspecting)
+        if ($this->is_super_admin) {
+            return true;
+        }
+
+        // 3. Regular user access
+        if (!$this->company) {
+            return false;
+        }
+
+        return $this->checkCompanyModuleAccess($this->company, $module);
+    }
+
+    /**
+     * Internal logic for checking module access against a specific company's settings.
+     */
+    protected function checkCompanyModuleAccess(\App\Models\Company $company, string $module): bool
+    {
+        // Core modules/groups that are always accessible
+        $core = ['dashboard', 'activities', 'Accounting', 'General'];
+        if (in_array($module, $core)) {
+            return true;
+        }
+
+        $activeModules = $company->settings['modules'] ?? [];
+
+        // Check for direct match
+        if (in_array($module, $activeModules)) {
+            return true;
+        }
+
+        // Group/Prefix matching (e.g., 'Accounting' matches 'accounting.dashboard')
+        $moduleLower = strtolower($module);
+        foreach ($activeModules as $active) {
+            if (str_starts_with(strtolower($active), $moduleLower . '.')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }

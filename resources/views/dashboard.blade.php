@@ -25,14 +25,18 @@
                 
                 <!-- Quick Mini Stats -->
                 <div class="hidden lg:flex items-center gap-3">
+                    @if(auth()->user()->hasModuleAccess('accounting.dashboard'))
                     <div class="px-4 py-2 rounded-xl bg-white/5 border border-gray-200 dark:border-white/10 backdrop-blur-md flex flex-col items-end">
                         <span class="text-[10px] text-gray-600 dark:text-slate-500 uppercase tracking-wider font-bold">Bu Ay Ciro</span>
                         <span class="text-lg font-black text-primary leading-none">+{{ number_format($monthlyRevenue, 0) }}₺</span>
                     </div>
+                    @endif
+                    @if(auth()->user()->hasModuleAccess('accounting.invoices'))
                     <div class="px-4 py-2 rounded-xl bg-white/5 border border-gray-200 dark:border-white/10 backdrop-blur-md flex flex-col items-end">
                         <span class="text-[10px] text-gray-600 dark:text-slate-500 uppercase tracking-wider font-bold">Bekleyen Fatura</span>
                         <span class="text-lg font-black text-yellow-400 leading-none">{{ $pendingInvoicesCount }}</span>
                     </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -44,6 +48,7 @@
             <!-- Row 1: Stat Cards (4 Cols) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 <!-- Stat 1 -->
+                @if(auth()->user()->hasModuleAccess('accounting.dashboard'))
                 <div class="group relative">
                     <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-blue-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <x-card class="h-full relative p-6 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl hover:border-primary/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
@@ -70,8 +75,10 @@
                         </div>
                     </x-card>
                 </div>
+                @endif
 
                 <!-- Stat 2 -->
+                @if(auth()->user()->hasModuleAccess('accounting.invoices'))
                 <div class="group relative">
                     <div class="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-orange-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <x-card class="h-full relative p-6 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl hover:border-yellow-500/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
@@ -95,8 +102,10 @@
                         </div>
                     </x-card>
                 </div>
+                @endif
 
                 <!-- Stat 3 -->
+                @if(auth()->user()->hasModuleAccess('inventory.products'))
                 <div class="group relative">
                     <div class="absolute inset-0 bg-gradient-to-br from-red-500/20 to-pink-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <x-card class="h-full relative p-6 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl hover:border-red-500/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
@@ -120,8 +129,10 @@
                         </div>
                     </x-card>
                 </div>
+                @endif
 
                 <!-- Stat 4 -->
+                @if(auth()->user()->hasModuleAccess('crm.contacts'))
                 <div class="group relative">
                     <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-fuchsia-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <x-card class="h-full relative p-6 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl hover:border-purple-500/30 transition-all duration-300 group-hover:-translate-y-1 flex flex-col justify-between">
@@ -145,11 +156,13 @@
                         </div>
                     </x-card>
                 </div>
+                @endif
             </div>
 
             <!-- Row 2: Charts (2 Cols/3 Spans) & Timeline (1 Col/3 Spans) -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Revenue Chart (Spans 2) -->
+                @if(auth()->user()->hasModuleAccess('accounting.dashboard'))
                 <div class="lg:col-span-2">
                     <x-card class="h-80 p-8 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl flex flex-col">
                         <div class="flex items-center justify-between mb-8">
@@ -186,8 +199,10 @@
                         </div>
                     </x-card>
                 </div>
+                @endif
 
                 <!-- Timeline (Spans 1) -->
+                @if(auth()->user()->hasModuleAccess('activities'))
                 <div class="lg:col-span-1">
                     <x-card class="h-80 p-8 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl flex flex-col">
                         <div class="flex items-center justify-between mb-6">
@@ -224,16 +239,18 @@
                         </div>
                     </x-card>
                 </div>
+                @endif
             </div>
 
             <!-- Row 3: Quick Actions -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach([
-                    ['route' => route('accounting.invoices.create'), 'icon' => 'receipt_long', 'label' => 'Fatura Kes', 'desc' => 'Yeni satış faturası oluştur', 'color' => 'blue'],
-                    ['route' => route('crm.contacts.create'), 'icon' => 'person_add', 'label' => 'Müşteri Ekle', 'desc' => 'Yeni kişi veya firma kartı', 'color' => 'purple'],
-                    ['route' => route('inventory.products.create'), 'icon' => 'add_box', 'label' => 'Stok Gir', 'desc' => 'Envantere yeni ürün girişi', 'color' => 'orange'],
-                    ['route' => route('accounting.cash-bank-transactions.create', ['type' => 'collection']), 'icon' => 'payments', 'label' => 'Ödeme Al', 'desc' => 'Hızlı tahsilat işlemi', 'color' => 'green']
+                    ['route' => route('accounting.invoices.create'), 'icon' => 'receipt_long', 'label' => 'Fatura Kes', 'desc' => 'Yeni satış faturası oluştur', 'color' => 'blue', 'module' => 'accounting.invoices'],
+                    ['route' => route('crm.contacts.create'), 'icon' => 'person_add', 'label' => 'Müşteri Ekle', 'desc' => 'Yeni kişi veya firma kartı', 'color' => 'purple', 'module' => 'crm.contacts'],
+                    ['route' => route('inventory.products.create'), 'icon' => 'add_box', 'label' => 'Stok Gir', 'desc' => 'Envantere yeni ürün girişi', 'color' => 'orange', 'module' => 'inventory.products'],
+                    ['route' => route('accounting.cash-bank-transactions.create', ['type' => 'collection']), 'icon' => 'payments', 'label' => 'Ödeme Al', 'desc' => 'Hızlı tahsilat işlemi', 'color' => 'green', 'module' => 'accounting.cash_bank']
                 ] as $action)
+                    @if(auth()->user()->hasModuleAccess($action['module']))
                     <a href="{{ $action['route'] }}" class="group relative overflow-hidden rounded-2xl p-1 {{ isset($action['disabled']) ? 'cursor-not-allowed opacity-80' : '' }}">
                         <!-- Background Glass -->
                         <div class="absolute inset-0 bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl backdrop-blur-xl transition-all duration-300 {{ !isset($action['disabled']) ? 'group-hover:bg-white/10 group-hover:border-'.$action['color'].'-500/30 group-hover:shadow-[0_0_30px_rgba(0,0,0,0.3)]' : '' }}"></div>
@@ -272,12 +289,14 @@
                             <div class="absolute -right-4 -bottom-4 w-24 h-24 bg-{{ $action['color'] }}-500/20 blur-3xl rounded-full opacity-0 {{ !isset($action['disabled']) ? 'group-hover:opacity-50' : '' }} transition-opacity duration-500 pointer-events-none"></div>
                         </div>
                     </a>
+                    @endif
                 @endforeach
             </div>
 
             <!-- Row 4: Lists (2 Cols) -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <!-- Recent Invoices -->
+                @if(auth()->user()->hasModuleAccess('accounting.invoices'))
                 <x-card class="h-full p-0 border-gray-200 dark:border-white/10 bg-white/5 overflow-hidden flex flex-col">
                     <div class="p-6 border-b border-gray-200 dark:border-white/10 flex items-center justify-between bg-white/[0.02]">
                         <h3 class="text-lg font-black text-gray-900 dark:text-white flex items-center gap-2">
@@ -314,8 +333,10 @@
                         @endforelse
                     </div>
                 </x-card>
+                @endif
 
                 <!-- Recent Contacts -->
+                @if(auth()->user()->hasModuleAccess('crm.contacts'))
                 <x-card class="h-full p-0 border-gray-200 dark:border-white/10 bg-white/5 overflow-hidden flex flex-col">
                     <div class="p-6 border-b border-gray-200 dark:border-white/10 flex items-center justify-between bg-white/[0.02]">
                         <h3 class="text-lg font-black text-gray-900 dark:text-white flex items-center gap-2">
@@ -353,6 +374,7 @@
                         @endforelse
                     </div>
                 </x-card>
+                @endif
             </div>
         </div>
     </div>

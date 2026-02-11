@@ -16,25 +16,7 @@ class CheckModuleAccess
      */
     public function handle(Request $request, Closure $next, string $module): Response
     {
-        $user = auth()->user();
-        if (!$user) {
-            return $next($request);
-        }
-
-        // SuperAdmins always have access
-        if ($user->is_super_admin) {
-            return $next($request);
-        }
-
-        $company = $user->company;
-        if (!$company) {
-            return $next($request);
-        }
-
-        // Default allowed if settings not initialized, otherwise check array
-        $activeModules = $company->settings['modules'] ?? ['Accounting', 'CRM', 'Inventory'];
-
-        if (!in_array($module, $activeModules)) {
+        if (auth()->check() && !auth()->user()->hasModuleAccess($module)) {
             abort(403, "Bu modül ({$module}) şirketiniz için aktif edilmemiştir. Lütfen sistem yöneticisi ile iletişime geçin.");
         }
 

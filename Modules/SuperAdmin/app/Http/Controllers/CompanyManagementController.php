@@ -88,6 +88,7 @@ class CompanyManagementController extends Controller
             'General' => [
                 'name' => 'Genel',
                 'icon' => 'dashboard',
+                'is_core' => true,
                 'items' => [
                     'dashboard' => 'Özet (Dashboard)',
                     'activities' => 'Aktiviteler',
@@ -96,6 +97,7 @@ class CompanyManagementController extends Controller
             'Accounting' => [
                 'name' => 'Muhasebe',
                 'icon' => 'account_balance',
+                'is_core' => true,
                 'items' => [
                     'accounting.dashboard' => 'Muhasebe Özeti',
                     'accounting.accounts' => 'Hesap Planı',

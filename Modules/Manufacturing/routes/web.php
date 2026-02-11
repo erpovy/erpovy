@@ -19,7 +19,7 @@ use Modules\Manufacturing\Http\Controllers\MaintenanceController;
 |
 */
 
-Route::middleware(['auth'])->prefix('manufacturing')->name('manufacturing.')->group(function () {
+Route::middleware(['auth', 'verified', 'module_access:Manufacturing', 'readonly'])->prefix('manufacturing')->name('manufacturing.')->group(function () {
     Route::get('/', [\Modules\Manufacturing\Http\Controllers\ManufacturingController::class, 'index'])->name('index');
     Route::get('/create', [\Modules\Manufacturing\Http\Controllers\ManufacturingController::class, 'create'])->name('create');
     Route::post('/store', [\Modules\Manufacturing\Http\Controllers\ManufacturingController::class, 'store'])->name('store');
