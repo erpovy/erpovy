@@ -73,6 +73,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Check if the user is a demo user.
+     */
+    public function isDemoUser(): bool
+    {
+        return $this->email === 'demo@erpovy.com';
+    }
+
+    /**
      * Check if the user has access to a specific module or menu item.
      * 
      * @param string $module
@@ -88,7 +96,19 @@ class User extends Authenticatable
             return $this->checkCompanyModuleAccess($company, $module);
         }
 
-        // 2. Regular user access (including SuperAdmin associated with a company)
+        // 2. Demo User access (Broad access but exclude SuperAdmin management)
+        if ($this->isDemoUser()) {
+            // Exclude SuperAdmin management routes
+            $superAdminRestricted = ['superadmin.companies', 'superadmin.index', 'superadmin.stop-inspection'];
+            foreach ($superAdminRestricted as $restricted) {
+                if ($module === $restricted || str_starts_with($module, $restricted . '.')) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        // 3. Regular user access (including SuperAdmin associated with a company)
         if (!$this->company) {
             // SuperAdmins without a company see all business modules 
             // Regular users without a company see nothing
