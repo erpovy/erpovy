@@ -1,104 +1,180 @@
 <x-app-layout>
-    <!-- Main Background Wrapper with Gradient -->
-    <div class="min-h-screen bg-gray-50 dark:bg-gradient-to-br dark:from-slate-800 dark:via-slate-900 dark:to-zinc-900 py-12">
-        <div class="container mx-auto px-4 sm:px-6 lg:px-8 max-w-3xl">
-            
-            <!-- Header -->
-            <div class="mb-8">
-                <a href="{{ route('manufacturing.index') }}" class="text-blue-600 dark:text-blue-300 hover:text-blue-800 dark:hover:text-white transition-colors text-sm font-medium flex items-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                    Listeye Dön
-                </a>
-                <h1 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600 dark:from-blue-300 dark:to-indigo-400 drop-shadow-lg">
-                    Yeni İş Emri Oluştur
-                </h1>
-                <p class="text-gray-600 dark:text-slate-400 mt-1">Üretime başlamak için yeni bir iş emri kaydı açın.</p>
-            </div>
+    <x-slot name="header">
+        Yeni İş Emri Oluştur
+    </x-slot>
 
-            <!-- Form Card -->
-            <div class="relative rounded-2xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 backdrop-blur-xl shadow-2xl p-8">
-                <div class="absolute inset-0 bg-blue-500/5 rounded-2xl blur-3xl -z-10"></div>
+    <div class="max-w-4xl mx-auto py-8">
+        <!-- Header Section -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
+                    <span class="material-symbols-outlined text-primary text-[32px]">precision_manufacturing</span>
+                    Yeni İş Emri
+                </h1>
+                <p class="text-sm text-gray-600 dark:text-slate-400 mt-1">Üretim sürecini başlatmak için iş emri detaylarını girin.</p>
+            </div>
+            <div class="flex items-center gap-3">
+                <a href="{{ route('manufacturing.index') }}" 
+                   class="px-4 py-2 rounded-xl border border-gray-300 dark:border-white/10 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-all font-bold text-sm flex items-center gap-2">
+                    <span class="material-symbols-outlined text-[18px]">list</span>
+                    İş Emirleri Listesi
+                </a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8">
+            <x-card class="p-8 relative overflow-hidden border-2 border-gray-100 dark:border-white/5 shadow-glass">
+                <!-- Decorative Blur -->
+                <div class="absolute -top-24 -right-24 w-48 h-48 bg-primary/10 rounded-full blur-3xl -z-10"></div>
                 
                 <form action="{{ route('manufacturing.store') }}" method="POST">
                     @csrf
                     
-                    <!-- Product Selection -->
-                    <div class="mb-6">
-                        <label for="product_id" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Ürün Seçimi</label>
-                        <select id="product_id" name="product_id" class="w-full bg-gray-50 dark:bg-slate-800/50 border border-gray-300 dark:border-white/10 rounded-xl text-gray-900 dark:text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all placeholder-gray-400 dark:placeholder-slate-500">
-                            <option value="" disabled selected>Üretilecek ürünü seçiniz...</option>
-                            @foreach($products as $product)
-                                <option value="{{ $product->id }}">{{ $product->code }} - {{ $product->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('product_id')
-                            <p class="text-rose-400 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
+                    <div class="space-y-8">
+                        <!-- Product & Personnel Section -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+                                    Üretilecek Ürün
+                                </label>
+                                <div class="relative">
+                                    <select name="product_id" class="w-full pl-4 pr-10 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20 appearance-none cursor-pointer font-medium transition-all" required>
+                                        <option value="" disabled selected>Üretilecek ürünü seçiniz...</option>
+                                        @foreach($products as $product)
+                                            <option value="{{ $product->id }}" class="bg-white dark:bg-slate-900">{{ $product->code }} - {{ $product->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-400 dark:text-slate-500 text-[20px] pointer-events-none">expand_more</span>
+                                </div>
+                                @error('product_id')
+                                    <p class="text-red-500 text-xs mt-2 flex items-center gap-1 font-medium">
+                                        <span class="material-symbols-outlined text-[14px]">error</span>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
 
-                    <!-- Responsible Person -->
-                    <div class="mb-6">
-                        <label for="employee_id" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Sorumlu Personel</label>
-                        <select id="employee_id" name="employee_id" class="w-full bg-gray-50 dark:bg-slate-800/50 border border-gray-300 dark:border-white/10 rounded-xl text-gray-900 dark:text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all placeholder-gray-400 dark:placeholder-slate-500">
-                            <option value="" selected>Personel Seçiniz (Opsiyonel)</option>
-                            @foreach($employees as $employee)
-                                <option value="{{ $employee->id }}">{{ $employee->full_name }}</option>
-                            @endforeach
-                        </select>
-                        @error('employee_id')
-                            <p class="text-rose-400 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-
-                    <!-- Quantity & Dates Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                         <!-- Quantity -->
-                         <div>
-                            <label for="quantity" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Miktar</label>
-                            <input type="number" id="quantity" name="quantity" min="1" placeholder="0" class="w-full bg-gray-50 dark:bg-slate-800/50 border border-gray-300 dark:border-white/10 rounded-xl text-gray-900 dark:text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all placeholder-gray-400 dark:placeholder-slate-500">
-                            @error('quantity')
-                                <p class="text-rose-400 text-xs mt-1">{{ $message }}</p>
-                            @enderror
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">person</span>
+                                    Sorumlu Personel
+                                </label>
+                                <div class="relative">
+                                    <select name="employee_id" class="w-full pl-4 pr-10 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20 appearance-none cursor-pointer font-medium transition-all">
+                                        <option value="" selected>Personel Seçiniz (Opsiyonel)</option>
+                                        @foreach($employees as $employee)
+                                            <option value="{{ $employee->id }}" class="bg-white dark:bg-slate-900">{{ $employee->full_name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-gray-400 dark:text-slate-500 text-[20px] pointer-events-none">expand_more</span>
+                                </div>
+                                @error('employee_id')
+                                    <p class="text-red-500 text-xs mt-2 flex items-center gap-1 font-medium">
+                                        <span class="material-symbols-outlined text-[14px]">error</span>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
                         </div>
 
-                         <!-- Start Date -->
-                         <div>
-                            <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Başlangıç Tarihi</label>
-                            <input type="date" id="start_date" name="start_date" value="{{ date('Y-m-d') }}" class="w-full bg-gray-50 dark:bg-slate-800/50 border border-gray-300 dark:border-white/10 rounded-xl text-gray-900 dark:text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all placeholder-gray-400 dark:placeholder-slate-500 dark:[color-scheme:dark]">
-                            @error('start_date')
-                                <p class="text-rose-400 text-xs mt-1">{{ $message }}</p>
-                            @enderror
+                        <!-- Quantity & Dates Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">format_list_numbered</span>
+                                    Miktar
+                                </label>
+                                <input type="number" name="quantity" min="1" placeholder="0" 
+                                       class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-mono font-bold" required>
+                                @error('quantity')
+                                    <p class="text-red-500 text-xs mt-2 flex items-center gap-1 font-medium">
+                                        <span class="material-symbols-outlined text-[14px]">error</span>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">play_circle</span>
+                                    Başlangıç Tarihi
+                                </label>
+                                <input type="date" name="start_date" value="{{ date('Y-m-d') }}" 
+                                       class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium">
+                                @error('start_date')
+                                    <p class="text-red-500 text-xs mt-2 flex items-center gap-1 font-medium">
+                                        <span class="material-symbols-outlined text-[14px]">error</span>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                                    <span class="material-symbols-outlined text-[18px]">event_available</span>
+                                    Teslim Tarihi
+                                </label>
+                                <input type="date" name="due_date" 
+                                       class="w-full px-4 py-3 rounded-xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium">
+                                @error('due_date')
+                                    <p class="text-red-500 text-xs mt-2 flex items-center gap-1 font-medium">
+                                        <span class="material-symbols-outlined text-[14px]">error</span>
+                                        {{ $message }}
+                                    </p>
+                                @enderror
+                            </div>
                         </div>
 
-                         <!-- Due Date -->
-                         <div>
-                            <label for="due_date" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Teslim Tarihi</label>
-                            <input type="date" id="due_date" name="due_date" class="w-full bg-gray-50 dark:bg-slate-800/50 border border-gray-300 dark:border-white/10 rounded-xl text-gray-900 dark:text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all placeholder-gray-400 dark:placeholder-slate-500 dark:[color-scheme:dark]">
-                            @error('due_date')
-                                <p class="text-rose-400 text-xs mt-1">{{ $message }}</p>
-                            @enderror
+                        <!-- Notes Area -->
+                        <div class="pt-4">
+                            <label class="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-[18px]">notes</span>
+                                Notlar ve Özel Talimatlar
+                            </label>
+                            <textarea name="notes" rows="4" placeholder="Üretim süreci ile ilgili eklemek istediğiniz notlar..." 
+                                      class="w-full px-4 py-4 rounded-2xl bg-white dark:bg-slate-900/50 border border-gray-300 dark:border-white/10 text-gray-900 dark:text-white shadow-sm focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all text-sm font-medium placeholder-gray-400 dark:placeholder-slate-500"></textarea>
                         </div>
-                    </div>
 
-                    <!-- Notes -->
-                    <div class="mb-8">
-                        <label for="notes" class="block text-sm font-medium text-gray-700 dark:text-slate-300 mb-2">Notlar / Açıklama</label>
-                        <textarea id="notes" name="notes" rows="4" placeholder="Eklemek istediğiniz notlar..." class="w-full bg-gray-50 dark:bg-slate-800/50 border border-gray-300 dark:border-white/10 rounded-xl text-gray-900 dark:text-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 transition-all placeholder-gray-400 dark:placeholder-slate-500"></textarea>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="flex justify-end space-x-4 border-t border-gray-200 dark:border-white/5 pt-6">
-                        <a href="{{ route('manufacturing.index') }}" class="px-6 py-2.5 rounded-xl bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-700 dark:text-slate-300 border border-gray-300 dark:border-white/5 transition-all duration-300 text-sm font-medium">
-                            İptal
-                        </a>
-                        <button type="submit" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white border border-blue-400/30 shadow-lg shadow-blue-500/30 transition-all duration-300 text-sm font-medium">
-                            İş Emrini Oluştur
-                        </button>
+                        <!-- Action Buttons -->
+                        <div class="flex items-center justify-end gap-4 pt-8 border-t border-gray-100 dark:border-white/5">
+                            <a href="{{ route('manufacturing.index') }}" 
+                               class="px-8 py-3 rounded-xl border border-gray-300 dark:border-white/10 text-gray-700 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-white/5 transition-all font-bold text-sm">
+                                Vazgeç
+                            </a>
+                            <button type="submit" 
+                                    class="flex items-center gap-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-10 py-3 rounded-xl hover:shadow-[0_20px_40px_rgba(37,99,235,0.3)] hover:scale-[1.02] active:scale-[0.98] transition-all font-bold shadow-xl shadow-blue-500/20">
+                                <span class="material-symbols-outlined text-[22px]">rocket_launch</span>
+                                İş Emrini Başlat
+                            </button>
+                        </div>
                     </div>
                 </form>
+            </x-card>
+
+            <!-- Quick Tips / Info -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="p-6 rounded-2xl bg-blue-50 dark:bg-primary/5 border border-blue-100 dark:border-primary/20 flex gap-4">
+                    <span class="material-symbols-outlined text-primary text-[24px] shrink-0">info</span>
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-900 dark:text-white mb-1">Maliyet Otomasyonu</h4>
+                        <p class="text-xs text-gray-600 dark:text-slate-400 leading-relaxed">İş emri tamamlandığında, ürün reçetesine göre kullanılan hammadde maliyetleri otomatik olarak hesaplanır ve stoklardan düşülür.</p>
+                    </div>
+                </div>
+                <div class="p-6 rounded-2xl bg-amber-50 dark:bg-amber-500/5 border border-amber-100 dark:border-amber-500/20 flex gap-4">
+                    <span class="material-symbols-outlined text-amber-600 text-[24px] shrink-0">warning</span>
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-900 dark:text-white mb-1">Teslim Tarihi Hatırlatıcı</h4>
+                        <p class="text-xs text-gray-600 dark:text-slate-400 leading-relaxed">Teslim tarihi belirtmeniz durumunda, sistem üretim planlamasında bu emri önceliklendirir ve gecikme uyarıları oluşturur.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+
+    <style>
+        .shadow-glass {
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+        }
+    </style>
 </x-app-layout>
