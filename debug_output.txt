@@ -1,5 +1,0 @@
-Company Found: Demo Şirketi A.Ş.
-Current Settings Type: array
-Current Modules: 
-SUCCESS: 'FixedAssets' added to modules.
-Final Modules: FixedAssets
