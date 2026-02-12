@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html x-data="{ darkMode: localStorage.getItem('theme') === 'dark' || !localStorage.getItem('theme') }" 
+<html x-data="{ darkMode: @auth {{ auth()->user()->theme === 'dark' ? 'true' : 'false' }} @else (localStorage.getItem('theme') === 'dark') @endauth }" 
       :class="darkMode ? 'dark' : ''" 
       x-init="$watch('darkMode', value => document.documentElement.classList.toggle('dark', value))"
       lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -290,7 +290,17 @@
                         </div>
                         <div class="flex items-center gap-4 md:gap-6">
                             <!-- Enhanced Theme Toggle Switch -->
-                            <div x-init="$watch('darkMode', value => { localStorage.setItem('theme', value ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', value); })"
+                            <div x-init="$watch('darkMode', value => { 
+                                localStorage.setItem('theme', value ? 'dark' : 'light'); 
+                                document.documentElement.classList.toggle('dark', value);
+                                @auth
+                                fetch('{{ route('user.theme.update') }}', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+                                    body: JSON.stringify({ theme: value ? 'dark' : 'light' })
+                                });
+                                @endauth
+                            })"
                                  class="relative group">
                                 <button @click="darkMode = !darkMode"
                                         class="relative w-16 h-8 rounded-full transition-all duration-500 overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 shadow-inner"

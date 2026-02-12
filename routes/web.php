@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile/weather', [ProfileController::class, 'updateWeatherSettings'])->name('profile.weather.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::post('/user/theme', [App\Http\Controllers\ThemeController::class, 'update'])->name('user.theme.update');
 
     // Settings
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
