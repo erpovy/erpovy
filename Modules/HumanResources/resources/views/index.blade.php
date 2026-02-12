@@ -140,7 +140,7 @@
                                                 {{ $employee->position ?? '-' }}
                                             </td>
                                             <td class="px-8 py-6 text-gray-700 dark:text-slate-300">
-                                                {{ $employee->hire_date->format('d.m.Y') }}
+                                                {{ $employee->hire_date ? $employee->hire_date->format('d.m.Y') : '-' }}
                                             </td>
                                             <td class="px-8 py-6">
                                                 @if($employee->status === 'active')
