@@ -134,7 +134,7 @@
                         </div>
                         <div class="overflow-x-auto text-left">
                             <table class="w-full text-left">
-                                <thead class="bg-gray-50/50 dark:bg-white/5 border-b border-gray-200 dark:border-white/5 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                <thead class="bg-gray-50/50 dark:bg-white/5 border-b border-gray-200 dark:border-white/5 text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                                     <tr>
                                         <th class="px-6 py-4 text-left">Araç</th>
                                         <th class="px-6 py-4 text-left">İşlem Türü</th>
@@ -149,11 +149,11 @@
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-col text-left">
                                                     <span class="text-sm font-black text-gray-900 dark:text-white text-left">{{ $service->vehicle->plate_number }}</span>
-                                                    <span class="text-[10px] font-bold text-slate-500 uppercase text-left">{{ $service->vehicle->brand }} {{ $service->vehicle->model }}</span>
+                                                    <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase text-left">{{ $service->vehicle->brand }} {{ $service->vehicle->model }}</span>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 text-sm font-bold text-gray-700 dark:text-slate-300 text-left">{{ $service->service_type }}</td>
-                                            <td class="px-6 py-4 text-xs font-medium text-slate-500 text-left">{{ $service->service_date->format('d.m.Y') }}</td>
+                                            <td class="px-6 py-4 text-xs font-medium text-slate-500 dark:text-slate-400 text-left">{{ $service->service_date->format('d.m.Y') }}</td>
                                             <td class="px-6 py-4 text-sm font-black text-gray-900 dark:text-white font-mono text-left">₺{{ number_format($service->total_cost, 0, ',', '.') }}</td>
                                             <td class="px-6 py-4 text-left">
                                                 @if($service->status == 'completed')
@@ -167,7 +167,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="5" class="px-6 py-12 text-center text-slate-500 font-bold uppercase tracking-widest opacity-30 text-xs text-left">Kayıtlı servis işlemi bulunmuyor.</td>
+                                            <td colspan="5" class="px-6 py-12 text-center text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest opacity-30 text-xs text-left">Kayıtlı servis işlemi bulunmuyor.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>
@@ -191,7 +191,7 @@
                                     </div>
                                     <div class="flex-1 min-w-0 text-left">
                                         <div class="text-sm font-black text-gray-900 dark:text-white truncate text-left">{{ $maintenance->vehicle->plate_number }}</div>
-                                        <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest text-left">{{ $maintenance->next_planned_date?->format('d.m.Y') ?? 'Tarih Belirtilmemiş' }}</div>
+                                        <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest text-left">{{ $maintenance->next_planned_date?->format('d.m.Y') ?? 'Tarih Belirtilmemiş' }}</div>
                                     </div>
                                     <div class="text-[9px] font-black text-amber-500 bg-amber-500/10 px-2 py-1 rounded text-left">
                                         {{ $maintenance->next_planned_date?->diffForHumans() }}
@@ -199,15 +199,15 @@
                                 </div>
                             @empty
                                 <div class="py-12 text-center text-left">
-                                    <span class="material-symbols-outlined text-slate-500 text-[48px] mb-4 opacity-10 text-left">event_available</span>
-                                    <p class="text-slate-500 text-[10px] font-bold uppercase tracking-[0.2em] text-left">Planlanmış bakım bulunmuyor.</p>
+                                    <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 text-[48px] mb-4 opacity-10 text-left">event_available</span>
+                                    <p class="text-slate-500 dark:text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] text-left">Planlanmış bakım bulunmuyor.</p>
                                 </div>
                             @endforelse
                         </div>
                     </x-card>
 
                     <!-- Quick Actions -->
-                    <x-card class="p-6 border-gray-200 dark:border-white/10 bg-gradient-to-br from-amber-500/10 to-transparent text-left">
+                    <x-card class="p-6 border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a2332]/60 bg-gradient-to-br from-amber-500/10 to-transparent text-left">
                         <h4 class="text-[10px] font-black uppercase text-amber-500 tracking-[0.2em] mb-4 text-left">Hızlı İşlemler</h4>
                         <div class="grid grid-cols-2 gap-3 text-left">
                             <button class="flex flex-col items-center gap-2 p-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-amber-500/50 transition-all group text-left">
