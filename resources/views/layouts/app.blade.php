@@ -293,30 +293,21 @@
                             <div x-init="$watch('darkMode', value => { localStorage.setItem('theme', value ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', value); })"
                                  class="relative group">
                                 <button @click="darkMode = !darkMode"
-                                        class="relative w-20 h-10 rounded-full transition-all duration-500 backdrop-blur-xl border-2 shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95"
-                                        :class="darkMode ? 'bg-gradient-to-r from-slate-800 to-slate-900 border-slate-700' : 'bg-gradient-to-r from-blue-400 to-cyan-300 border-blue-300'">
+                                        class="relative w-16 h-8 rounded-full transition-all duration-500 backdrop-blur-xl border-2 shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 flex items-center"
+                                        :class="darkMode ? 'bg-slate-800 border-slate-700' : 'bg-blue-100 border-blue-200'">
                                     
                                     <!-- Background Glow Effect -->
                                     <div class="absolute inset-0 rounded-full blur-md opacity-50 transition-opacity duration-500"
                                          :class="darkMode ? 'bg-purple-500' : 'bg-yellow-400'"></div>
                                     
                                     <!-- Toggle Circle with Icon -->
-                                    <div class="absolute top-[2px] left-[2px] w-8 h-8 rounded-full transition-all duration-500 flex items-center justify-center shadow-2xl transform"
-                                         :class="darkMode ? 'translate-x-10 bg-gradient-to-br from-slate-700 to-slate-900' : 'translate-x-0 bg-gradient-to-br from-yellow-300 to-yellow-500'">
+                                    <div class="absolute w-6 h-6 rounded-full transition-all duration-500 flex items-center justify-center shadow-md transform"
+                                         style="top: 2px; left: 2px;"
+                                         :class="darkMode ? 'translate-x-8 bg-slate-700 text-yellow-300' : 'translate-x-0 bg-white text-orange-500'">
                                         <!-- Moon Icon (Dark Mode) -->
-                                        <div x-show="darkMode" x-transition:enter="transition ease-out duration-300" 
-                                             x-transition:enter-start="opacity-0 rotate-90" 
-                                             x-transition:enter-end="opacity-100 rotate-0"
-                                             class="absolute inset-0 flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-[18px] text-yellow-200">dark_mode</span>
-                                        </div>
+                                        <span x-show="darkMode" class="material-symbols-outlined text-[16px]">dark_mode</span>
                                         <!-- Sun Icon (Light Mode) -->
-                                        <div x-show="!darkMode" x-transition:enter="transition ease-out duration-300" 
-                                             x-transition:enter-start="opacity-0 -rotate-90" 
-                                             x-transition:enter-end="opacity-100 rotate-0"
-                                             class="absolute inset-0 flex items-center justify-center">
-                                            <span class="material-symbols-outlined text-[18px] text-orange-600 animate-pulse">light_mode</span>
-                                        </div>
+                                        <span x-show="!darkMode" class="material-symbols-outlined text-[16px]">light_mode</span>
                                     </div>
                                 </button>
                                 
@@ -369,8 +360,8 @@
                                             
                                             <!-- Temperature & City -->
                                             <div class="flex items-baseline gap-2">
-                                                <span class="text-3xl font-black text-gray-900 dark:text-white leading-none" x-text="weather.temp_c + '°'"></span>
-                                                <span class="text-sm text-gray-700 dark:text-slate-300 font-bold" x-text="weather.city"></span>
+                                                <span class="text-3xl font-black text-gray-900 dark:text-white leading-none" x-text="(weather.temp_c || 0) + '°'"></span>
+                                                <span class="text-sm text-gray-700 dark:text-slate-300 font-bold" x-text="weather.city || 'İstanbul'"></span>
                                             </div>
                                         </div>
                                         

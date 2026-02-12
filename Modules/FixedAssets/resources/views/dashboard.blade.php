@@ -156,7 +156,7 @@
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left">
-                                <thead class="bg-gray-50/50 dark:bg-white/5 border-b border-gray-200 dark:border-white/5 text-[10px] font-black text-slate-500 uppercase tracking-widest">
+                                <thead class="bg-gray-50/50 dark:bg-white/5 border-b border-gray-200 dark:border-white/5 text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-widest">
                                     <tr>
                                         <th class="px-6 py-4">Demirbaş</th>
                                         <th class="px-6 py-4">Personel</th>
@@ -170,11 +170,11 @@
                                             <td class="px-6 py-4">
                                                 <div class="flex flex-col">
                                                     <span class="text-sm font-black text-gray-900 dark:text-white">{{ $assignment->asset->name }}</span>
-                                                    <span class="text-[10px] font-bold text-slate-500">{{ $assignment->asset->code }}</span>
+                                                    <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">{{ $assignment->asset->code }}</span>
                                                 </div>
                                             </td>
                                             <td class="px-6 py-4 text-sm font-bold text-gray-700 dark:text-slate-300">{{ $assignment->employee->name }}</td>
-                                            <td class="px-6 py-4 text-xs font-medium text-slate-500">{{ $assignment->assigned_at->format('d.m.Y') }}</td>
+                                            <td class="px-6 py-4 text-xs font-medium text-slate-500 dark:text-slate-400">{{ $assignment->assigned_at->format('d.m.Y') }}</td>
                                             <td class="px-6 py-4">
                                                 @if($assignment->returned_at)
                                                     <span class="px-2 py-0.5 text-[9px] font-black uppercase tracking-tight rounded bg-slate-500/10 text-slate-500 border border-slate-500/20">İADE EDİLDİ</span>
@@ -197,8 +197,8 @@
                         </div>
                         @if($upcomingMaintenances->isEmpty())
                             <div class="p-12 text-center">
-                                <span class="material-symbols-outlined text-slate-500 text-[48px] mb-4 opacity-20">event_available</span>
-                                <p class="text-slate-500 text-sm font-bold uppercase tracking-widest">Yakında planlanmış bakım bulunmuyor.</p>
+                                <span class="material-symbols-outlined text-slate-500 dark:text-slate-400 text-[48px] mb-4 opacity-20">event_available</span>
+                                <p class="text-slate-500 dark:text-slate-400 text-sm font-bold uppercase tracking-widest">Yakında planlanmış bakım bulunmuyor.</p>
                             </div>
                         @else
                             <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -209,7 +209,7 @@
                                         </div>
                                         <div>
                                             <div class="text-sm font-black text-gray-900 dark:text-white">{{ $maintenance->asset->name }}</div>
-                                            <div class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ $maintenance->next_maintenance_date->format('d.m.Y') }}</div>
+                                            <div class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{{ $maintenance->next_maintenance_date->format('d.m.Y') }}</div>
                                         </div>
                                         <div class="ml-auto text-[10px] font-black text-amber-500/50 group-hover:text-amber-500 transition-colors">
                                             KALAN: {{ $maintenance->next_maintenance_date->diffForHumans() }}
