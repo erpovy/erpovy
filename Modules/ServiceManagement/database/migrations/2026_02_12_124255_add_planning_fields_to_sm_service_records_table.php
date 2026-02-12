@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('sm_service_records', function (Blueprint $table) {
-            
+            $table->date('next_planned_date')->nullable()->after('service_date');
+            $table->timestamp('completed_at')->nullable()->after('updated_at');
         });
     }
 
@@ -22,7 +23,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('sm_service_records', function (Blueprint $table) {
-            
+            $table->dropColumn(['next_planned_date', 'completed_at']);
         });
     }
 };
