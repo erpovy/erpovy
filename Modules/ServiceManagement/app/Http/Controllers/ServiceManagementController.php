@@ -38,12 +38,15 @@ class ServiceManagementController extends Controller
             ->take(5)
             ->get();
 
-        $upcomingMaintenance = \Modules\ServiceManagement\Models\ServiceRecord::with('vehicle')
-            ->whereNotNull('next_planned_date')
-            ->where('next_planned_date', '>=', now())
-            ->orderBy('next_planned_date')
-            ->take(4)
-            ->get();
+        $upcomingMaintenance = collect();
+        if (\Illuminate\Support\Facades\Schema::hasColumn('sm_service_records', 'next_planned_date')) {
+            $upcomingMaintenance = \Modules\ServiceManagement\Models\ServiceRecord::with('vehicle')
+                ->whereNotNull('next_planned_date')
+                ->where('next_planned_date', '>=', now())
+                ->orderBy('next_planned_date')
+                ->take(4)
+                ->get();
+        }
 
         // Overdue Vehicles
         $overdueVehicles = \Modules\ServiceManagement\Models\Vehicle::all()->filter(function($v) {
