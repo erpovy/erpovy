@@ -14,7 +14,7 @@
                 </div>
                 
                 <div class="flex items-center gap-4">
-                    <a href="#" class="group flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-500 text-white font-black text-xs uppercase tracking-widest transition-all hover:scale-[1.05] active:scale-[0.95] shadow-lg shadow-amber-500/20">
+                    <a href="{{ route('servicemanagement.vehicles.create') }}" class="group flex items-center gap-2 px-6 py-3 rounded-xl bg-amber-500 text-white font-black text-xs uppercase tracking-widest transition-all hover:scale-[1.05] active:scale-[0.95] shadow-lg shadow-amber-500/20">
                         <span class="material-symbols-outlined text-[18px]">add_circle</span>
                         YENİ ARAÇ KAYDI
                     </a>
@@ -210,14 +210,14 @@
                     <x-card class="p-6 border-gray-200 dark:border-white/10 bg-white dark:bg-[#1a2332]/60 bg-gradient-to-br from-amber-500/10 to-transparent text-left">
                         <h4 class="text-[10px] font-black uppercase text-amber-500 tracking-[0.2em] mb-4 text-left">Hızlı İşlemler</h4>
                         <div class="grid grid-cols-2 gap-3 text-left">
-                            <button class="flex flex-col items-center gap-2 p-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-amber-500/50 transition-all group text-left">
+                            <a href="{{ route('servicemanagement.job-cards.create') }}" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-amber-500/50 transition-all group text-left">
                                 <span class="material-symbols-outlined text-amber-500 group-hover:scale-110 transition-transform">add_task</span>
                                 <span class="text-[10px] font-bold text-gray-600 dark:text-slate-400 text-left">Servis Aç</span>
-                            </button>
-                            <button class="flex flex-col items-center gap-2 p-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-blue-500/50 transition-all group text-left">
+                            </a>
+                            <a href="{{ route('servicemanagement.job-cards.create') }}" class="flex flex-col items-center gap-2 p-4 rounded-xl bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 hover:border-blue-500/50 transition-all group text-left">
                                 <span class="material-symbols-outlined text-blue-500 group-hover:scale-110 transition-transform">minor_crash</span>
                                 <span class="text-[10px] font-bold text-gray-600 dark:text-slate-400 text-left">Arıza Bildir</span>
-                            </button>
+                            </a>
                         </div>
                     </x-card>
                 </div>
