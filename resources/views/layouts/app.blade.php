@@ -308,7 +308,7 @@
                                     </div>
                                     
                                     <!-- Toggle Circle with Icon -->
-                                    <div class="absolute top-1 left-1 w-8 h-8 rounded-full transition-all duration-500 flex items-center justify-center shadow-2xl transform"
+                                    <div class="absolute top-[2px] left-[2px] w-8 h-8 rounded-full transition-all duration-500 flex items-center justify-center shadow-2xl transform"
                                          :class="darkMode ? 'translate-x-10 bg-gradient-to-br from-slate-700 to-slate-900' : 'translate-x-0 bg-gradient-to-br from-yellow-300 to-yellow-500'">
                                         <!-- Moon Icon (Dark Mode) -->
                                         <div x-show="darkMode" x-transition:enter="transition ease-out duration-300" 

@@ -6,5 +6,6 @@
     "HumanResources": true,
     "Manufacturing": true,
     "Sales": true,
-    "FixedAssets": true
+    "FixedAssets": true,
+    "ServiceManagement": true
 }

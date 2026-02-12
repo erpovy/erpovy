@@ -14,6 +14,17 @@ class ModuleMarketController extends Controller
     {
         $modules = [
             [
+                'id' => 'sales',
+                'name' => 'Satış (Sales)',
+                'description' => 'Satış siparişleri, teklif yönetimi, müşteri bazlı fiyatlandırma ve sevkiyat takibi.',
+                'icon' => 'payments',
+                'color' => 'rose',
+                'style_classes' => 'bg-rose-500/20 text-rose-400 ring-rose-500/30 group-hover:bg-rose-500',
+                'version' => 'v1.0.0',
+                'status' => 'active',
+                'is_installed' => true,
+            ],
+            [
                 'id' => 'accounting',
                 'name' => 'Muhasebe (Accounting)',
                 'description' => 'Gelir/Gider takibi, faturalama, cari hesap yönetimi ve finansal raporlama.',
@@ -211,7 +222,38 @@ class ModuleMarketController extends Controller
                 'status' => 'coming_soon',
                 'is_installed' => false,
             ],
+            [
+                'id' => 'servicemanagement',
+                'name' => 'Servis / Bakım (Service/Maintenance)',
+                'description' => 'Araç servis, bakım, tamir ve parça değişim süreçlerinin yönetimi.',
+                'icon' => 'build',
+                'color' => 'amber',
+                'style_classes' => 'bg-amber-500/20 text-amber-400 ring-amber-500/30 group-hover:bg-amber-500',
+                'version' => 'v1.0.0',
+                'status' => 'active',
+                'is_installed' => true,
+            ],
         ];
+
+        // Sort modules: Core > Active > Inactive
+        $coreIds = ['accounting', 'crm', 'inventory', 'hr', 'sales'];
+        usort($modules, function ($a, $b) use ($coreIds) {
+            $aCore = in_array($a['id'], $coreIds) ? 0 : 1;
+            $bCore = in_array($b['id'], $coreIds) ? 0 : 1;
+
+            if ($aCore !== $bCore) {
+                return $aCore - $bCore;
+            }
+
+            $aActive = $a['is_installed'] ? 0 : 1;
+            $bActive = $b['is_installed'] ? 0 : 1;
+
+            if ($aActive !== $bActive) {
+                return $aActive - $bActive;
+            }
+
+            return strcmp($a['name'], $b['name']);
+        });
 
         return view('superadmin::market.index', compact('modules'));
     }

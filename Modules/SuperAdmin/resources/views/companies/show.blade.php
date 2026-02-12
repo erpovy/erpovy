@@ -1,147 +1,190 @@
 <x-app-layout>
     <x-slot name="header">
-        Şirket Detayı: {{ $company->name }}
+        <div class="relative overflow-hidden group">
+            <div class="absolute inset-0 bg-gradient-to-r from-primary/5 via-purple-500/5 to-blue-500/5 animate-pulse"></div>
+            <div class="relative flex items-center justify-between py-2">
+                <div>
+                    <h2 class="font-black text-3xl text-gray-900 dark:text-white tracking-tight mb-1">
+                        Şirket Detayı: {{ $company->name }}
+                    </h2>
+                    <p class="text-gray-600 dark:text-slate-400 text-sm font-medium flex items-center gap-2">
+                        <span class="material-symbols-outlined text-[16px]">info</span>
+                        Şirket Bilgileri ve Ayarlar
+                    </p>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <a href="{{ route('superadmin.companies.edit', $company) }}" class="group flex items-center gap-2 px-4 py-2 rounded-xl bg-primary/10 text-primary font-bold text-sm transition-all hover:bg-primary/20">
+                        <span class="material-symbols-outlined text-[20px]">edit</span>
+                        Düzenle
+                    </a>
+                    <a href="{{ route('superadmin.companies.index') }}" class="group flex items-center gap-2 px-4 py-2 rounded-xl bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-slate-400 font-bold text-sm transition-all hover:bg-gray-200 dark:hover:bg-white/10">
+                        <span class="material-symbols-outlined text-[20px]">arrow_back</span>
+                        Listeye Dön
+                    </a>
+                </div>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <!-- Sidebar Info -->
-        <div class="lg:col-span-1 space-y-6">
-            <x-card class="p-6">
-                <h3 class="text-white font-bold mb-4 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-primary">info</span>
-                    Genel Bilgiler
-                </h3>
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-xs text-slate-500 block">Şirket Unvanı</label>
-                        <div class="text-white font-medium">{{ $company->name }}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-slate-500 block">Domain / Alt Alan Adı</label>
-                        <div class="text-white font-medium">{{ $company->domain ?? 'Tanımlanmamış' }}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-slate-500 block">Kayıt Tarihi</label>
-                        <div class="text-white font-medium">{{ $company->created_at->format('d.m.Y H:i') }}</div>
-                    </div>
-                    <div>
-                        <label class="text-xs text-slate-500 block">Durum</label>
-                        <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-green-900/30 text-green-400 border border-green-800/50">
-                            {{ strtoupper($company->status ?? 'ACTIVE') }}
-                        </span>
-                    </div>
-                </div>
-            </x-card>
-
-            <x-card class="p-6">
-                <h3 class="text-white font-bold mb-4 flex items-center gap-2">
-                    <span class="material-symbols-outlined text-purple-400">database</span>
-                    Veritabanı Durumu
-                </h3>
-                <div class="space-y-4 text-sm">
-                    <div class="flex justify-between">
-                        <span class="text-slate-400">Bağlantı</span>
-                        <span class="text-white font-mono">{{ $company->db_connection ?? 'Sistem Varsayılan' }}</span>
-                    </div>
-                    <div class="flex justify-between">
-                        <span class="text-slate-400">Veri Boyutu</span>
-                        <span class="text-white">~ 1.2 MB</span>
-                    </div>
-                </div>
-            </x-card>
-        </div>
-
-        <!-- Main Content -->
-        <div class="lg:col-span-2 space-y-6">
-            <!-- Module Management -->
-            <x-card class="overflow-hidden">
-                <div class="p-6 border-b border-white/5">
-                    <h3 class="text-white font-bold">Modül ve Yetki Yönetimi</h3>
-                </div>
-                <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                    @php 
-                        $allModules = [
-                            ['id' => 'Accounting', 'name' => 'Muhasebe', 'desc' => 'Fatura, Fiş ve Hesap Planı'],
-                            ['id' => 'CRM', 'name' => 'CRM', 'desc' => 'Müşteri ve Tedarikçi Yönetimi'],
-                            ['id' => 'Inventory', 'name' => 'Stok', 'desc' => 'Ürün ve Depo Takibi'],
-                        ];
-                        $activeModules = $company->settings['modules'] ?? ['Accounting', 'CRM', 'Inventory'];
-                    @endphp
-
-                    @foreach($allModules as $mod)
-                        <div class="border border-white/5 rounded-xl p-4 bg-white/5 flex justify-between items-center group hover:border-primary/30 transition-colors">
-                            <div>
-                                <div class="text-white font-bold text-sm">{{ $mod['name'] }}</div>
-                                <div class="text-xs text-slate-500">{{ $mod['desc'] }}</div>
+    <div class="py-8">
+        <div class="container mx-auto px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Sidebar Info -->
+                <div class="lg:col-span-1 space-y-6">
+                    <x-card class="p-8 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl">
+                        <h3 class="text-gray-900 dark:text-white font-black text-xs uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-primary text-[20px]">info</span>
+                            Genel Bilgiler
+                        </h3>
+                        <div class="space-y-6">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Şirket Unvanı</label>
+                                <div class="text-gray-900 dark:text-white font-bold">{{ $company->name }}</div>
                             </div>
-                            <form action="{{ route('superadmin.companies.toggle-module', $company) }}" method="POST">
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Domain / Alt Alan Adı</label>
+                                <div class="text-gray-900 dark:text-white font-mono text-sm">{{ $company->domain ?? 'Tanımlanmamış' }}</div>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-slate-500">Kayıt Tarihi</label>
+                                <div class="text-gray-900 dark:text-white font-medium">{{ $company->created_at->format('d.m.Y H:i') }}</div>
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 block">Durum</label>
+                                <div class="flex">
+                                    @if($company->status === 'active')
+                                        <span class="px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full bg-emerald-500/10 text-emerald-500 border border-emerald-500/20 flex items-center gap-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                            Aktif
+                                        </span>
+                                    @else
+                                        <span class="px-3 py-1 text-[10px] font-black uppercase tracking-widest rounded-full bg-rose-500/10 text-rose-500 border border-rose-500/20 flex items-center gap-1.5">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-rose-500"></span>
+                                            Pasif
+                                        </span>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </x-card>
+
+                    <x-card class="p-8 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl">
+                        <h3 class="text-gray-900 dark:text-white font-black text-xs uppercase tracking-[0.2em] mb-6 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-purple-400 text-[20px]">database</span>
+                            Veritabanı Durumu
+                        </h3>
+                        <div class="space-y-4 text-sm font-medium">
+                            <div class="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/5">
+                                <span class="text-slate-500 text-xs uppercase tracking-tight">Bağlantı</span>
+                                <span class="text-gray-900 dark:text-white font-mono">{{ $company->db_connection ?? 'Sistem Varsayılan' }}</span>
+                            </div>
+                            <div class="flex justify-between items-center bg-white/5 p-3 rounded-xl border border-white/5">
+                                <span class="text-slate-500 text-xs uppercase tracking-tight">Veri Boyutu</span>
+                                <span class="text-gray-900 dark:text-white">~ 1.2 MB</span>
+                            </div>
+                        </div>
+                    </x-card>
+                </div>
+
+                <!-- Main Content -->
+                <div class="lg:col-span-2 space-y-6">
+                    <!-- Location Settings -->
+                    <x-card class="overflow-hidden border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl">
+                        <div class="p-8 border-b border-gray-200 dark:border-white/5">
+                            <h3 class="text-gray-900 dark:text-white font-black text-xs uppercase tracking-[0.2em] flex items-center gap-2">
+                                <span class="material-symbols-outlined text-primary text-[20px]">location_on</span>
+                                Konum Ayarları
+                            </h3>
+                            <p class="text-[10px] text-slate-500 uppercase font-black mt-1">Hava durumu widget'ı için şirket konumunu belirleyin</p>
+                        </div>
+                        <div class="p-8">
+                            <form action="{{ route('superadmin.companies.update-location', $company) }}" method="POST" class="space-y-6">
                                 @csrf
-                                <input type="hidden" name="module" value="{{ $mod['id'] }}">
-                                <button type="submit" class="relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none {{ in_array($mod['id'], $activeModules) ? 'bg-primary' : 'bg-slate-700' }}">
-                                    <span class="sr-only">Toggle</span>
-                                    <span class="pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out {{ in_array($mod['id'], $activeModules) ? 'translate-x-5' : 'translate-x-0' }}"></span>
-                                </button>
+                                @method('PUT')
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="space-y-2">
+                                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Ülke</label>
+                                        <div class="relative">
+                                            <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 text-[18px]">public</span>
+                                            <input type="text" name="country" value="{{ $company->settings['country'] ?? 'Turkey' }}" 
+                                                class="w-full pl-11 pr-4 py-3 bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white focus:border-primary/50 focus:ring-0 transition-all font-bold">
+                                        </div>
+                                    </div>
+
+                                    <div class="space-y-2">
+                                        <label class="text-[10px] font-black uppercase tracking-widest text-slate-500 ml-1">Şehir</label>
+                                        <div class="relative">
+                                            <span class="absolute left-4 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 text-[18px]">location_city</span>
+                                            <input type="text" name="city" value="{{ $company->settings['city'] ?? 'Ankara' }}" 
+                                                class="w-full pl-11 pr-4 py-3 bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl text-gray-900 dark:text-white focus:border-primary/50 focus:ring-0 transition-all font-bold">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-end pt-2">
+                                    <button type="submit" class="bg-primary px-8 py-3 rounded-xl text-gray-900 dark:text-white font-black text-xs uppercase tracking-[0.2em] shadow-[0_0_20px_rgba(var(--color-primary),0.3)] hover:scale-[1.05] active:scale-[0.95] transition-all">
+                                        AYARLARI KAYDET
+                                    </button>
+                                </div>
                             </form>
                         </div>
-                    @endforeach
-                </div>
-            </x-card>
+                    </x-card>
 
-            <!-- Location Settings -->
-            <x-card class="overflow-hidden">
-                <div class="p-6 border-b border-white/5">
-                    <h3 class="text-white font-bold flex items-center gap-2">
-                        <span class="material-symbols-outlined text-primary">location_on</span>
-                        Konum Ayarları
-                    </h3>
-                    <p class="text-xs text-slate-500 mt-1">Hava durumu widget'ı için şirket konumunu belirleyin</p>
-                </div>
-                <div class="p-6">
-                    <form action="{{ route('superadmin.companies.update-location', $company) }}" method="POST" class="space-y-4">
-                        @csrf
-                        @method('PUT')
-                        
-                        <div>
-                            <label class="block text-sm font-medium text-slate-400 mb-2">Ülke</label>
-                            <input type="text" name="country" value="{{ $company->settings['country'] ?? 'Turkey' }}" 
-                                   class="w-full rounded-lg bg-slate-900/50 border border-white/10 text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm" 
-                                   placeholder="Örn: Turkey">
-                        </div>
+                    <!-- Read-only Inspection & Statistics -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <x-card class="bg-primary/5 border-primary/20 p-8 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="p-2 bg-primary/20 rounded-lg text-primary">
+                                        <span class="material-symbols-outlined text-[20px]">group</span>
+                                    </div>
+                                    <h4 class="text-gray-900 dark:text-white font-black text-xs uppercase tracking-widest text-primary">Kullanıcı Erişimi</h4>
+                                </div>
+                                <div class="text-3xl font-black text-gray-900 dark:text-white mb-1">
+                                    {{ $company->users_count ?? 0 }}
+                                </div>
+                                <p class="text-[10px] text-slate-500 uppercase font-black tracking-tight">Tanımlı Toplam Kullanıcı Sayısı</p>
+                            </div>
+                        </x-card>
 
-                        <div>
-                            <label class="block text-sm font-medium text-slate-400 mb-2">Şehir</label>
-                            <input type="text" name="city" value="{{ $company->settings['city'] ?? 'Ankara' }}" 
-                                   class="w-full rounded-lg bg-slate-900/50 border border-white/10 text-white shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm" 
-                                   placeholder="Örn: Ankara">
-                        </div>
-
-                        <div class="flex justify-end pt-2">
-                            <button type="submit" class="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-500 shadow-neon transition-all font-bold text-sm">
-                                KAYDET
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </x-card>
-
-            <!-- Read-only Inspection -->
-            <x-card class="bg-blue-600/5 border-blue-500/20 p-6">
-                <div class="flex items-start gap-4">
-                    <div class="p-3 bg-blue-500/20 rounded-lg text-blue-400">
-                        <span class="material-symbols-outlined">visibility</span>
+                        <x-card class="bg-purple-500/5 border-purple-500/20 p-8 flex flex-col justify-between">
+                            <div>
+                                <div class="flex items-center gap-3 mb-4">
+                                    <div class="p-2 bg-purple-500/20 rounded-lg text-purple-400">
+                                        <span class="material-symbols-outlined text-[20px]">extension</span>
+                                    </div>
+                                    <h4 class="text-gray-900 dark:text-white font-black text-xs uppercase tracking-widest text-purple-400">Aktif Modüller</h4>
+                                </div>
+                                <div class="text-3xl font-black text-gray-900 dark:text-white mb-1">
+                                    {{ count($company->settings['modules'] ?? []) }}
+                                </div>
+                                <p class="text-[10px] text-slate-500 uppercase font-black tracking-tight">Şirket Tarafından Kullanılan Modüller</p>
+                            </div>
+                        </x-card>
                     </div>
-                    <div class="flex-1">
-                        <h4 class="text-white font-bold mb-1">Gözetim Modu (Salt-Okunur)</h4>
-                        <p class="text-slate-400 text-sm mb-4">Bu şirketin paneline "Read-Only" yetkisiyle giriş yaparak işlemleri denetleyebilirsiniz. Hiçbir veri değiştirilemez.</p>
-                        <form action="{{ route('superadmin.companies.inspect', $company) }}" method="POST">
-                            @csrf
-                            <button type="submit" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-bold transition-all">
-                                Şirket Panelini İzle
-                            </button>
-                        </form>
-                    </div>
+
+                    <x-card class="bg-rose-500/5 border-rose-500/20 border-dashed p-8 border-2">
+                        <div class="flex items-start gap-6">
+                            <div class="p-4 bg-rose-500/20 rounded-2xl text-rose-500 shadow-[0_0_20px_rgba(244,63,94,0.2)]">
+                                <span class="material-symbols-outlined text-[32px]">visibility</span>
+                            </div>
+                            <div class="flex-1">
+                                <h4 class="text-gray-900 dark:text-white font-black text-base uppercase tracking-tight mb-2">Gözetim Modu (Salt-Okunur)</h4>
+                                <p class="text-slate-500 text-sm font-medium mb-6">Bu şirketin paneline "Read-Only" yetkisiyle giriş yaparak işlemleri denetleyebilirsiniz. Hiçbir veri değiştirilemez.</p>
+                                <form action="{{ route('superadmin.companies.inspect', $company) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="bg-rose-500 hover:bg-rose-600 text-white px-8 py-4 rounded-xl text-xs font-black uppercase tracking-[0.2em] transition-all shadow-[0_4px_15px_rgba(244,63,94,0.3)] group flex items-center gap-3">
+                                        PANELİ DENETLEMEYE BAŞLA
+                                        <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </x-card>
                 </div>
-            </x-card>
+            </div>
         </div>
     </div>
 </x-app-layout>

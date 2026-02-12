@@ -53,6 +53,12 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <div class="flex justify-end pr-2">
+                                <a href="{{ route('fixedassets.categories.index') }}" class="text-[10px] font-black uppercase tracking-widest text-primary hover:text-primary/80 transition-colors flex items-center gap-1">
+                                    <span class="material-symbols-outlined text-[12px]">settings</span>
+                                    Kategorileri Yönet
+                                </a>
+                            </div>
                         </div>
 
                         <!-- Serial Number -->

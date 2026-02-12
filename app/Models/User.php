@@ -8,11 +8,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 use App\Traits\BelongsToCompany;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, BelongsToCompany;
+    use HasFactory, Notifiable, BelongsToCompany, HasRoles;
 
     /**
      * The "booted" method of the model.
@@ -88,6 +89,11 @@ class User extends Authenticatable
      */
     public function hasModuleAccess(string $module): bool
     {
+        // 0. SuperAdmins always have full access
+        if ($this->is_super_admin) {
+            return true;
+        }
+
         // 1. Check for inspection mode (SuperAdmin viewing a company)
         if (session()->has('is_inspecting') && session()->has('inspected_company_id')) {
             $company = \App\Models\Company::find(session('inspected_company_id'));
@@ -126,6 +132,14 @@ class User extends Authenticatable
         // Items that are always accessible to company users/admins
         if ($module === 'market.index') {
             return true;
+        }
+
+        // Core modules accessible to all Admins
+        $coreModules = ['Accounting', 'CRM', 'Inventory', 'HumanResources', 'Sales'];
+        if (in_array($module, $coreModules) || in_array(explode('.', $module)[0], $coreModules)) {
+            if ($this->hasRole('Admin')) {
+                return true;
+            }
         }
 
         $activeModules = $company->settings['modules'] ?? [];

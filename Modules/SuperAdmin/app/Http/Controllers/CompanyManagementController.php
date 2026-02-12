@@ -14,8 +14,36 @@ class CompanyManagementController extends Controller
         return view('superadmin::companies.index', compact('companies'));
     }
 
+    public function create()
+    {
+        return view('superadmin::companies.create');
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'domain' => 'nullable|string|max:255|unique:companies,domain',
+            'status' => 'required|in:active,suspended',
+        ]);
+
+        $company = Company::create([
+            'name' => $validated['name'],
+            'domain' => $validated['domain'],
+            'status' => $validated['status'],
+            'settings' => [
+                'modules' => ['General.dashboard', 'General.activities'],
+                'country' => 'Turkey',
+                'city' => 'Ankara',
+            ],
+        ]);
+
+        return redirect()->route('superadmin.companies.index')->with('success', 'Şirket başarıyla oluşturuldu.');
+    }
+
     public function show(Company $company)
     {
+        $company->loadCount('users');
         return view('superadmin::companies.show', compact('company'));
     }
 
@@ -177,6 +205,15 @@ class CompanyManagementController extends Controller
                     'fixedassets.index' => 'Demirbaş Listesi',
                     'fixedassets.create' => 'Yeni Demirbaş',
                     'fixedassets.categories' => 'Kategoriler',
+                ]
+            ],
+            'ServiceManagement' => [
+                'name' => 'Servis / Bakım',
+                'icon' => 'build',
+                'items' => [
+                    'servicemanagement.index' => 'Servis Özeti',
+                    'servicemanagement.vehicles.index' => 'Araç Listesi',
+                    'servicemanagement.service-records.index' => 'Servis Geçmişi',
                 ]
             ],
             'MarketSetup' => [

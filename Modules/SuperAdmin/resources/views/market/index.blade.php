@@ -21,6 +21,9 @@
         <div class="max-w-7xl mx-auto space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($modules as $module)
+                    @php
+                        $isCore = in_array($module['id'], ['accounting', 'crm', 'inventory', 'hr', 'sales']);
+                    @endphp
                     <div class="bg-white dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-2xl overflow-hidden group hover:border-gray-300 dark:hover:border-white/20 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 flex flex-col h-full">
                         <!-- Card Header with Icon and Status -->
                         <div class="p-6 flex-1">
@@ -29,16 +32,23 @@
                                     <span class="material-symbols-outlined text-[32px]" style="color: #60a5fa;">{{ $module['icon'] }}</span>
                                 </div>
                                 <div class="flex flex-col items-end gap-1.5">
-                                    @if($module['is_installed'])
+                                    @if($isCore)
+                                        <span class="px-3 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 text-[10px] font-black uppercase tracking-widest border border-purple-500/20 shadow-lg shadow-purple-500/5">
+                                            <span class="inline-flex items-center gap-1">
+                                                <span class="w-1.5 h-1.5 bg-purple-400 rounded-full"></span>
+                                                Çekirdek
+                                            </span>
+                                        </span>
+                                    @elseif($module['is_installed'])
                                         <span class="px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[10px] font-black uppercase tracking-widest border border-emerald-500/20 shadow-lg shadow-emerald-500/5">
                                             <span class="inline-flex items-center gap-1">
                                                 <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full animate-pulse"></span>
-                                                Yüklü
+                                                Aktif
                                             </span>
                                         </span>
                                     @else
                                         <span class="px-3 py-1.5 rounded-lg bg-slate-500/10 text-slate-400 text-[10px] font-black uppercase tracking-widest border border-slate-500/20">
-                                            Yakında
+                                            Pasif
                                         </span>
                                     @endif
                                     <span class="text-[10px] text-slate-500 font-mono font-bold">{{ $module['version'] }}</span>
@@ -56,17 +66,24 @@
                         
                         <!-- Card Footer with Action Button -->
                         <div class="p-4 bg-gradient-to-br from-black/30 to-black/20 border-t border-white/5">
-                             @if($module['is_installed'])
-                                <button class="w-full py-3 rounded-xl bg-white/5 text-slate-400 text-xs font-bold uppercase tracking-wider hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/30 transition-all border border-white/5 cursor-not-allowed opacity-60" disabled>
+                             @if($isCore)
+                                <button class="w-full py-3 rounded-xl bg-white/5 text-slate-400 text-xs font-bold uppercase tracking-wider border border-white/5 cursor-not-allowed opacity-60" disabled>
                                     <span class="flex items-center justify-center gap-2">
-                                        <span class="material-symbols-outlined text-[16px]">delete</span>
-                                        Kaldır
+                                        <span class="material-symbols-outlined text-[16px]">verified</span>
+                                        Çekirdek Modül
+                                    </span>
+                                </button>
+                             @elseif($module['is_installed'])
+                                <button class="w-full py-3 rounded-xl bg-emerald-500/10 text-emerald-400 text-xs font-bold uppercase tracking-wider border border-emerald-500/20 cursor-not-allowed" disabled>
+                                    <span class="flex items-center justify-center gap-2">
+                                        <span class="material-symbols-outlined text-[16px]">check_circle</span>
+                                        Aktif / Yüklü
                                     </span>
                                 </button>
                              @else
-                                <button class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:scale-[1.02] transition-all border border-blue-400/20" disabled>
+                                <button class="w-full py-3 rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-blue-500/30 hover:shadow-xl hover:shadow-blue-500/40 hover:scale-[1.02] transition-all border border-blue-400/20">
                                     <span class="flex items-center justify-center gap-2">
-                                        <span class="material-symbols-outlined text-[16px]">download</span>
+                                        <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
                                         Satın Al / Yükle
                                     </span>
                                 </button>
