@@ -300,13 +300,6 @@
                                     <div class="absolute inset-0 rounded-full blur-md opacity-50 transition-opacity duration-500"
                                          :class="darkMode ? 'bg-purple-500' : 'bg-yellow-400'"></div>
                                     
-                                    <!-- Stars (Dark Mode) -->
-                                    <div x-show="darkMode" x-transition class="absolute inset-0 overflow-hidden rounded-full">
-                                        <div class="absolute top-2 left-3 w-1 h-1 bg-white rounded-full animate-pulse"></div>
-                                        <div class="absolute top-4 left-6 w-0.5 h-0.5 bg-white rounded-full animate-pulse" style="animation-delay: 0.3s"></div>
-                                        <div class="absolute top-3 left-10 w-0.5 h-0.5 bg-white rounded-full animate-pulse" style="animation-delay: 0.6s"></div>
-                                    </div>
-                                    
                                     <!-- Toggle Circle with Icon -->
                                     <div class="absolute top-[2px] left-[2px] w-8 h-8 rounded-full transition-all duration-500 flex items-center justify-center shadow-2xl transform"
                                          :class="darkMode ? 'translate-x-10 bg-gradient-to-br from-slate-700 to-slate-900' : 'translate-x-0 bg-gradient-to-br from-yellow-300 to-yellow-500'">
@@ -324,12 +317,6 @@
                                              class="absolute inset-0 flex items-center justify-center">
                                             <span class="material-symbols-outlined text-[18px] text-orange-600 animate-pulse">light_mode</span>
                                         </div>
-                                    </div>
-                                    
-                                    <!-- Clouds (Light Mode) -->
-                                    <div x-show="!darkMode" x-transition class="absolute inset-0 overflow-hidden rounded-full">
-                                        <div class="absolute top-2 right-4 w-3 h-2 bg-white/40 rounded-full"></div>
-                                        <div class="absolute top-3 right-2 w-2 h-1.5 bg-white/30 rounded-full"></div>
                                     </div>
                                 </button>
                                 
