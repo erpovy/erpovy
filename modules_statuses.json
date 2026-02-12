@@ -6,5 +6,5 @@
     "HumanResources": true,
     "Manufacturing": true,
     "Sales": true,
-    "FixedAssets": false
+    "FixedAssets": true
 }

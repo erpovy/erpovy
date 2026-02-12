@@ -4,13 +4,23 @@ use Illuminate\Support\Facades\Route;
 use Modules\FixedAssets\Http\Controllers\FixedAssetsController;
 use Modules\FixedAssets\Http\Controllers\FixedAssetCategoryController;
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('fixedassets/categories', FixedAssetCategoryController::class)
-        ->names('fixedassets.categories')
+Route::middleware(['auth', 'verified', 'module_access:FixedAssets'])->prefix('fixedassets')->name('fixedassets.')->group(function () {
+    Route::resource('categories', FixedAssetCategoryController::class)
         ->except(['create', 'show', 'edit']); 
 
-    Route::resource('fixedassets', FixedAssetsController::class)->names('fixedassets');
-    Route::post('fixedassets/{id}/assign', [FixedAssetsController::class, 'assign'])->name('fixedassets.assign');
-    Route::post('fixedassets/{id}/return', [FixedAssetsController::class, 'returnAsset'])->name('fixedassets.return');
-    Route::post('fixedassets/{id}/maintenance', [FixedAssetsController::class, 'storeMaintenance'])->name('fixedassets.maintenance.store');
+    Route::resource('/', FixedAssetsController::class)
+        ->parameter('', 'fixedasset')
+        ->names([
+            'index' => 'index',
+            'create' => 'create',
+            'store' => 'store',
+            'show' => 'show',
+            'edit' => 'edit',
+            'update' => 'update',
+            'destroy' => 'destroy',
+        ]);
+
+    Route::post('/{id}/assign', [FixedAssetsController::class, 'assign'])->name('assign');
+    Route::post('/{id}/return', [FixedAssetsController::class, 'returnAsset'])->name('return');
+    Route::post('/{id}/maintenance', [FixedAssetsController::class, 'storeMaintenance'])->name('maintenance.store');
 });
