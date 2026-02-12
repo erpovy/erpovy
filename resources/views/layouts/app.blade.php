@@ -293,21 +293,43 @@
                             <div x-init="$watch('darkMode', value => { localStorage.setItem('theme', value ? 'dark' : 'light'); document.documentElement.classList.toggle('dark', value); })"
                                  class="relative group">
                                 <button @click="darkMode = !darkMode"
-                                        class="relative w-16 h-8 rounded-full transition-all duration-500 backdrop-blur-xl border-2 shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 flex items-center"
-                                        :class="darkMode ? 'bg-slate-800 border-slate-700' : 'bg-blue-100 border-blue-200'">
+                                        class="relative w-14 h-7 rounded-full transition-all duration-500 shadow-inner overflow-hidden focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                                        :class="darkMode ? 'bg-slate-800' : 'bg-slate-200'">
                                     
-                                    <!-- Background Glow Effect -->
-                                    <div class="absolute inset-0 rounded-full blur-md opacity-50 transition-opacity duration-500"
-                                         :class="darkMode ? 'bg-purple-500' : 'bg-yellow-400'"></div>
-                                    
-                                    <!-- Toggle Circle with Icon -->
-                                    <div class="absolute w-6 h-6 rounded-full transition-all duration-500 flex items-center justify-center shadow-md transform"
-                                         style="top: 2px; left: 2px;"
-                                         :class="darkMode ? 'translate-x-8 bg-slate-700 text-yellow-300' : 'translate-x-0 bg-white text-orange-500'">
-                                        <!-- Moon Icon (Dark Mode) -->
-                                        <span x-show="darkMode" class="material-symbols-outlined text-[16px]">dark_mode</span>
-                                        <!-- Sun Icon (Light Mode) -->
-                                        <span x-show="!darkMode" class="material-symbols-outlined text-[16px]">light_mode</span>
+                                    <!-- Background Gradient (Dark Mode) -->
+                                    <div class="absolute inset-0 transition-opacity duration-500 bg-gradient-to-r from-indigo-500 to-purple-600"
+                                         :class="darkMode ? 'opacity-100' : 'opacity-0'"></div>
+
+                                    <!-- Knob -->
+                                    <div class="absolute top-[2px] left-[2px] w-6 h-6 rounded-full bg-white shadow-md transform transition-transform duration-500 flex items-center justify-center z-10"
+                                         :class="darkMode ? 'translate-x-7' : 'translate-x-0'">
+                                        <!-- Sun Icon -->
+                                        <span x-show="!darkMode" 
+                                              x-transition:enter="transition ease-out duration-300"
+                                              x-transition:enter-start="opacity-0 rotate-90 scale-50"
+                                              x-transition:enter-end="opacity-100 rotate-0 scale-100"
+                                              x-transition:leave="transition ease-in duration-200"
+                                              x-transition:leave-start="opacity-100 rotate-0 scale-100"
+                                              x-transition:leave-end="opacity-0 -rotate-90 scale-50"
+                                              class="absolute text-amber-500">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                <path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd" />
+                                            </svg>
+                                        </span>
+                                        
+                                        <!-- Moon Icon -->
+                                        <span x-show="darkMode" style="display: none;"
+                                              x-transition:enter="transition ease-out duration-300"
+                                              x-transition:enter-start="opacity-0 -rotate-90 scale-50"
+                                              x-transition:enter-end="opacity-100 rotate-0 scale-100"
+                                              x-transition:leave="transition ease-in duration-200"
+                                              x-transition:leave-start="opacity-100 rotate-0 scale-100"
+                                              x-transition:leave-end="opacity-0 rotate-90 scale-50"
+                                              class="absolute text-indigo-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                                <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
+                                            </svg>
+                                        </span>
                                     </div>
                                 </button>
                                 
