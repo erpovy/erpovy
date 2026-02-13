@@ -143,7 +143,28 @@ class ProductController extends Controller
             ->latest()
             ->paginate(10);
 
-        return view('inventory::index', compact('products'));
+        $companyId = auth()->user()->company_id;
+
+        // Dashboard Stats
+        $totalProducts = Product::where('company_id', $companyId)->count();
+        
+        $totalStockValue = \Illuminate\Support\Facades\DB::table('stock_movements')
+            ->join('products', 'stock_movements.product_id', '=', 'products.id')
+            ->where('products.company_id', $companyId)
+            ->selectRaw('SUM(stock_movements.quantity) as current_stock, products.purchase_price')
+            ->groupBy('products.id', 'products.purchase_price')
+            ->get()
+            ->sum(function ($row) {
+                return $row->current_stock * $row->purchase_price;
+            });
+
+        $criticalStockCount = Product::where('company_id', $companyId)
+            ->where('stock_track', true)
+            ->whereNotNull('min_stock_level')
+            ->whereRaw('(SELECT SUM(quantity) FROM stock_movements WHERE product_id = products.id) <= min_stock_level')
+            ->count();
+
+        return view('inventory::index', compact('products', 'totalProducts', 'totalStockValue', 'criticalStockCount'));
     }
 
     public function create()
