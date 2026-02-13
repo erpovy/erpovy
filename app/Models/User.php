@@ -130,34 +130,40 @@ class User extends Authenticatable
      */
     protected function checkCompanyModuleAccess(\App\Models\Company $company, string $module): bool
     {
+        $moduleLower = strtolower($module);
+
         // Items that are always accessible to company users/admins
-        if ($module === 'market.index') {
+        if ($moduleLower === 'market.index') {
             return true;
         }
 
         // Core modules accessible to all Admins
-        $coreModules = ['Accounting', 'CRM', 'Inventory', 'HumanResources', 'Sales'];
-        if (in_array($module, $coreModules) || in_array(explode('.', $module)[0], $coreModules)) {
+        $coreModules = ['accounting', 'crm', 'inventory', 'humanresources', 'sales'];
+        $moduleBase = explode('.', $moduleLower)[0];
+        
+        if (in_array($moduleBase, $coreModules)) {
             if ($this->hasRole('Admin')) {
                 return true;
             }
         }
 
-        $activeModules = $company->settings['modules'] ?? [];
+        $activeModules = collect($company->settings['modules'] ?? [])
+            ->map(fn($m) => strtolower($m))
+            ->toArray();
 
         // Check for direct match
-        if (in_array($module, $activeModules)) {
+        if (in_array($moduleLower, $activeModules)) {
             return true;
         }
 
         // Group/Prefix matching (e.g., 'Accounting' matches 'accounting.dashboard')
-        $moduleLower = strtolower($module);
         foreach ($activeModules as $active) {
-            if (str_starts_with(strtolower($active), $moduleLower . '.')) {
+            if (str_starts_with($active, $moduleLower . '.')) {
                 return true;
             }
         }
 
         return false;
     }
+
 }

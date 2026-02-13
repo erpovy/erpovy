@@ -35,16 +35,20 @@ class DashboardController extends Controller
             ->count();
 
         // Aylık Satış Trendi (Son 6 Ay)
+        $isSqlite = DB::connection()->getDriverName() === 'sqlite';
+        $monthFormat = $isSqlite ? "strftime('%Y-%m', issue_date)" : "DATE_FORMAT(issue_date, '%Y-%m')";
+
         $monthlySales = Invoice::where('company_id', $companyId)
             ->where('status', 'paid')
             ->where('issue_date', '>=', now()->subMonths(6))
             ->select(
-                DB::raw("strftime('%Y-%m', issue_date) as month"), 
+                DB::raw("$monthFormat as month"), 
                 DB::raw('SUM(total_amount) as total')
             )
             ->groupBy('month')
             ->orderBy('month')
             ->get();
+
 
         // Teklif Durum Dağılımı
         $quoteStages = Quote::where('company_id', $companyId)
