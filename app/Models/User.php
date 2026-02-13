@@ -142,10 +142,12 @@ class User extends Authenticatable
         $moduleBase = explode('.', $moduleLower)[0];
         
         if (in_array($moduleBase, $coreModules)) {
-            if ($this->hasRole('Admin')) {
+            // Case-insensitive role check
+            if ($this->hasAnyRole(['Admin', 'admin', 'Yönetici', 'yönetici'])) {
                 return true;
             }
         }
+
 
 
         $activeModules = collect($company->settings['modules'] ?? [])
