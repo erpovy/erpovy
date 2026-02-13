@@ -271,6 +271,35 @@
                 </div>
                 @endif
 
+                <!-- Logistics Group -->
+                @if(auth()->user()->hasModuleAccess('Logistics'))
+                <div>
+                    <button type="button" @click.stop.prevent="toggle('logistics')" 
+                        class="w-full group relative flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('logistics.*') ? 'text-gray-900 bg-gray-100 dark:text-white dark:bg-white/5' : 'text-slate-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
+                        @if(request()->routeIs('logistics.*'))
+                             <div class="absolute inset-0 rounded-xl bg-neon-active opacity-100 pointer-events-none"></div>
+                             <div class="absolute left-0 h-6 w-1 rounded-r-full bg-primary shadow-[0_0_10px_#137fec] pointer-events-none"></div>
+                        @endif
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined {{ request()->routeIs('logistics.*') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">local_shipping</span>
+                            <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Lojistik & Sevkiyat</span>
+                        </div>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('logistics'), 'hidden': isCollapsed}">chevron_right</span>
+                    </button>
+                    
+                    <div x-show="isOpen('logistics')" x-cloak class="mt-1 space-y-1 pl-4">
+                        <a href="{{ route('logistics.dashboard') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('logistics.dashboard') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('logistics.dashboard') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Özet (Dashboard)
+                        </a>
+                        <a href="{{ route('logistics.settings.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('logistics.settings.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('logistics.settings.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Lojistik Ayarları
+                        </a>
+                    </div>
+                </div>
+                @endif
+
                 <!-- Inventory Group -->
                 @if(auth()->user()->hasModuleAccess('Inventory'))
                 <div>
