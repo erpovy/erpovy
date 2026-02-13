@@ -138,7 +138,7 @@ class User extends Authenticatable
         }
 
         // Core modules accessible to all Admins
-        $coreModules = ['accounting', 'crm', 'inventory', 'humanresources', 'sales', 'dashboard', 'reports'];
+        $coreModules = ['accounting', 'crm', 'inventory', 'humanresources', 'sales', 'logistics', 'dashboard', 'reports'];
         $moduleBase = explode('.', $moduleLower)[0];
         
         if (in_array($moduleBase, $coreModules)) {

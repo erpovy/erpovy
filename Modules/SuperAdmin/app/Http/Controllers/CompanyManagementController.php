@@ -198,6 +198,14 @@ class CompanyManagementController extends Controller
                     'hr.fleet' => 'Filo Yönetimi',
                 ]
             ],
+            'Logistics' => [
+                'name' => 'Lojistik & Sevkiyat',
+                'icon' => 'local_shipping',
+                'items' => [
+                    'logistics.dashboard' => 'Lojistik Özeti',
+                    'logistics.settings' => 'Lojistik Ayarları',
+                ]
+            ],
             'FixedAssets' => [
                 'name' => 'Demirbaş Yönetimi',
                 'icon' => 'inventory_2',

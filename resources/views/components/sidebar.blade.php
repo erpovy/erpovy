@@ -444,11 +444,13 @@
                         </a>
                         @endif
                         @if(auth()->user()->hasModuleAccess('hr.fleet'))
-                        <a href="{{ route('hr.fleet.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.fleet.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                        <a href="{{ route('hr.fleet.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.fleet.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.fleet.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Filo Yönetimi
                         </a>
                         @endif
+
+
                         
                         <!-- User Management Submenu Items -->
                         @if(auth()->user()->hasModuleAccess('hr.users'))

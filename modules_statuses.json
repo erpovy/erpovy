@@ -7,5 +7,6 @@
     "Manufacturing": true,
     "Sales": true,
     "FixedAssets": true,
-    "ServiceManagement": true
+    "ServiceManagement": true,
+    "Logistics": true
 }

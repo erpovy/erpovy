@@ -208,8 +208,8 @@ class ModuleMarketController extends Controller
                 'color' => 'slate',
                 'style_classes' => 'bg-slate-500/20 text-slate-400 ring-slate-500/30 group-hover:bg-slate-500',
                 'version' => 'v0.7.0',
-                'status' => 'coming_soon',
-                'is_installed' => false,
+                'status' => 'active',
+                'is_installed' => true,
             ],
             [
                 'id' => 'legal',
