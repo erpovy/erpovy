@@ -8,8 +8,10 @@ use Modules\Inventory\Http\Controllers\UnitController;
 use Modules\Inventory\Http\Controllers\WarehouseController;
 use Modules\Inventory\Http\Controllers\AnalyticsController;
 use Modules\Inventory\Http\Controllers\ProductTypeController;
+use Modules\Inventory\Http\Controllers\DashboardController;
 
 Route::middleware(['auth', 'verified', 'module_access:Inventory', 'readonly'])->prefix('inventory')->name('inventory.')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     // Ürün Türleri
     Route::resource('settings/types', ProductTypeController::class)->names([
         'index' => 'settings.types.index',

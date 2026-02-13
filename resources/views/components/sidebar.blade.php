@@ -176,7 +176,12 @@
                     </button>
                     
                     <div x-show="isOpen('sales')" x-cloak class="mt-1 space-y-1 pl-4">
+                        <a href="{{ route('sales.dashboard') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('sales.dashboard') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('sales.dashboard') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Özet (Dashboard)
+                        </a>
                         @if(auth()->user()->hasModuleAccess('sales.crm_sync'))
+
                         <a href="{{ route('crm.contacts.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('crm.contacts.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('crm.contacts.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Müşteri İlişkileri Yönetimi
@@ -233,7 +238,12 @@
                     </button>
                     
                     <div x-show="isOpen('crm')" x-cloak class="mt-1 space-y-1 pl-4">
+                        <a href="{{ route('crm.dashboard') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('crm.dashboard') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('crm.dashboard') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Özet (Dashboard)
+                        </a>
                         @if(auth()->user()->hasModuleAccess('crm.contacts'))
+
                         <a href="{{ route('crm.contacts.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('crm.contacts.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('crm.contacts.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Kişiler & Firmalar
@@ -278,7 +288,12 @@
                     </button>
                     
                     <div x-show="isOpen('inventory')" x-cloak class="mt-1 space-y-1 pl-4">
+                        <a href="{{ route('inventory.dashboard') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('inventory.dashboard') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('inventory.dashboard') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Özet (Dashboard)
+                        </a>
                         @if(auth()->user()->hasModuleAccess('inventory.analytics'))
+
                         <a href="{{ route('inventory.analytics.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('inventory.analytics.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('inventory.analytics.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Stok Analitik
