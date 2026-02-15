@@ -20,6 +20,8 @@ class Shipment extends Model
         'tracking_number',
         'invoice_id',
         'contact_id',
+        'origin',
+        'destination',
         'status',
         'shipped_at',
         'delivered_at',
@@ -27,7 +29,16 @@ class Shipment extends Model
         'carrier_name',
         'carrier_tracking_no',
         'weight',
+        'weight_kg',
+        'volume_m3',
+        'estimated_delivery',
         'notes',
+    ];
+
+    protected $casts = [
+        'shipped_at' => 'datetime',
+        'delivered_at' => 'datetime',
+        'estimated_delivery' => 'date',
     ];
 
     public function invoice()

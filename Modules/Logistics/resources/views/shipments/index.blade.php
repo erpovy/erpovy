@@ -87,6 +87,9 @@
                                 </td>
                                 <td class="px-6 py-5 text-right">
                                     <div class="flex items-center justify-end gap-2">
+                                        <a href="{{ route('logistics.shipments.track', ['number' => $shipment->tracking_number]) }}" class="p-2 hover:bg-indigo-500/10 text-indigo-500 rounded-xl transition-colors" title="Takip Et">
+                                            <i class="fa-solid fa-location-dot"></i>
+                                        </a>
                                         <a href="{{ route('logistics.shipments.edit', $shipment) }}" class="p-2 hover:bg-blue-500/10 text-blue-500 rounded-xl transition-colors">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </a>

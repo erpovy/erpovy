@@ -39,7 +39,7 @@
             </a>
 
             <!-- Active Routes -->
-            <div class="bg-white dark:bg-[#0f172a]/20 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-6 rounded-3xl shadow-glass group hover:border-cyan-500/50 transition-all duration-500">
+            <a href="{{ route('logistics.routes.index') }}" class="bg-white dark:bg-[#0f172a]/20 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-6 rounded-3xl shadow-glass group hover:border-cyan-500/50 transition-all duration-500">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-cyan-500/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                         <i class="fa-solid fa-route text-cyan-500 text-xl"></i>
@@ -49,7 +49,7 @@
                 <div class="flex items-end gap-2">
                     <span class="text-3xl font-black text-gray-900 dark:text-white leading-none tracking-tight">{{ $activeRoutes }}</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Available Vehicles -->
             <a href="{{ route('logistics.vehicles.index') }}" class="bg-white dark:bg-[#0f172a]/20 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-6 rounded-3xl shadow-glass group hover:border-indigo-500/50 transition-all duration-500">
@@ -102,7 +102,15 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-blue-500/10 text-blue-500">
+                                    @php
+                                        $shipmentStatusClasses = [
+                                            'pending' => 'bg-amber-500/10 text-amber-500',
+                                            'in_transit' => 'bg-blue-500/10 text-blue-500',
+                                            'delivered' => 'bg-emerald-500/10 text-emerald-500',
+                                            'cancelled' => 'bg-rose-500/10 text-rose-500',
+                                        ];
+                                    @endphp
+                                    <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider {{ $shipmentStatusClasses[$shipment->status] ?? 'bg-gray-500/10 text-gray-500' }}">
                                         {{ $shipment->status }}
                                     </span>
                                 </div>

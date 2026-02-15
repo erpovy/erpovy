@@ -77,4 +77,18 @@ class ShipmentController extends Controller
         return redirect()->route('logistics.shipments.index')
             ->with('success', 'Sevkiyat başarıyla silindi.');
     }
+
+    public function track(Request $request, $number = null)
+    {
+        $trackingNumber = $number ?: $request->get('number');
+        $shipment = null;
+
+        if ($trackingNumber) {
+            $shipment = Shipment::where('tracking_number', $trackingNumber)
+                ->with(['contact'])
+                ->first();
+        }
+
+        return view('logistics::shipments.track', compact('shipment', 'trackingNumber'));
+    }
 }

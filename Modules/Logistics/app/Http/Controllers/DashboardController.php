@@ -14,7 +14,7 @@ class DashboardController extends Controller
         $companyId = auth()->user()->company_id;
 
         $totalShipments = Shipment::where('company_id', $companyId)->count();
-        $activeRoutes = Route::where('company_id', $companyId)->where('status', 'active')->count();
+        $activeRoutes = Route::where('company_id', $companyId)->whereIn('status', ['optimized', 'in_progress'])->count();
         $totalVehicles = Vehicle::where('company_id', $companyId)->count();
         $availableVehicles = Vehicle::where('company_id', $companyId)->where('status', 'available')->count();
         $pendingShipments = Shipment::where('company_id', $companyId)->where('status', 'pending')->count();
