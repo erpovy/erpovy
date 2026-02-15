@@ -45,9 +45,13 @@
                         <!-- Tracking Number -->
                         <div class="space-y-2">
                             <label class="text-xs font-black uppercase tracking-wider text-gray-500 dark:text-gray-400">Takip Numarası *</label>
-                            <input type="text" name="tracking_number" value="{{ old('tracking_number', 'TRK-' . strtoupper(Str::random(8))) }}" required
+                            @php
+                                $prefix = $settings['tracking_prefix'] ?? 'TRK-';
+                                $defaultTracking = $prefix . strtoupper(Str::random(8));
+                            @endphp
+                            <input type="text" name="tracking_number" value="{{ old('tracking_number', $defaultTracking) }}" required
                                 class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-4 py-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all placeholder:text-gray-400"
-                                placeholder="Örn: TRK123456">
+                                placeholder="Örn: {{ $prefix }}123456">
                             @error('tracking_number') <p class="text-red-500 text-xs font-bold mt-1">{{ $message }}</p> @enderror
                         </div>
 
@@ -64,7 +68,7 @@
                         <!-- Origin -->
                         <div class="space-y-2">
                             <label class="text-xs font-black uppercase tracking-wider text-gray-500 dark:text-gray-400">Çıkış Noktası *</label>
-                            <input type="text" name="origin" value="{{ old('origin') }}" required
+                            <input type="text" name="origin" value="{{ old('origin', $settings['default_origin'] ?? '') }}" required
                                 class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-4 py-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500/50 outline-none transition-all"
                                 placeholder="Örn: İstanbul Depo">
                         </div>

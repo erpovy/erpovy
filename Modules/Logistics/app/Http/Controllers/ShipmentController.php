@@ -21,8 +21,11 @@ class ShipmentController extends Controller
 
     public function create()
     {
-        $contacts = Contact::where('company_id', auth()->user()->company_id)->get();
-        return view('logistics::shipments.create', compact('contacts'));
+        $company = auth()->user()->company;
+        $settings = $company->settings['logistics'] ?? [];
+        $contacts = Contact::where('company_id', $company->id)->get();
+        
+        return view('logistics::shipments.create', compact('contacts', 'settings'));
     }
 
     public function store(Request $request)

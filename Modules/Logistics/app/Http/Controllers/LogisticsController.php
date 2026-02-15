@@ -12,28 +12,45 @@ class LogisticsController extends Controller
      */
     public function index()
     {
-        return view('logistics::index');
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return view('logistics::create');
+        $company = auth()->user()->company;
+        $settings = $company->settings['logistics'] ?? [];
+        
+        return view('logistics::settings.index', compact('settings'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'tracking_prefix' => 'nullable|string|max:10',
+            'default_carrier' => 'nullable|string|max:100',
+            'auto_generate_tracking' => 'nullable|boolean',
+            'default_origin' => 'nullable|string|max:255',
+        ]);
+
+        $company = auth()->user()->company;
+        $allSettings = $company->settings ?? [];
+        $allSettings['logistics'] = [
+            'tracking_prefix' => $validated['tracking_prefix'] ?? 'TRK-',
+            'default_carrier' => $validated['default_carrier'] ?? '',
+            'auto_generate_tracking' => $request->has('auto_generate_tracking'),
+            'default_origin' => $validated['default_origin'] ?? '',
+        ];
+
+        $company->update(['settings' => $allSettings]);
+
+        return redirect()->route('logistics.settings.index')
+            ->with('success', 'Lojistik ayarları başarıyla güncellendi.');
+    }
 
     /**
      * Show the specified resource.
      */
     public function show($id)
     {
-        return view('logistics::show');
+        return redirect()->route('logistics.settings.index');
     }
 
     /**
@@ -41,13 +58,16 @@ class LogisticsController extends Controller
      */
     public function edit($id)
     {
-        return view('logistics::edit');
+        return redirect()->route('logistics.settings.index');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id) {}
+    public function update(Request $request, $id)
+    {
+        return $this->store($request);
+    }
 
     /**
      * Remove the specified resource from storage.
