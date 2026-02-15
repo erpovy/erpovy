@@ -13,10 +13,10 @@
                     </p>
                 </div>
                 <div class="flex items-center gap-3">
-                    <button class="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 px-4 py-2 rounded-xl text-sm font-bold text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-white/10 transition-all flex items-center gap-2 shadow-sm">
+                    <a href="{{ route('logistics.shipments.create') }}" class="bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 px-4 py-2 rounded-xl text-sm font-bold text-gray-700 dark:text-white hover:bg-gray-50 dark:hover:bg-white/10 transition-all flex items-center gap-2 shadow-sm">
                         <i class="fa-solid fa-plus text-blue-500"></i>
                         Yeni Sevkiyat
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
         <!-- Stats Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Total Shipments -->
-            <div class="bg-white dark:bg-[#0f172a]/20 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-6 rounded-3xl shadow-glass group hover:border-blue-500/50 transition-all duration-500">
+            <a href="{{ route('logistics.shipments.index') }}" class="bg-white dark:bg-[#0f172a]/20 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-6 rounded-3xl shadow-glass group hover:border-blue-500/50 transition-all duration-500">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-blue-500/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                         <i class="fa-solid fa-truck-fast text-blue-500 text-xl"></i>
@@ -36,7 +36,7 @@
                 <div class="flex items-end gap-2">
                     <span class="text-3xl font-black text-gray-900 dark:text-white leading-none tracking-tight">{{ $totalShipments }}</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Active Routes -->
             <div class="bg-white dark:bg-[#0f172a]/20 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-6 rounded-3xl shadow-glass group hover:border-cyan-500/50 transition-all duration-500">
@@ -52,20 +52,21 @@
             </div>
 
             <!-- Available Vehicles -->
-            <div class="bg-white dark:bg-[#0f172a]/20 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-6 rounded-3xl shadow-glass group hover:border-indigo-500/50 transition-all duration-500">
+            <a href="{{ route('logistics.vehicles.index') }}" class="bg-white dark:bg-[#0f172a]/20 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-6 rounded-3xl shadow-glass group hover:border-indigo-500/50 transition-all duration-500">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-indigo-500/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                         <i class="fa-solid fa-car text-indigo-500 text-xl"></i>
                     </div>
                 </div>
-                <h3 class="text-gray-500 dark:text-gray-400 text-sm font-bold uppercase tracking-wider mb-1">Müsait Araçlar</h3>
+                <h3 class="text-gray-500 dark:text-gray-400 text-sm font-bold uppercase tracking-wider mb-1">Araç Yönetimi</h3>
                 <div class="flex items-end gap-2">
-                    <span class="text-3xl font-black text-gray-900 dark:text-white leading-none tracking-tight">{{ $availableVehicles }}</span>
+                    <span class="text-3xl font-black text-gray-900 dark:text-white leading-none tracking-tight">{{ $availableVehicles }} / {{ $totalVehicles }}</span>
+                    <span class="text-xs text-gray-500 mb-1 font-bold">Müsait</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Pending Deliveries -->
-            <div class="bg-white dark:bg-[#0f172a]/20 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-6 rounded-3xl shadow-glass group hover:border-amber-500/50 transition-all duration-500">
+            <a href="{{ route('logistics.shipments.index', ['status' => 'pending']) }}" class="bg-white dark:bg-[#0f172a]/20 backdrop-blur-xl border border-gray-200 dark:border-white/10 p-6 rounded-3xl shadow-glass group hover:border-amber-500/50 transition-all duration-500">
                 <div class="flex items-center justify-between mb-4">
                     <div class="w-12 h-12 bg-amber-500/10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-500">
                         <i class="fa-solid fa-clock text-amber-500 text-xl"></i>
@@ -75,7 +76,7 @@
                 <div class="flex items-end gap-2">
                     <span class="text-3xl font-black text-gray-900 dark:text-white leading-none tracking-tight">{{ $pendingShipments }}</span>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">

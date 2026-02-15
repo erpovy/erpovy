@@ -11,6 +11,8 @@ class Vehicle extends Model
 {
     use HasFactory, BelongsToCompany, SoftDeletes;
 
+    protected $table = 'logistics_vehicles';
+
     protected $fillable = [
         'company_id',
         'plate_number',

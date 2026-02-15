@@ -11,6 +11,8 @@ class Route extends Model
 {
     use HasFactory, BelongsToCompany, SoftDeletes;
 
+    protected $table = 'logistics_routes';
+
     protected $fillable = [
         'company_id',
         'vehicle_id',

@@ -13,6 +13,8 @@ class Shipment extends Model
 {
     use HasFactory, BelongsToCompany, SoftDeletes;
 
+    protected $table = 'logistics_shipments';
+
     protected $fillable = [
         'company_id',
         'tracking_number',

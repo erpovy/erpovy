@@ -1,3 +1,4 @@
+<?php
 namespace Modules\Logistics\Http\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -14,6 +15,7 @@ class DashboardController extends Controller
 
         $totalShipments = Shipment::where('company_id', $companyId)->count();
         $activeRoutes = Route::where('company_id', $companyId)->where('status', 'active')->count();
+        $totalVehicles = Vehicle::where('company_id', $companyId)->count();
         $availableVehicles = Vehicle::where('company_id', $companyId)->where('status', 'available')->count();
         $pendingShipments = Shipment::where('company_id', $companyId)->where('status', 'pending')->count();
 
@@ -34,6 +36,7 @@ class DashboardController extends Controller
             'totalShipments',
             'activeRoutes',
             'availableVehicles',
+            'totalVehicles',
             'pendingShipments',
             'recentShipments',
             'recentRoutes'
