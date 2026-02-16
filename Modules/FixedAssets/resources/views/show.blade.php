@@ -135,8 +135,11 @@
                             </div>
                             <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-white/5">
                                 <span class="text-xs font-bold text-gray-500">Son Bakım</span>
+                                @php
+                                    $lastMaintenance = $asset->maintenances()->latest('maintenance_date')->first();
+                                @endphp
                                 <span class="text-sm font-bold text-gray-900 dark:text-white">
-                                    {{ $asset->maintenances()->latest('maintenance_date')->first()->maintenance_date->format('d.m.Y') ?? '-' }}
+                                    {{ $lastMaintenance ? $lastMaintenance->maintenance_date->format('d.m.Y') : '-' }}
                                 </span>
                             </div>
                              <div class="flex justify-between items-center p-3 rounded-lg bg-gray-50 dark:bg-white/5">
@@ -400,21 +403,29 @@
                                 <thead>
                                     <tr class="bg-gray-50 dark:bg-white/[0.02] border-b border-gray-200 dark:border-white/5">
                                         <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest">Yıl</th>
-                                        <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-right">Düşülecek Tutar</th>
-                                        <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-right">Kalan Değer (Defter Değeri)</th>
+                                        <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-center">Takvim Yılı</th>
+                                        <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-right">Dönem Gideri</th>
+                                        <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-right">Birikmiş Amortisman</th>
+                                        <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-right">Net Defter Değeri</th>
                                     </tr>
                                 </thead>
                                 <tbody class="divide-y divide-gray-200 dark:divide-white/5">
                                     @foreach($asset->calculateDepreciation() as $entry)
                                     <tr class="hover:bg-gray-100 dark:hover:bg-white/5 transition-colors">
                                         <td class="p-4">
-                                            <div class="text-sm font-bold text-gray-900 dark:text-white">{{ $entry['year'] }}. Yıl</div>
+                                            <div class="text-sm font-bold text-gray-900 dark:text-white">{{ $entry['year_index'] }}. Yıl</div>
+                                        </td>
+                                        <td class="p-4 text-center">
+                                            <div class="text-sm text-gray-600 dark:text-slate-400">{{ $entry['calendar_year'] }}</div>
                                         </td>
                                         <td class="p-4 text-right">
-                                            <div class="text-sm text-red-400 font-mono">-{{ number_format($entry['depreciation_amount'], 2) }} ₺</div>
+                                            <div class="text-sm text-red-500 font-mono font-bold">-{{ number_format($entry['depreciation_amount'], 2, ',', '.') }} ₺</div>
                                         </td>
                                         <td class="p-4 text-right">
-                                            <div class="text-sm text-gray-900 dark:text-white font-mono font-bold">{{ number_format($entry['book_value'], 2) }} ₺</div>
+                                            <div class="text-sm text-orange-400 font-mono">{{ number_format($entry['accumulated_depreciation'], 2, ',', '.') }} ₺</div>
+                                        </td>
+                                        <td class="p-4 text-right">
+                                            <div class="text-sm text-gray-900 dark:text-white font-mono font-black">{{ number_format($entry['book_value'], 2, ',', '.') }} ₺</div>
                                         </td>
                                     </tr>
                                     @endforeach

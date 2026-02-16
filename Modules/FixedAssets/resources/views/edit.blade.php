@@ -102,6 +102,21 @@
                                 <option value="declining_balance" {{ old('depreciation_method', $asset->depreciation_method) == 'declining_balance' ? 'selected' : '' }}>Azalan Bakiyeler</option>
                             </select>
                         </div>
+
+                        <!-- Prorata -->
+                        <div class="space-y-2 flex items-center h-full">
+                            <label class="flex items-center gap-3 cursor-pointer group mt-6 ml-1">
+                                <div class="relative">
+                                    <input type="checkbox" name="prorata" value="1" {{ old('prorata', $asset->prorata) ? 'checked' : '' }} class="peer hidden">
+                                    <div class="w-12 h-6 bg-white/10 border border-white/10 rounded-full peer-checked:bg-primary/50 transition-all"></div>
+                                    <div class="absolute left-1 top-1 w-4 h-4 bg-gray-400 rounded-full peer-checked:translate-x-6 peer-checked:bg-white transition-all"></div>
+                                </div>
+                                <div class="flex flex-col text-left">
+                                    <span class="text-xs font-black uppercase tracking-widest text-gray-900 dark:text-white group-hover:text-primary transition-colors">Kıst Amortisman (Prorata)</span>
+                                    <span class="text-[10px] text-slate-500 font-medium">Binek otomobiller için ay bazlı hesaplama.</span>
+                                </div>
+                            </label>
+                        </div>
                     </div>
 
                     <!-- Description -->

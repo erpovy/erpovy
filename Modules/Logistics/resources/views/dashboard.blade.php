@@ -91,9 +91,17 @@
                 <div class="p-6">
                     <div class="space-y-4">
                         @forelse($recentShipments as $shipment)
-                            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-blue-500/30 transition-all">
+                            @php
+                                $shipmentStatusClasses = [
+                                    'pending' => 'bg-amber-500/10 text-amber-500',
+                                    'in_transit' => 'bg-blue-500/10 text-blue-500',
+                                    'delivered' => 'bg-emerald-500/10 text-emerald-500',
+                                    'cancelled' => 'bg-rose-500/10 text-rose-500',
+                                ];
+                            @endphp
+                            <a href="{{ route('logistics.shipments.show', $shipment) }}" class="flex items-center justify-between p-4 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-blue-500/30 transition-all group">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center">
+                                    <div class="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                                         <i class="fa-solid fa-box text-blue-500"></i>
                                     </div>
                                     <div>
@@ -102,19 +110,11 @@
                                     </div>
                                 </div>
                                 <div class="text-right">
-                                    @php
-                                        $shipmentStatusClasses = [
-                                            'pending' => 'bg-amber-500/10 text-amber-500',
-                                            'in_transit' => 'bg-blue-500/10 text-blue-500',
-                                            'delivered' => 'bg-emerald-500/10 text-emerald-500',
-                                            'cancelled' => 'bg-rose-500/10 text-rose-500',
-                                        ];
-                                    @endphp
                                     <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider {{ $shipmentStatusClasses[$shipment->status] ?? 'bg-gray-500/10 text-gray-500' }}">
                                         {{ $shipment->status }}
                                     </span>
                                 </div>
-                            </div>
+                            </a>
                         @empty
                             <div class="text-center py-8">
                                 <p class="text-gray-500 dark:text-gray-400 italic">Henüz sevkiyat bulunmuyor.</p>
@@ -135,9 +135,9 @@
                 <div class="p-6">
                     <div class="space-y-4">
                         @forelse($recentRoutes as $route)
-                            <div class="flex items-center justify-between p-4 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-cyan-500/30 transition-all">
+                            <a href="{{ route('logistics.routes.show', $route) }}" class="flex items-center justify-between p-4 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/5 hover:border-cyan-500/30 transition-all group">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 bg-cyan-500/10 rounded-xl flex items-center justify-center">
+                                    <div class="w-10 h-10 bg-cyan-500/10 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
                                         <i class="fa-solid fa-route text-cyan-500"></i>
                                     </div>
                                     <div>
@@ -148,7 +148,7 @@
                                 <div class="text-right text-xs text-gray-400">
                                     {{ $route->planned_date->format('d.m.Y') }}
                                 </div>
-                            </div>
+                            </a>
                         @empty
                             <div class="text-center py-8">
                                 <p class="text-gray-500 dark:text-gray-400 italic">Planlı rota bulunmuyor.</p>

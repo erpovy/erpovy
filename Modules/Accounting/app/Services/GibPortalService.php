@@ -171,4 +171,56 @@ class GibPortalService
             'okcSeriNo' => ''
         ];
     }
+
+    /**
+     * Gelen faturaları portal üzerinden sorgular. (Simülasyon/Taslak)
+     */
+    public function fetchIncomingInvoices($startDate = null, $endDate = null)
+    {
+        if (!$this->token) {
+            $this->login();
+        }
+
+        $startDate = $startDate ?? now()->subDays(7)->format('d/m/Y');
+        $endDate = $endDate ?? now()->format('d/m/Y');
+
+        $response = Http::withoutVerifying()->asForm()->post($this->baseUrl . '/earsiv-services/dispatch', [
+            'cmd' => 'EARSIV_PORTAL_GELEN_FATURALARI_GETIR',
+            'callid' => Str::uuid()->toString(),
+            'token' => $this->token,
+            'jp' => json_encode([
+                'baslangic' => $startDate,
+                'bitis' => $endDate
+            ])
+        ]);
+
+        $result = $response->json();
+
+        if (isset($result['error'])) {
+            // Gerçek portalda veri yoksa boş dönebilir, hata fırlatmak yerine loglayıp boş dönelim
+            \Illuminate\Support\Facades\Log::warning('GİB Gelen Fatura Sorgulama Hatası:', ['result' => $result]);
+            return [];
+        }
+
+        return $result['data'] ?? [];
+    }
+
+    /**
+     * Giden faturanın durumunu portal üzerinden sorgular.
+     */
+    public function checkInvoiceStatus($uuid)
+    {
+        if (!$this->token) {
+            $this->login();
+        }
+
+        $response = Http::withoutVerifying()->asForm()->post($this->baseUrl . '/earsiv-services/dispatch', [
+            'cmd' => 'EARSIV_PORTAL_FATURA_DURUM_SORGULA',
+            'callid' => Str::uuid()->toString(),
+            'token' => $this->token,
+            'jp' => json_encode(['faturaUuid' => $uuid])
+        ]);
+
+        return $response->json();
+    }
 }

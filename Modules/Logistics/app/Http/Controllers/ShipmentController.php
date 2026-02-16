@@ -12,11 +12,22 @@ class ShipmentController extends Controller
     public function index()
     {
         $shipments = Shipment::where('company_id', auth()->user()->company_id)
-            ->with('contact')
+            ->with(['contact', 'route'])
             ->latest()
             ->paginate(15);
             
         return view('logistics::shipments.index', compact('shipments'));
+    }
+
+    public function show(Shipment $shipment)
+    {
+        $shipment->load(['contact', 'route.vehicle', 'invoice']);
+        $logs = \Modules\Logistics\Models\ShipmentStatusLog::where('shipment_id', $shipment->id)
+            ->with('user')
+            ->latest()
+            ->get();
+            
+        return view('logistics::shipments.show', compact('shipment', 'logs'));
     }
 
     public function create()

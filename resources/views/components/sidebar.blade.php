@@ -59,6 +59,9 @@
             elseif (request()->routeIs('hr.users.*') || request()->routeIs('hr.roles.*') || request()->routeIs('hr.permissions.*')) $activeMenu = 'user_management';
             elseif (request()->routeIs('hr.*')) $activeMenu = 'hr';
             elseif (request()->routeIs('fixedassets.*')) $activeMenu = 'fixedassets';
+            elseif (request()->routeIs('purchasing.*')) $activeMenu = 'purchasing';
+            elseif (request()->routeIs('logistics.*')) $activeMenu = 'logistics';
+            elseif (request()->routeIs('servicemanagement.*')) $activeMenu = 'servicemanagement';
             elseif (request()->routeIs('setup.*')) $activeMenu = 'setup';
         @endphp
 
@@ -125,11 +128,36 @@
                             Fatura Şablonları
                         </a>
                         @endif
+                        @if(auth()->user()->hasModuleAccess('accounting.e_transformation'))
+                        <div x-data="{ open: {{ request()->routeIs('accounting.e-transformation.*') ? 'true' : 'false' }} }">
+                            <button @click="open = !open" class="w-full flex items-center justify-between gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.e-transformation.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.e-transformation.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                                    e-Dönüşüm
+                                </div>
+                                <span class="material-symbols-outlined text-xs transition-transform" :class="open ? 'rotate-90' : ''">chevron_right</span>
+                            </button>
+                            <div x-show="open" x-cloak class="mt-1 ml-4 space-y-1 border-l border-gray-100 dark:border-white/5">
+                                <a href="{{ route('accounting.e-transformation.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-1.5 text-xs transition-colors {{ request()->routeIs('accounting.e-transformation.index') ? 'text-primary font-bold' : 'text-gray-500 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">Özet Paneli</a>
+                                <a href="{{ route('accounting.e-transformation.incoming') }}" class="flex items-center gap-3 rounded-lg px-4 py-1.5 text-xs transition-colors {{ request()->routeIs('accounting.e-transformation.incoming') ? 'text-primary font-bold' : 'text-gray-500 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">Gelen Kutusu</a>
+                                <a href="{{ route('accounting.e-transformation.outgoing') }}" class="flex items-center gap-3 rounded-lg px-4 py-1.5 text-xs transition-colors {{ request()->routeIs('accounting.e-transformation.outgoing') ? 'text-primary font-bold' : 'text-gray-500 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">Giden Kutusu</a>
+                            </div>
+                        </div>
+                        @endif
                         @if(auth()->user()->hasModuleAccess('accounting.cash_bank'))
-                        <a href="{{ route('accounting.cash-bank-accounts.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.cash-bank-accounts.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
-                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.cash-bank-accounts.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
-                            Kasa/Banka
-                        </a>
+                        <div x-data="{ open: {{ request()->routeIs('accounting.cash-bank-accounts.*') || request()->routeIs('accounting.bank-statements.*') ? 'true' : 'false' }} }">
+                            <button @click="open = !open" class="w-full flex items-center justify-between gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.cash-bank-accounts.*') || request()->routeIs('accounting.bank-statements.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.cash-bank-accounts.*') || request()->routeIs('accounting.bank-statements.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                                    Kasa & Banka
+                                </div>
+                                <span class="material-symbols-outlined text-xs transition-transform" :class="open ? 'rotate-90' : ''">chevron_right</span>
+                            </button>
+                            <div x-show="open" x-cloak class="mt-1 ml-4 space-y-1 border-l border-gray-100 dark:border-white/5">
+                                <a href="{{ route('accounting.cash-bank-accounts.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-1.5 text-xs transition-colors {{ request()->routeIs('accounting.cash-bank-accounts.*') ? 'text-primary font-bold' : 'text-gray-500 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">Hesap Listesi</a>
+                                <a href="{{ route('accounting.bank-statements.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-1.5 text-xs transition-colors {{ request()->routeIs('accounting.bank-statements.*') ? 'text-primary font-bold' : 'text-gray-500 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">Banka Ekstreleri</a>
+                            </div>
+                        </div>
                         @endif
                         @if(auth()->user()->hasModuleAccess('accounting.portfolio'))
                         <a href="{{ route('accounting.portfolio.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.portfolio.*') || request()->routeIs('accounting.cheques.*') || request()->routeIs('accounting.promissory-notes.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
@@ -150,6 +178,10 @@
                         </a>
                         @endif
                         @if(auth()->user()->hasModuleAccess('accounting.reports'))
+                        <a href="{{ route('accounting.cash-flow.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.cash-flow.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.cash-flow.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Nakit Akış Öngörüsü
+                        </a>
                         <a href="{{ route('accounting.reports.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('accounting.reports.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('accounting.reports.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Finansal Raporlar
@@ -292,6 +324,26 @@
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('logistics.dashboard') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Özet (Dashboard)
                         </a>
+                        <a href="{{ route('logistics.shipments.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('logistics.shipments.index') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('logistics.shipments.index') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Sevkiyat Listesi
+                        </a>
+                        <a href="{{ route('logistics.shipments.create') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('logistics.shipments.create') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('logistics.shipments.create') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Yeni Sevkiyat
+                        </a>
+                        <a href="{{ route('logistics.routes.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('logistics.routes.index') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('logistics.routes.index') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Rota Planlama
+                        </a>
+                        <a href="{{ route('logistics.routes.create') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('logistics.routes.create') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('logistics.routes.create') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Yeni Rota
+                        </a>
+                        <a href="{{ route('logistics.vehicles.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('logistics.vehicles.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('logistics.vehicles.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Araç Yönetimi
+                        </a>
                         <a href="{{ route('logistics.settings.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('logistics.settings.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('logistics.settings.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Lojistik Ayarları
@@ -358,6 +410,51 @@
                             Depolar
                         </a>
                         @endif
+                    </div>
+                </div>
+                @endif
+
+                <!-- Purchasing Group -->
+                @if(auth()->user()->hasModuleAccess('Purchasing'))
+                <div>
+                    <button type="button" @click.stop.prevent="toggle('purchasing')" 
+                        class="w-full group relative flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('purchasing.*') ? 'text-gray-900 bg-gray-100 dark:text-white dark:bg-white/5' : 'text-slate-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
+                        @if(request()->routeIs('purchasing.*'))
+                             <div class="absolute inset-0 rounded-xl bg-neon-active opacity-100 pointer-events-none"></div>
+                             <div class="absolute left-0 h-6 w-1 rounded-r-full bg-primary shadow-[0_0_10px_#137fec] pointer-events-none"></div>
+                        @endif
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined {{ request()->routeIs('purchasing.*') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">shopping_cart</span>
+                            <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">Satın Alma</span>
+                        </div>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('purchasing'), 'hidden': isCollapsed}">chevron_right</span>
+                    </button>
+                    
+                    <div x-show="isOpen('purchasing')" x-cloak class="mt-1 space-y-1 pl-4">
+                        <a href="{{ route('purchasing.dashboard') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('purchasing.dashboard') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('purchasing.dashboard') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Özet (Dashboard)
+                        </a>
+                        <a href="{{ route('purchasing.orders.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('purchasing.orders.index') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('purchasing.orders.index') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Sipariş Listesi
+                        </a>
+                        <a href="{{ route('purchasing.orders.create') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('purchasing.orders.create') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('purchasing.orders.create') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Yeni Sipariş
+                        </a>
+                        <a href="{{ route('purchasing.orders.index', ['status' => 'pending']) }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request('status') == 'pending' ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request('status') == 'pending' ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Mal Kabul Bekleyenler
+                        </a>
+                        <a href="{{ route('purchasing.suppliers.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('purchasing.suppliers.index') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('purchasing.suppliers.index') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Tedarikçi Listesi
+                        </a>
+                        <a href="{{ route('crm.contacts.create', ['type' => 'vendor']) }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request('type') == 'vendor' && request()->routeIs('crm.contacts.create') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request('type') == 'vendor' && request()->routeIs('crm.contacts.create') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Yeni Tedarikçi
+                        </a>
                     </div>
                 </div>
                 @endif
@@ -472,6 +569,12 @@
                             İzin Takvimi
                         </a>
                         @endif
+                        @if(auth()->user()->hasModuleAccess('hr.payrolls'))
+                        <a href="{{ route('hr.payrolls.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.payrolls.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.payrolls.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Bordro Yönetimi
+                        </a>
+                        @endif
                         @if(auth()->user()->hasModuleAccess('hr.fleet'))
                         <a href="{{ route('hr.fleet.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('hr.fleet.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('hr.fleet.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
@@ -556,6 +659,10 @@
                         <a href="{{ route('servicemanagement.vehicles.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('servicemanagement.vehicles.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('servicemanagement.vehicles.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Araçlar
+                        </a>
+                        <a href="{{ route('servicemanagement.maintenance-schedule') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('servicemanagement.maintenance-schedule') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('servicemanagement.maintenance-schedule') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Bakım Planlama
                         </a>
                         <a href="{{ route('servicemanagement.service-records.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('servicemanagement.service-records.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('servicemanagement.service-records.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>

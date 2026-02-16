@@ -8,5 +8,6 @@
     "Sales": true,
     "FixedAssets": true,
     "ServiceManagement": true,
-    "Logistics": true
+    "Logistics": true,
+    "Purchasing": true
 }

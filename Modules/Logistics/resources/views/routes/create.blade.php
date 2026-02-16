@@ -16,7 +16,7 @@
                     <p class="text-gray-500 dark:text-gray-400 mt-1 font-medium">Teslimat noktalarını ve araç atamasını yapın.</p>
                 </div>
                 <a href="{{ route('logistics.routes.index') }}" class="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white transition-colors flex items-center font-bold text-sm">
-                    <span class="material-icons-outlined mr-1">arrow_back</span>
+                    <span class="material-symbols-outlined mr-1">arrow_back</span>
                     VAZGEÇ
                 </a>
             </div>
@@ -51,6 +51,30 @@
                                 class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl px-4 py-3 text-gray-900 dark:text-white focus:ring-2 focus:ring-indigo-500/50 outline-none transition-all">
                         </div>
 
+                        <!-- Shipment Selection -->
+                        <div class="space-y-2 md:col-span-2">
+                            <label class="text-xs font-black uppercase tracking-wider text-gray-500 dark:text-gray-400 flex items-center justify-between">
+                                Bu Rotaya Bağlı Sevkiyatlar
+                                <span class="text-[10px] text-indigo-500 normal-case font-medium">Sadece boşta olan sevkiyatlar listelenir.</span>
+                            </label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-48 overflow-y-auto p-4 bg-gray-50 dark:bg-white/5 rounded-2xl border border-gray-100 dark:border-white/10">
+                                @forelse($availableShipments as $shipment)
+                                <label class="flex items-center gap-3 p-3 bg-white dark:bg-white/5 rounded-xl border border-gray-200 dark:border-white/10 cursor-pointer hover:border-indigo-500/50 transition-all group">
+                                    <input type="checkbox" name="shipment_ids[]" value="{{ $shipment->id }}" 
+                                        class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs font-bold text-gray-900 dark:text-white group-hover:text-indigo-500 transition-colors">{{ $shipment->tracking_number }}</span>
+                                        <span class="text-[10px] text-gray-500">{{ $shipment->destination }}</span>
+                                    </div>
+                                </label>
+                                @empty
+                                <div class="md:col-span-2 py-4 text-center">
+                                    <p class="text-xs text-gray-400 italic">Atanabilir sevkiyat bulunamadı.</p>
+                                </div>
+                                @endforelse
+                            </div>
+                        </div>
+
                         <input type="hidden" name="status" value="draft">
                     </div>
                 </div>
@@ -59,12 +83,12 @@
                 <div class="bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-3xl p-8 shadow-sm">
                     <div class="flex items-center justify-between mb-6">
                         <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center">
-                            <span class="material-icons-outlined mr-2 text-indigo-500">place</span>
+                            <span class="material-symbols-outlined mr-2 text-indigo-500">place</span>
                             Durak Planı
                         </h3>
                         <button type="button" @click="addStop()" 
                             class="inline-flex items-center px-4 py-2 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-xs font-black rounded-xl transition-all uppercase tracking-widest">
-                            <span class="material-icons-outlined text-sm mr-1">add_location</span>
+                            <span class="material-symbols-outlined text-sm mr-1">add_location</span>
                             DURAK EKLE
                         </button>
                     </div>
@@ -89,7 +113,7 @@
 
                                 <button type="button" @click="removeStop(index)" 
                                     class="p-2.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-600 rounded-xl transition-colors md:mb-0 mb-2">
-                                    <span class="material-icons-outlined text-sm">remove_circle_outline</span>
+                                    <span class="material-symbols-outlined text-sm">remove_circle_outline</span>
                                 </button>
                             </div>
                         </template>

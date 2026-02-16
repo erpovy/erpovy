@@ -48,6 +48,14 @@ class Contact extends Model
     }
 
     /**
+     * Satın Alma Siparişleri
+     */
+    public function purchaseOrders()
+    {
+        return $this->hasMany(\Modules\Purchasing\Models\PurchaseOrder::class, 'supplier_id');
+    }
+
+    /**
      * Toplam borç tutarı
      */
     public function getDebitTotalAttribute()

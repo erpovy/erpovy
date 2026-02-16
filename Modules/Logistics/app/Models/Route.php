@@ -29,9 +29,26 @@ class Route extends Model
         'stops' => 'json',
     ];
 
+    protected static function booted()
+    {
+        static::updated(function ($route) {
+            if ($route->isDirty('status') && $route->status === 'completed') {
+                $route->shipments()->update([
+                    'status' => 'delivered',
+                    'delivered_at' => now()
+                ]);
+            }
+        });
+    }
+
     public function vehicle()
     {
         return $this->belongsTo(Vehicle::class);
+    }
+
+    public function shipments()
+    {
+        return $this->hasMany(Shipment::class);
     }
 }
 

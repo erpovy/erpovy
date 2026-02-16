@@ -51,7 +51,9 @@
             "Modules\\FixedAssets\\Database\\Seeders\\": "Modules/FixedAssets/database/seeders/",
             "Modules\\ServiceManagement\\": "Modules/ServiceManagement/app/",
             "Modules\\Logistics\\": "Modules/Logistics/app/",
-            "Modules\\Logistics\\Database\\Seeders\\": "Modules/Logistics/database/seeders/"
+            "Modules\\Logistics\\Database\\Seeders\\": "Modules/Logistics/database/seeders/",
+            "Modules\\Purchasing\\": "Modules/Purchasing/app/",
+            "Modules\\Purchasing\\Database\\Seeders\\": "Modules/Purchasing/database/seeders/"
         }
     },
     "autoload-dev": {

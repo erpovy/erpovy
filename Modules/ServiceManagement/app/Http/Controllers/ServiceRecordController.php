@@ -10,6 +10,23 @@ use Modules\ServiceManagement\Models\ServiceRecord;
 class ServiceRecordController extends Controller
 {
     /**
+     * Display maintenance schedule/planning.
+     */
+    public function maintenanceSchedule()
+    {
+        $vehicles = Vehicle::with(['serviceRecords' => function($q) {
+            $q->where(function($sq) {
+                $sq->whereNotNull('next_planned_date')
+                   ->orWhereNotNull('next_planned_mileage');
+            })->latest('service_date');
+        }])->get()->filter(function($vehicle) {
+            return $vehicle->maintenance_status !== 'healthy' && $vehicle->maintenance_status !== 'unknown';
+        });
+
+        return view('servicemanagement::maintenance.index', compact('vehicles'));
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)

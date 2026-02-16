@@ -50,8 +50,11 @@ class FixedAssetsController extends Controller
             'purchase_value' => 'nullable|numeric|min:0',
             'useful_life_years' => 'nullable|integer|min:1',
             'depreciation_method' => 'nullable|string|in:straight_line,declining_balance',
+            'prorata' => 'nullable|boolean',
             'description' => 'nullable|string',
         ]);
+
+        $validated['prorata'] = $request->boolean('prorata');
 
         FixedAsset::create($validated);
 
@@ -95,8 +98,11 @@ class FixedAssetsController extends Controller
             'status' => 'required|in:active,retired,maintenance,lost',
             'useful_life_years' => 'nullable|integer|min:1',
             'depreciation_method' => 'nullable|string|in:straight_line,declining_balance',
+            'prorata' => 'nullable|boolean',
             'description' => 'nullable|string',
         ]);
+
+        $validated['prorata'] = $request->boolean('prorata');
 
         $asset->update($validated);
 

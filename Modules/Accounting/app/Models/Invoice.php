@@ -36,6 +36,12 @@ class Invoice extends Model
         'invoice_scenario',
         'gib_status',
         'receiver_info',
+        'direction',
+        'is_e_invoice',
+        'is_e_archive',
+        'external_id',
+        'ubl_xml',
+        'process_status',
     ];
 
     protected static function boot()
@@ -136,5 +142,38 @@ class Invoice extends Model
         }
 
         return false;
+    }
+
+    // e-Transformation Scopes
+    public function scopeIncoming($query)
+    {
+        return $query->where('direction', 'in');
+    }
+
+    public function scopeOutgoing($query)
+    {
+        return $query->where('direction', 'out');
+    }
+
+    public function scopeEInvoices($query)
+    {
+        return $query->where('is_e_invoice', true);
+    }
+
+    public function scopeEArchives($query)
+    {
+        return $query->where('is_e_archive', true);
+    }
+
+    public function getDirectionLabelAttribute()
+    {
+        return $this->direction === 'in' ? 'Gelen' : 'Giden';
+    }
+
+    public function getETypeLabelAttribute()
+    {
+        if ($this->is_e_invoice) return 'e-Fatura';
+        if ($this->is_e_archive) return 'e-Arşiv';
+        return 'Kağıt / Matbu';
     }
 }

@@ -71,31 +71,24 @@
             </div>
 
             <!-- Material Requirements List -->
-            <x-card class="p-0 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 overflow-hidden rounded-[2.5rem] shadow-2xl">
+            <x-card class="p-0 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 overflow-hidden rounded-[2.5rem] shadow-2xl mb-8">
                 <div class="p-8 border-b border-gray-200 dark:border-white/10 flex items-center justify-between bg-gray-50 dark:bg-white/[0.02]">
                     <h3 class="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3">
                         <div class="p-2.5 rounded-xl bg-primary/10 text-primary">
                             <span class="material-symbols-outlined text-[24px]">list_alt</span>
                         </div>
-                        İhtiyaç Listesi & Öneriler
+                        Üretim & İkmal Planı
                     </h3>
-                    <div class="flex gap-2">
-                        <button class="px-5 py-2.5 rounded-xl bg-gray-100 dark:bg-white/5 hover:bg-gray-200 dark:hover:bg-white/10 text-gray-900 dark:text-white text-xs font-bold uppercase tracking-widest transition-all flex items-center gap-2 border border-gray-300 dark:border-white/5">
-                            <span class="material-symbols-outlined text-[18px]">refresh</span>
-                            Hesapla
-                        </button>
-                    </div>
                 </div>
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left">
                         <thead class="bg-gray-100 dark:bg-white/5 text-xs uppercase text-gray-700 dark:text-slate-400 font-bold tracking-wider">
                             <tr>
-                                <th class="px-8 py-6">Ürün Kodu</th>
-                                <th class="px-8 py-6">Ürün Adı</th>
-                                <th class="px-8 py-6">Mevcut Stok</th>
-                                <th class="px-8 py-6">Min. Seviye</th>
-                                <th class="px-8 py-6">Açık İşlem</th>
+                                <th class="px-8 py-6">Ürün</th>
+                                <th class="px-8 py-6 text-center">Mevcut Stok</th>
+                                <th class="px-8 py-6 text-center">Gelen (PO/WO)</th>
+                                <th class="px-8 py-6 text-center">Min. Seviye</th>
                                 <th class="px-8 py-6">Öneri</th>
                                 <th class="px-8 py-6 text-right">İşlemler</th>
                             </tr>
@@ -103,65 +96,102 @@
                         <tbody class="divide-y divide-gray-200 dark:divide-white/5">
                             @forelse($requirements as $req)
                                 <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors group">
-                                    <td class="px-8 py-6 text-gray-700 dark:text-slate-300 font-mono text-sm">{{ $req['product']->code }}</td>
                                     <td class="px-8 py-6">
                                         <div class="flex flex-col">
                                             <span class="text-gray-900 dark:text-white font-bold">{{ $req['product']->name }}</span>
-                                            @if($req['product']->billOfMaterials()->exists())
-                                                 <span class="text-[10px] text-green-400 font-bold uppercase mt-0.5">Üretilebilir</span>
-                                            @else
-                                                 <span class="text-[10px] text-blue-400 font-bold uppercase mt-0.5">Satın Alma</span>
-                                            @endif
+                                            <span class="text-xs text-slate-500 font-mono">{{ $req['product']->code }}</span>
                                         </div>
                                     </td>
-                                    <td class="px-8 py-6 font-bold {{ $req['current_stock'] <= 0 ? 'text-red-500' : 'text-gray-700 dark:text-slate-300' }}">
-                                        {{ number_format($req['current_stock'], 2) }}
+                                    <td class="px-8 py-6 text-center">
+                                        <div class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold {{ $req['current_stock'] <= 0 ? 'bg-red-500/10 text-red-500' : 'bg-gray-100 dark:bg-white/5 text-gray-700 dark:text-slate-300' }}">
+                                            {{ number_format($req['current_stock'], 2) }}
+                                        </div>
                                     </td>
-                                    <td class="px-8 py-6 text-gray-600 dark:text-slate-400 font-medium">
+                                    <td class="px-8 py-6 text-center text-blue-400 font-bold">
+                                        +{{ number_format($req['incoming'], 2) }}
+                                    </td>
+                                    <td class="px-8 py-6 text-center text-gray-500">
                                         {{ number_format($req['min_level'], 2) }}
-                                    </td>
-                                     <td class="px-8 py-6 text-slate-400 font-medium">
-                                        {{ number_format($req['deficit'] - ($req['min_level'] - $req['current_stock']), 2) }}
                                     </td>
                                     <td class="px-8 py-6">
                                         <div class="flex flex-col gap-1">
                                             @if($req['suggestion_type'] == 'production')
-                                                <span class="text-purple-400 text-xs font-black uppercase tracking-wider flex items-center gap-1">
-                                                    <span class="material-symbols-outlined text-[14px]">factory</span>
-                                                    Üretim Emri
+                                                <span class="text-purple-400 text-[10px] font-black uppercase tracking-widest flex items-center gap-1">
+                                                    <span class="material-symbols-outlined text-[12px]">factory</span>
+                                                    Üretim: {{ number_format($req['suggestion_quantity'], 2) }} Adet
                                                 </span>
                                             @else
-                                                <span class="text-yellow-400 text-xs font-black uppercase tracking-wider flex items-center gap-1">
-                                                    <span class="material-symbols-outlined text-[14px]">shopping_cart</span>
-                                                    Satın Alma
+                                                <span class="text-yellow-400 text-[10px] font-black uppercase tracking-widest flex items-center gap-1">
+                                                    <span class="material-symbols-outlined text-[12px]">shopping_cart</span>
+                                                    Satın Alma: {{ number_format($req['suggestion_quantity'], 2) }} Adet
                                                 </span>
                                             @endif
-                                            <span class="text-white font-bold text-sm">
-                                                {{ number_format($req['suggestion_quantity'], 2) }} Adet
-                                            </span>
                                         </div>
                                     </td>
                                     <td class="px-8 py-6 text-right">
                                         @if($req['suggestion_type'] == 'production')
                                             <button @click="openModal = true; selectedProduct = '{{ $req['product']->id }}'; quantity = '{{ $req['suggestion_quantity'] }}'" class="px-4 py-2 rounded-xl bg-purple-500 hover:bg-purple-600 text-white text-xs font-bold uppercase tracking-wider shadow-lg shadow-purple-500/20 transition-all transform hover:-translate-y-0.5">
-                                                Üret
+                                                Planla
                                             </button>
                                         @else
                                              <button class="px-4 py-2 rounded-xl bg-yellow-500 hover:bg-yellow-600 text-black text-xs font-bold uppercase tracking-wider shadow-lg shadow-yellow-500/20 transition-all transform hover:-translate-y-0.5">
-                                                Satın Al
+                                                Sipariş Ver
                                             </button>
                                         @endif
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-8 py-16 text-center">
-                                        <div class="w-20 h-20 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-4">
-                                            <span class="material-symbols-outlined text-4xl text-green-500">check_circle</span>
-                                        </div>
-                                        <p class="text-gray-900 dark:text-white font-bold text-lg mb-1">Harika!</p>
-                                        <p class="text-gray-500 dark:text-slate-500 font-medium">Şu anda planlanması gereken acil bir ihtiyaç bulunmuyor.</p>
+                                    <td colspan="6" class="px-8 py-16 text-center text-slate-500 italic">Planlanması gereken bir ana ürün bulunmuyor.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </x-card>
+
+            <!-- Raw Materials Requirements Table -->
+            <x-card class="p-0 border-gray-200 dark:border-white/10 bg-white dark:bg-white/5 overflow-hidden rounded-[2.5rem] shadow-2xl">
+                <div class="p-8 border-b border-gray-200 dark:border-white/10 flex items-center justify-between bg-orange-500/[0.02]">
+                    <h3 class="text-xl font-black text-gray-900 dark:text-white flex items-center gap-3">
+                        <div class="p-2.5 rounded-xl bg-orange-500/10 text-orange-500">
+                            <span class="material-symbols-outlined text-[24px]">engineering</span>
+                        </div>
+                        Hammadde & Alt Bileşen İhtiyaçları (BOM Patlatma)
+                    </h3>
+                </div>
+                
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-100 dark:bg-white/5 text-xs uppercase text-gray-700 dark:text-slate-400 font-bold tracking-wider">
+                            <tr>
+                                <th class="px-8 py-6">Bileşen Adı</th>
+                                <th class="px-8 py-6 text-center">Toplam Gerekli Miktar</th>
+                                <th class="px-8 py-6 text-center">Birim</th>
+                                <th class="px-8 py-6 text-right">Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-200 dark:divide-white/5">
+                            @forelse($rawMaterialNeeds as $need)
+                                <tr class="hover:bg-gray-50 dark:hover:bg-white/5 transition-colors">
+                                    <td class="px-8 py-6">
+                                        <span class="text-gray-900 dark:text-white font-bold">{{ $need['name'] }}</span>
                                     </td>
+                                    <td class="px-8 py-6 text-center text-orange-500 font-black text-lg">
+                                        {{ number_format($need['quantity'], 2) }}
+                                    </td>
+                                    <td class="px-8 py-6 text-center text-slate-500 font-medium lowercase">
+                                        {{ $need['unit'] }}
+                                    </td>
+                                    <td class="px-8 py-6 text-right">
+                                        <span class="px-3 py-1 rounded-lg bg-orange-500/10 text-orange-500 text-[10px] font-black uppercase tracking-widest border border-orange-500/20">
+                                            Satın Alma Öneriliyor
+                                        </span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="4" class="px-8 py-16 text-center text-slate-500 italic">Üretim planlarına bağlı ek bir hammadde ihtiyacı yok.</td>
                                 </tr>
                             @endforelse
                         </tbody>

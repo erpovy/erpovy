@@ -66,21 +66,57 @@ class FixedAsset extends Model
 
     public function calculateDepreciation()
     {
-        if (!$this->purchase_value || !$this->useful_life_years || $this->useful_life_years <= 0) {
+        if (!$this->purchase_value || !$this->useful_life_years || $this->useful_life_years <= 0 || !$this->purchase_date) {
             return [];
         }
 
         $schedule = [];
         $currentValue = $this->purchase_value;
-        $yearlyDepreciation = $this->purchase_value / $this->useful_life_years;
+        $totalDepreciation = 0;
+        $normalRate = 1 / $this->useful_life_years;
+        $purchaseYear = (int)$this->purchase_date->format('Y');
+        $purchaseMonth = (int)$this->purchase_date->format('m');
 
         for ($year = 1; $year <= $this->useful_life_years; $year++) {
-            $currentValue -= $yearlyDepreciation;
+            $currentYear = $purchaseYear + $year - 1;
+            $depreciationAmount = 0;
+
+            if ($this->depreciation_method === 'declining_balance') {
+                $rate = min(0.5, $normalRate * 2); // Azalan bakiyelerde genelde normal oranın 2 katı uygulanır, max %50.
+                $depreciationAmount = $currentValue * $rate;
+            } else {
+                // Normal Amortisman
+                $depreciationAmount = $this->purchase_value * $normalRate;
+            }
+
+            // Kıst Amortisman (Prorata) Kontrolü (Sadece ilk yıl için)
+            if ($year === 1 && $this->prorata) {
+                $monthsRemaining = 12 - $purchaseMonth + 1;
+                $fullYearDepreciation = $depreciationAmount;
+                $depreciationAmount = ($fullYearDepreciation / 12) * $monthsRemaining;
+                
+                // İlk yıl ayrılmayan kısım son yıla eklenir (veya amortisman süresi 1 yıl uzar)
+                // Türkiye vergi mevzuatına göre son yıl bakiye sıfırlanır.
+            }
+
+            // Son yıl kontrolü (Sıfırlama garantisi)
+            if ($year === $this->useful_life_years) {
+                $depreciationAmount = $currentValue;
+            }
+
+            $depreciationAmount = min($depreciationAmount, $currentValue);
+            $currentValue -= $depreciationAmount;
+            $totalDepreciation += $depreciationAmount;
+
             $schedule[] = [
-                'year' => $year,
-                'depreciation_amount' => $yearlyDepreciation,
-                'book_value' => max(0, $currentValue),
+                'year_index' => $year,
+                'calendar_year' => $currentYear,
+                'depreciation_amount' => round($depreciationAmount, 2),
+                'accumulated_depreciation' => round($totalDepreciation, 2),
+                'book_value' => round(max(0, $currentValue), 2),
             ];
+
+            if ($currentValue <= 0) break;
         }
 
         return $schedule;

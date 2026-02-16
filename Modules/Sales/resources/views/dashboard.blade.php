@@ -38,10 +38,31 @@
                             <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-500">
                                 <span class="material-symbols-outlined text-[24px]">payments</span>
                             </div>
-                            <div class="text-emerald-400 text-xs font-bold bg-emerald-900/30 px-2 py-1 rounded-lg border border-emerald-500/30">Ciro</div>
+                            <div class="flex flex-col items-end">
+                                <div class="text-emerald-400 text-[10px] font-bold bg-emerald-900/30 px-2 py-0.5 rounded-lg border border-emerald-500/30 mb-1">Ciro</div>
+                                <div class="flex items-center gap-1 {{ $salesGrowth >= 0 ? 'text-emerald-500' : 'text-rose-500' }} text-[10px] font-black">
+                                    <span class="material-symbols-outlined text-[14px]">{{ $salesGrowth >= 0 ? 'trending_up' : 'trending_down' }}</span>
+                                    {{ number_format(abs($salesGrowth), 1) }}%
+                                </div>
+                            </div>
                         </div>
                         <div class="text-3xl font-black text-gray-900 dark:text-white tracking-tight mb-1">₺{{ number_format($totalSalesAmount, 0, ',', '.') }}</div>
                         <div class="text-xs text-gray-600 dark:text-slate-500 font-medium">Toplam Faturalandırılan Satış</div>
+                    </x-card>
+                </div>
+
+                <!-- Bekleyen Tahsilatlar -->
+                <div class="group relative">
+                    <div class="absolute inset-0 bg-gradient-to-br from-amber-500/20 to-orange-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                    <x-card class="h-full relative p-6 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl hover:border-amber-500/30 transition-all duration-300 group-hover:-translate-y-1">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="p-2 rounded-xl bg-amber-500/10 text-amber-500">
+                                <span class="material-symbols-outlined text-[24px]">hourglass_empty</span>
+                            </div>
+                            <div class="text-amber-400 text-xs font-bold bg-amber-900/30 px-2 py-1 rounded-lg border border-amber-500/30">Alacaklar</div>
+                        </div>
+                        <div class="text-3xl font-black text-gray-900 dark:text-white tracking-tight mb-1">₺{{ number_format($pendingInvoicesAmount, 0, ',', '.') }}</div>
+                        <div class="text-xs text-gray-600 dark:text-slate-500 font-medium">Bekleyen Tahsilat Miktarı</div>
                     </x-card>
                 </div>
 
@@ -74,24 +95,9 @@
                         <div class="text-xs text-gray-600 dark:text-slate-500 font-medium">Aktif Tekrarlayan Gelir</div>
                     </x-card>
                 </div>
-
-                <!-- Aktif Kiralamalar -->
-                <div class="group relative">
-                    <div class="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-amber-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    <x-card class="h-full relative p-6 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl hover:border-orange-500/30 transition-all duration-300 group-hover:-translate-y-1">
-                        <div class="flex items-center justify-between mb-4">
-                            <div class="p-2 rounded-xl bg-orange-500/10 text-orange-500">
-                                <span class="material-symbols-outlined text-[24px]">key</span>
-                            </div>
-                            <div class="text-orange-400 text-xs font-bold bg-orange-900/30 px-2 py-1 rounded-lg border border-orange-500/30">Kiralama</div>
-                        </div>
-                        <div class="text-3xl font-black text-gray-900 dark:text-white tracking-tight mb-1">{{ number_format($activeRentalsCount) }}</div>
-                        <div class="text-xs text-gray-600 dark:text-slate-500 font-medium">Devam Eden Kiralama İşlemi</div>
-                    </x-card>
-                </div>
             </div>
 
-            <!-- Satış Analizi ve Kanallar -->
+            <!-- Satış Analizi ve En Çok Satanlar -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Satış Trend Grafiği -->
                 <div class="lg:col-span-2">
@@ -144,33 +150,38 @@
                     </x-card>
                 </div>
 
-                <!-- Teklif Dağılımı -->
+                <!-- En Çok Satan Ürünler -->
                 <div class="lg:col-span-1">
                     <x-card class="h-full p-8 border-gray-200 dark:border-white/10 bg-white/5 backdrop-blur-2xl">
                         <h3 class="text-lg font-black text-gray-900 dark:text-white flex items-center gap-2 mb-8">
-                            <span class="material-symbols-outlined text-blue-500">query_stats</span>
-                            Teklif Havuzu
+                            <span class="material-symbols-outlined text-orange-500">stars</span>
+                            Top Performance (Ürünler)
                         </h3>
 
                         <div class="space-y-6">
-                            @php
-                                $totalQuotesCount = $quoteStages->sum('total') ?: 1;
-                            @endphp
-                            @forelse($quoteStages as $stage)
-                                <div class="space-y-2">
-                                    <div class="flex justify-between items-center text-xs">
-                                        <span class="font-bold text-gray-700 dark:text-slate-400 capitalize">{{ $stage->status }}</span>
-                                        <span class="text-gray-900 dark:text-white font-black">{{ number_format($stage->total) }}</span>
+                            @forelse($topProducts as $product)
+                                <div class="flex items-center gap-4 group">
+                                    <div class="w-10 h-10 rounded-xl bg-orange-500/10 text-orange-500 flex items-center justify-center shrink-0 border border-orange-500/20">
+                                        {{ $loop->iteration }}
                                     </div>
-                                    <div class="h-2 w-full bg-gray-200 dark:bg-white/5 rounded-full overflow-hidden">
-                                        <div class="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full shadow-[0_0_5px_rgba(59,130,246,0.5)]" 
-                                             style="width: {{ ($stage->total / $totalQuotesCount) * 100 }}%"></div>
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex justify-between items-center mb-1">
+                                            <span class="text-xs font-bold text-gray-700 dark:text-slate-400 truncate">{{ $product->name }}</span>
+                                            <span class="text-[10px] font-black text-gray-900 dark:text-white">₺{{ number_format($product->total_revenue, 0, ',', '.') }}</span>
+                                        </div>
+                                        <div class="h-1.5 w-full bg-gray-200 dark:bg-white/5 rounded-full overflow-hidden">
+                                            @php
+                                                $maxRevenue = $topProducts->first()->total_revenue ?: 1;
+                                            @endphp
+                                            <div class="h-full bg-gradient-to-r from-orange-500 to-amber-600 rounded-full" 
+                                                 style="width: {{ ($product->total_revenue / $maxRevenue) * 100 }}%"></div>
+                                        </div>
                                     </div>
                                 </div>
                             @empty
                                 <div class="text-center py-12 opacity-30">
-                                    <span class="material-symbols-outlined text-5xl block mb-2">request_quote</span>
-                                    Henüz teklif yok
+                                    <span class="material-symbols-outlined text-5xl block mb-2">inventory_2</span>
+                                    Veri bulunamadı
                                 </div>
                             @endforelse
                         </div>

@@ -22,15 +22,30 @@ class DashboardController extends Controller
             ->where('status', 'paid')
             ->sum('total_amount');
 
+        // Aylık Karşılaştırma (Büyüme Oranı)
+        $thisMonthSales = Invoice::where('company_id', $companyId)
+            ->where('status', 'paid')
+            ->whereMonth('issue_date', now()->month)
+            ->whereYear('issue_date', now()->year)
+            ->sum('total_amount');
+
+        $lastMonthSales = Invoice::where('company_id', $companyId)
+            ->where('status', 'paid')
+            ->whereMonth('issue_date', now()->subMonth()->month)
+            ->whereYear('issue_date', now()->subMonth()->year)
+            ->sum('total_amount');
+
+        $salesGrowth = $lastMonthSales > 0 ? (($thisMonthSales - $lastMonthSales) / $lastMonthSales) * 100 : 0;
+
+        $pendingInvoicesAmount = Invoice::where('company_id', $companyId)
+            ->whereIn('status', ['unpaid', 'partially_paid', 'sent'])
+            ->sum('total_amount');
+
         $pendingQuotesCount = Quote::where('company_id', $companyId)
             ->where('status', 'pending')
             ->count();
 
         $activeSubscriptionsCount = Subscription::where('company_id', $companyId)
-            ->where('status', 'active')
-            ->count();
-
-        $activeRentalsCount = Rental::where('company_id', $companyId)
             ->where('status', 'active')
             ->count();
 
@@ -49,6 +64,16 @@ class DashboardController extends Controller
             ->orderBy('month')
             ->get();
 
+        // En Çok Satan Ürünler (Top 5)
+        $topProducts = DB::table('invoice_items')
+            ->join('invoices', 'invoice_items.invoice_id', '=', 'invoices.id')
+            ->where('invoices.company_id', $companyId)
+            ->where('invoices.status', 'paid')
+            ->select('description as name', DB::raw('SUM(quantity) as total_qty'), DB::raw('SUM(total) as total_revenue'))
+            ->groupBy('description')
+            ->orderByDesc('total_revenue')
+            ->take(5)
+            ->get();
 
         // Teklif Durum Dağılımı
         $quoteStages = Quote::where('company_id', $companyId)
@@ -73,10 +98,13 @@ class DashboardController extends Controller
 
         return view('sales::dashboard', compact(
             'totalSalesAmount',
+            'thisMonthSales',
+            'salesGrowth',
+            'pendingInvoicesAmount',
             'pendingQuotesCount',
             'activeSubscriptionsCount',
-            'activeRentalsCount',
             'monthlySales',
+            'topProducts',
             'quoteStages',
             'recentSales',
             'upcomingBillings'

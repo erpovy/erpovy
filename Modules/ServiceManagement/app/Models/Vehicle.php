@@ -84,4 +84,17 @@ class Vehicle extends Model
         
         return 'healthy';
     }
+
+    public function scopeNeedingMaintenance($query)
+    {
+        return $query->whereHas('serviceRecords', function($q) {
+            $q->where(function($sq) {
+                $sq->whereNotNull('next_planned_date')
+                   ->where('next_planned_date', '<=', now()->addDays(15));
+            })->orWhere(function($sq) {
+                $sq->whereNotNull('next_planned_mileage')
+                   ->whereRaw('sm_vehicles.current_mileage >= (sm_service_records.next_planned_mileage - 1000)');
+            });
+        });
+    }
 }

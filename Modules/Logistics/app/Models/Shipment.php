@@ -17,6 +17,7 @@ class Shipment extends Model
 
     protected $fillable = [
         'company_id',
+        'route_id',
         'tracking_number',
         'invoice_id',
         'contact_id',
@@ -40,6 +41,27 @@ class Shipment extends Model
         'delivered_at' => 'datetime',
         'estimated_delivery' => 'date',
     ];
+
+    protected static function booted()
+    {
+        static::updated(function ($shipment) {
+            if ($shipment->isDirty('status')) {
+                ShipmentStatusLog::create([
+                    'company_id' => $shipment->company_id,
+                    'shipment_id' => $shipment->id,
+                    'old_status' => $shipment->getOriginal('status'),
+                    'new_status' => $shipment->status,
+                    'user_id' => auth()->id(),
+                    'notes' => 'Sistem tarafından otomatik güncellendi.',
+                ]);
+            }
+        });
+    }
+
+    public function route()
+    {
+        return $this->belongsTo(Route::class);
+    }
 
     public function invoice()
     {

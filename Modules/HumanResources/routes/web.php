@@ -38,4 +38,9 @@ Route::middleware(['auth', 'verified', 'module_access:HumanResources', 'readonly
     // User Management Routes
     Route::resource('users', UserController::class);
     Route::resource('departments', \Modules\HumanResources\Http\Controllers\DepartmentController::class);
+
+    // Payroll Routes
+    Route::resource('payrolls', \Modules\HumanResources\Http\Controllers\PayrollController::class);
+    Route::post('payrolls/{payroll}/calculate', [\Modules\HumanResources\Http\Controllers\PayrollController::class, 'calculateAll'])->name('payrolls.calculate');
+    Route::post('payrolls/{payroll}/post-accounting', [\Modules\HumanResources\Http\Controllers\PayrollController::class, 'postToAccounting'])->name('payrolls.postAccounting');
 });

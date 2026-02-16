@@ -8,6 +8,7 @@ use Modules\ServiceManagement\Http\Controllers\JobCardController;
 
 Route::middleware(['auth', 'verified', 'module_access:ServiceManagement'])->group(function () {
     Route::resource('service-management/vehicles', VehicleController::class)->names('servicemanagement.vehicles');
+    Route::get('service-management/maintenance-schedule', [ServiceRecordController::class, 'maintenanceSchedule'])->name('servicemanagement.maintenance-schedule');
     Route::resource('service-management/service-records', ServiceRecordController::class)->names('servicemanagement.service-records');
     
     // Job Cards

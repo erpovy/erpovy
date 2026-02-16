@@ -14,12 +14,38 @@ Route::middleware(['auth', 'verified', 'module_access:Accounting', 'readonly'])-
     Route::post('invoices/{invoice}/send-gib', [InvoiceController::class, 'sendToGib'])->name('invoices.send-to-gib');
     Route::resource('accounts', AccountController::class);
     Route::resource('transactions', TransactionController::class);
+    Route::resource('fiscal-periods', \Modules\Accounting\Http\Controllers\FiscalPeriodController::class);
+    Route::post('fiscal-periods/{fiscal_period}/open', [\Modules\Accounting\Http\Controllers\FiscalPeriodController::class, 'open'])->name('fiscal-periods.open');
+    Route::post('fiscal-periods/{fiscal_period}/close', [\Modules\Accounting\Http\Controllers\FiscalPeriodController::class, 'close'])->name('fiscal-periods.close');
     Route::get('invoices/{invoice}/pdf', [InvoiceController::class, 'downloadPdf'])->name('invoices.pdf');
     Route::resource('invoices', InvoiceController::class);
     
     // Fatura Şablonları
     Route::post('invoice-templates/preview', [InvoiceTemplateController::class, 'preview'])->name('invoice-templates.preview');
     Route::resource('invoice-templates', InvoiceTemplateController::class);
+
+    // e-Dönüşüm
+    Route::prefix('e-transformation')->name('e-transformation.')->group(function () {
+        Route::get('/', [\Modules\Accounting\Http\Controllers\ETransformationController::class, 'index'])->name('index');
+        Route::get('/incoming', [\Modules\Accounting\Http\Controllers\ETransformationController::class, 'incoming'])->name('incoming');
+        Route::get('/outgoing', [\Modules\Accounting\Http\Controllers\ETransformationController::class, 'outgoing'])->name('outgoing');
+        Route::get('/xml/{invoice}', [\Modules\Accounting\Http\Controllers\ETransformationController::class, 'showXml'])->name('show-xml');
+        Route::get('/check-status/{invoice}', [\Modules\Accounting\Http\Controllers\ETransformationController::class, 'checkOutgoingStatus'])->name('check-status');
+        Route::post('/bulk-check-status', [\Modules\Accounting\Http\Controllers\ETransformationController::class, 'bulkCheckStatus'])->name('bulk-check-status');
+        Route::post('/sync-incoming', [\Modules\Accounting\Http\Controllers\ETransformationController::class, 'syncIncoming'])->name('sync-incoming');
+        Route::post('/convert/{invoice}', [\Modules\Accounting\Http\Controllers\ETransformationController::class, 'convertIncomingToPurchaseInvoice'])->name('convert-to-purchase');
+    });
+
+    // Banka Entegrasyonu (MT940)
+    Route::prefix('bank-statements')->as('bank-statements.')->group(function () {
+        Route::get('/', [\Modules\Accounting\Http\Controllers\BankStatementController::class, 'index'])->name('index');
+        Route::post('/upload', [\Modules\Accounting\Http\Controllers\BankStatementController::class, 'upload'])->name('upload');
+        Route::get('/reconcile', [\Modules\Accounting\Http\Controllers\BankStatementController::class, 'reconcile'])->name('reconcile');
+        Route::post('/process', [\Modules\Accounting\Http\Controllers\BankStatementController::class, 'process'])->name('process');
+    });
+
+    // Nakit Akış Öngörüsü
+    Route::get('/cash-flow', [\Modules\Accounting\Http\Controllers\CashFlowController::class, 'index'])->name('cash-flow.index');
     
     // Cari Hesap Yönetimi
     Route::get('/account-transactions', [AccountTransactionController::class, 'index'])->name('account-transactions.index');

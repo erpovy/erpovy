@@ -3,7 +3,7 @@
         <div class="max-w-3xl mx-auto sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <div class="inline-flex items-center justify-center w-20 h-20 bg-indigo-600 rounded-3xl shadow-xl shadow-indigo-500/20 mb-6 border-4 border-white dark:border-white/10">
-                    <span class="material-icons-outlined text-white text-4xl">travel_explore</span>
+                    <span class="material-symbols-outlined text-white text-4xl">travel_explore</span>
                 </div>
                 <h2 class="text-4xl font-black text-gray-900 dark:text-white tracking-tight">Kargo Takip</h2>
                 <p class="text-gray-500 dark:text-gray-400 mt-2 font-medium">Sevkiyatınızın durumunu anlık olarak sorgulayın.</p>
@@ -13,7 +13,7 @@
             <div class="bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[2.5rem] p-4 shadow-sm mb-8">
                 <form action="{{ route('logistics.shipments.track') }}" method="GET" class="flex flex-col md:flex-row gap-3">
                     <div class="flex-1 relative">
-                        <span class="material-icons-outlined absolute left-5 top-1/2 -translate-y-1/2 text-gray-400">search</span>
+                        <span class="material-symbols-outlined absolute left-5 top-1/2 -translate-y-1/2 text-gray-400">search</span>
                         <input type="text" name="number" value="{{ $trackingNumber }}" required
                             class="w-full bg-gray-50 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-2xl pl-14 pr-6 py-4 text-gray-900 dark:text-white focus:ring-4 focus:ring-indigo-500/10 outline-none transition-all font-bold"
                             placeholder="Takip Numarasını Giriniz (Örn: TRK-...)">
@@ -31,7 +31,7 @@
                     <div class="bg-white/50 dark:bg-white/5 backdrop-blur-xl border border-gray-200 dark:border-white/10 rounded-[2.5rem] overflow-hidden shadow-sm animate-fade-in">
                         <div class="bg-indigo-600 p-8 text-white relative overflow-hidden">
                             <div class="absolute top-0 right-0 p-8 opacity-10">
-                                <span class="material-icons-outlined text-[120px]">local_shipping</span>
+                                <span class="material-symbols-outlined text-[120px]">local_shipping</span>
                             </div>
                             <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                                 <div>
@@ -64,7 +64,7 @@
                                     <div class="relative z-10 flex flex-col items-center gap-3">
                                         <div class="w-10 h-10 rounded-full flex items-center justify-center border-4 border-white dark:border-gray-800 transition-colors duration-500
                                             {{ ($shipment->status == $step || ($shipment->status == 'delivered') || ($shipment->status == 'in_transit' && $step == 'pending')) ? 'bg-indigo-500 text-white' : 'bg-gray-200 text-gray-400 dark:bg-white/10' }}">
-                                            <span class="material-icons-outlined text-sm">
+                                            <span class="material-symbols-outlined text-sm">
                                                 {{ $step == 'pending' ? 'inventory_2' : ($step == 'in_transit' ? 'local_shipping' : 'done_all') }}
                                             </span>
                                         </div>
@@ -80,7 +80,7 @@
                                 <div class="space-y-4">
                                     <div class="flex gap-4">
                                         <div class="w-12 h-12 bg-gray-100 dark:bg-white/5 rounded-2xl flex items-center justify-center text-gray-400">
-                                            <span class="material-icons-outlined">location_on</span>
+                                            <span class="material-symbols-outlined">location_on</span>
                                         </div>
                                         <div>
                                             <p class="text-[10px] font-black uppercase tracking-wider text-gray-400">Çıkış Noktası</p>
@@ -89,7 +89,7 @@
                                     </div>
                                     <div class="flex gap-4">
                                         <div class="w-12 h-12 bg-gray-100 dark:bg-white/5 rounded-2xl flex items-center justify-center text-indigo-500">
-                                            <span class="material-icons-outlined">flag</span>
+                                            <span class="material-symbols-outlined">flag</span>
                                         </div>
                                         <div>
                                             <p class="text-[10px] font-black uppercase tracking-wider text-gray-400">Varış Noktası</p>
@@ -101,7 +101,7 @@
                                 <div class="space-y-4">
                                     <div class="flex gap-4">
                                         <div class="w-12 h-12 bg-gray-100 dark:bg-white/5 rounded-2xl flex items-center justify-center text-gray-400">
-                                            <span class="material-icons-outlined">person</span>
+                                            <span class="material-symbols-outlined">person</span>
                                         </div>
                                         <div>
                                             <p class="text-[10px] font-black uppercase tracking-wider text-gray-400">Alıcı / Müşteri</p>
@@ -111,7 +111,7 @@
                                     @if($shipment->estimated_delivery)
                                     <div class="flex gap-4">
                                         <div class="w-12 h-12 bg-emerald-500/10 rounded-2xl flex items-center justify-center text-emerald-500">
-                                            <span class="material-icons-outlined">event_available</span>
+                                            <span class="material-symbols-outlined">event_available</span>
                                         </div>
                                         <div>
                                             <p class="text-[10px] font-black uppercase tracking-wider text-gray-400">Tahmini Teslimat</p>
@@ -126,7 +126,7 @@
                 @else
                     <!-- Not Found State -->
                     <div class="text-center p-12 bg-rose-500/10 rounded-[2.5rem] border border-rose-500/20 animate-fade-in">
-                        <span class="material-icons-outlined text-rose-500 text-5xl mb-4">search_off</span>
+                        <span class="material-symbols-outlined text-rose-500 text-5xl mb-4">search_off</span>
                         <h3 class="text-xl font-bold text-rose-600 dark:text-rose-400 italic">Üzgünüz, Sevkiyat Bulunamadı</h3>
                         <p class="text-rose-500/70 mt-2 font-medium">Lütfen takip numaranızı kontrol edip tekrar deneyiniz.</p>
                     </div>
