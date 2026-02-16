@@ -88,7 +88,7 @@
                         </button>
                     </form>
 
-                    <form action="{{ route('inventory.products.bulk-destroy') }}" method="POST" onsubmit="return confirm('Seçili tüm ürünleri silmek istediğinizden emin misiniz?')">
+                    <form action="{{ route('inventory.products.bulk-destroy') }}" method="POST" data-confirm="Seçilen tüm ürünler sistemden KALICI olarak silinecektir. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?">
                         @csrf
                         <template x-for="id in selected">
                             <input type="hidden" name="product_ids[]" :value="id">
@@ -235,7 +235,7 @@
                                                class="p-2 rounded-xl bg-gray-50 dark:bg-white/5 text-gray-500 dark:text-slate-400 hover:bg-gray-100 dark:hover:bg-white/10 border border-gray-200 dark:border-white/10 transition-all" title="Düzenle">
                                                 <span class="material-symbols-outlined text-[18px]">edit</span>
                                             </a>
-                                            <form action="{{ route('inventory.products.destroy', $product) }}" method="POST" class="inline" onsubmit="return confirm('Bu ürünü silmek istediğinizden emin misiniz?');">
+                                            <form action="{{ route('inventory.products.destroy', $product) }}" method="POST" class="inline" data-confirm="'{{ $product->name }}' ürünü sistemden KALICI olarak silinecektir. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit" class="p-2 rounded-xl bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-500/20 border border-red-200 dark:border-red-500/20 transition-all" title="Sil">

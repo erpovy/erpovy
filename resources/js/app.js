@@ -28,6 +28,28 @@ Alpine.data('sidebarMenu', (initialState) => ({
 
 Alpine.start();
 
+// Global Preloader Control
+window.showLoader = (title = 'Veriler İşleniyor', message = 'Lütfen bekleyin, işleminiz gerçekleştiriliyor...') => {
+    const loader = document.getElementById('global-preloader');
+    const titleEl = document.getElementById('preloader-title');
+    const messageEl = document.getElementById('preloader-message');
+
+    if (loader && titleEl && messageEl) {
+        titleEl.textContent = title;
+        messageEl.textContent = message;
+        loader.classList.remove('hidden');
+        setTimeout(() => loader.classList.add('active'), 10);
+    }
+};
+
+window.hideLoader = () => {
+    const loader = document.getElementById('global-preloader');
+    if (loader) {
+        loader.classList.remove('active');
+        setTimeout(() => loader.classList.add('hidden'), 300);
+    }
+};
+
 // Global Delete Confirmation
 document.addEventListener('submit', (e) => {
     const form = e.target;

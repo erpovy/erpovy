@@ -30,6 +30,9 @@ class EcommerceController extends Controller
                 ->orderBy('is_default', 'desc')
                 ->first();
 
+            $wcProducts = $service->getProducts();
+            $count = 0;
+
             foreach ($wcProducts as $wcProduct) {
                 // Determine SKU/Code
                 $sku = $wcProduct['sku'] ?: 'WC-' . $wcProduct['id'];

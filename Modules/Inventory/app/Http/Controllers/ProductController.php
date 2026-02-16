@@ -254,10 +254,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product): RedirectResponse
     {
-        $product->delete();
+        // Permanently delete the product
+        $product->forceDelete();
 
         return redirect()->route('inventory.products.index')
-            ->with('success', 'Ürün başarıyla silindi.');
+            ->with('success', 'Ürün kalıcı olarak silindi.');
     }
 
     public function bulkEdit(Request $request)
@@ -320,8 +321,8 @@ class ProductController extends Controller
 
         $count = Product::whereIn('id', $ids)
             ->where('company_id', auth()->user()->company_id)
-            ->delete();
+            ->forceDelete();
 
-        return redirect()->route('inventory.products.index')->with('success', $count . ' ürün başarıyla silindi.');
+        return redirect()->route('inventory.products.index')->with('success', $count . ' ürün kalıcı olarak silindi.');
     }
 }
