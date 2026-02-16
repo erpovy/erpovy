@@ -47,6 +47,9 @@ Route::middleware(['auth', 'verified', 'module_access:Inventory', 'readonly'])->
     Route::get('products/import', [ProductController::class, 'importForm'])->name('products.import.form');
     Route::post('products/import', [ProductController::class, 'importCsv'])->name('products.import');
     Route::get('products/export', [ProductController::class, 'exportCsv'])->name('products.export');
+    Route::post('products/bulk-edit', [ProductController::class, 'bulkEdit'])->name('products.bulk-edit');
+    Route::post('products/bulk-update', [ProductController::class, 'bulkUpdate'])->name('products.bulk-update');
+    Route::post('products/bulk-destroy', [ProductController::class, 'bulkDestroy'])->name('products.bulk-destroy');
     Route::resource('products', ProductController::class);
     
     // Stok Hareketleri

@@ -44,64 +44,70 @@
         </div>
     </x-slot>
 
-    <div class="py-8 min-h-screen transition-colors duration-300">
-        <div class="container mx-auto px-6 lg:px-8 max-w-[1600px]">
-            
-            <!-- Dashboard Cards -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <!-- Total Products -->
-                <div class="relative overflow-hidden rounded-2xl bg-white dark:bg-[#1e293b]/50 border border-gray-200 dark:border-white/5 p-6 shadow-sm group">
-                    <div class="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-blue-50/50 dark:from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="relative flex items-center gap-4">
-                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-500/20 text-blue-600 dark:text-blue-400">
-                            <span class="material-symbols-outlined text-[24px]">inventory_2</span>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-gray-500 dark:text-slate-400">Toplam Ürün</p>
-                            <h3 class="font-display text-2xl font-black text-gray-900 dark:text-white">{{ $totalProducts }}</h3>
-                        </div>
-                    </div>
+    <div class="py-8 min-h-screen transition-colors duration-300" 
+         x-data="{ 
+            selected: [], 
+            toggleAll() {
+                if (this.selected.length === {{ $products->count() }}) {
+                    this.selected = [];
+                } else {
+                    this.selected = [
+                        @foreach($products as $product)
+                            '{{ $product->id }}',
+                        @endforeach
+                    ];
+                }
+            }
+         }">
+        
+        <!-- Bulk Action Bar -->
+        <div x-show="selected.length > 0" 
+             x-transition:enter="transition ease-out duration-300 transform"
+             x-transition:enter-start="translate-y-20 opacity-0"
+             x-transition:enter-end="translate-y-0 opacity-100"
+             x-transition:leave="transition ease-in duration-200 transform"
+             x-transition:leave-start="translate-y-0 opacity-100"
+             x-transition:leave-end="translate-y-20 opacity-0"
+             class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 w-full max-w-2xl px-4"
+             style="display: none;">
+            <div class="bg-gray-900 dark:bg-slate-800 text-white p-4 rounded-2xl shadow-2xl border border-white/10 flex items-center justify-between backdrop-blur-xl">
+                <div class="flex items-center gap-4 px-2">
+                    <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-primary text-gray-900 font-black text-sm" x-text="selected.length"></span>
+                    <span class="font-bold text-sm tracking-wide">Ürün Seçildi</span>
                 </div>
+                
+                <div class="flex items-center gap-2">
+                    <form action="{{ route('inventory.products.bulk-edit') }}" method="POST">
+                        @csrf
+                        <template x-for="id in selected">
+                            <input type="hidden" name="product_ids[]" :value="id">
+                        </template>
+                        <button type="submit" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white font-bold text-xs uppercase tracking-widest transition-all">
+                            <span class="material-symbols-outlined text-[18px]">edit_note</span>
+                            Toplu Düzenle
+                        </button>
+                    </form>
 
-                <!-- Total Stock Value -->
-                <div class="relative overflow-hidden rounded-2xl bg-white dark:bg-[#1e293b]/50 border border-gray-200 dark:border-white/5 p-6 shadow-sm group">
-                    <div class="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-emerald-50/50 dark:from-emerald-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="relative flex items-center gap-4">
-                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
-                            <span class="material-symbols-outlined text-[24px]">payments</span>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-gray-500 dark:text-slate-400">Toplam Stok Değeri</p>
-                            <h3 class="font-display text-2xl font-black text-gray-900 dark:text-white">₺{{ number_format($totalStockValue, 2) }}</h3>
-                        </div>
-                    </div>
+                    <form action="{{ route('inventory.products.bulk-destroy') }}" method="POST" onsubmit="return confirm('Seçili tüm ürünleri silmek istediğinizden emin misiniz?')">
+                        @csrf
+                        <template x-for="id in selected">
+                            <input type="hidden" name="product_ids[]" :value="id">
+                        </template>
+                        <button type="submit" class="flex items-center gap-2 px-4 py-2 rounded-xl bg-red-500/20 hover:bg-red-500 text-red-500 hover:text-white font-bold text-xs uppercase tracking-widest transition-all border border-red-500/30">
+                            <span class="material-symbols-outlined text-[18px]">delete_sweep</span>
+                            Seçilenleri Sil
+                        </button>
+                    </form>
+
+                    <button @click="selected = []" class="p-2 text-gray-400 hover:text-white transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
                 </div>
-
-                <!-- Critical Stock -->
-                <div class="relative overflow-hidden rounded-2xl bg-white dark:bg-[#1e293b]/50 border border-gray-200 dark:border-white/5 p-6 shadow-sm group">
-                    <div class="absolute right-0 top-0 h-full w-24 bg-gradient-to-l from-red-50/50 dark:from-red-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="relative flex items-center gap-4">
-                        <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-red-50 dark:bg-red-500/20 text-red-600 dark:text-red-400">
-                            <span class="material-symbols-outlined text-[24px]">warning</span>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-gray-500 dark:text-slate-400">Kritik Stok</p>
-                            <h3 class="font-display text-2xl font-black text-gray-900 dark:text-white">{{ $criticalStockCount }}</h3>
-                        </div>
-                    </div>
-                    @if($criticalStockCount > 0)
-                        <a href="{{ route('inventory.analytics.index') }}" class="absolute bottom-6 right-6 text-xs font-bold text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300 flex items-center gap-1">
-                            İncele <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
-                        </a>
-                    @endif
-                </div>
-
-                <!-- Link to Full Analytics -->
-                <a href="{{ route('inventory.analytics.index') }}" class="col-span-full md:col-start-auto flex items-center justify-center gap-2 p-3 rounded-xl border border-dashed border-gray-300 dark:border-white/20 text-gray-500 dark:text-slate-400 hover:bg-gray-50 dark:hover:bg-white/5 hover:text-primary dark:hover:text-primary-400 hover:border-primary/50 dark:hover:border-primary/50 transition-all group">
-                    <span class="material-symbols-outlined group-hover:scale-110 transition-transform">insights</span>
-                    <span class="text-sm font-bold">Detaylı Analiz Raporu</span>
-                </a>
             </div>
+        </div>
+
+        <div class="container mx-auto px-6 lg:px-8 max-w-[1600px]">
+            @include('inventory::partials.stats')
             
             <div class="bg-white dark:bg-[#1e293b]/50 border border-gray-200 dark:border-white/5 rounded-3xl shadow-sm dark:shadow-2xl overflow-hidden backdrop-blur-xl">
                 <div class="p-6 border-b border-gray-100 dark:border-white/5 flex flex-col sm:flex-row justify-between items-center gap-4">
@@ -118,7 +124,13 @@
                     <table class="w-full">
                         <thead>
                             <tr class="bg-gray-50/50 dark:bg-white/5 border-b border-gray-100 dark:border-white/5">
-                                <th class="px-6 py-4 text-left text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kod (SKU)</th>
+                                <th class="px-6 py-4 text-left">
+                                    <input type="checkbox" 
+                                           @change="toggleAll()" 
+                                           :checked="selected.length === {{ $products->count() }} && {{ $products->count() }} > 0"
+                                           class="rounded bg-gray-100 dark:bg-white/5 border-gray-300 dark:border-white/10 text-primary focus:ring-primary w-4 h-4">
+                                </th>
+                                <th class="px-2 py-4 text-left text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kod (SKU)</th>
                                 <th class="px-6 py-4 text-left text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Ürün Adı</th>
                                 <th class="px-6 py-4 text-left text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Tür</th>
                                 <th class="px-6 py-4 text-right text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Alış Fiyatı</th>
@@ -129,8 +141,15 @@
                         </thead>
                         <tbody class="divide-y divide-gray-100 dark:divide-white/5">
                             @forelse($products as $product)
-                                <tr class="group hover:bg-blue-50/50 dark:hover:bg-blue-500/5 transition-colors">
+                                <tr class="group hover:bg-blue-50/50 dark:hover:bg-blue-500/5 transition-colors"
+                                    :class="selected.includes('{{ $product->id }}') ? 'bg-blue-50/50 dark:bg-blue-500/5' : ''">
                                     <td class="px-6 py-4">
+                                        <input type="checkbox" 
+                                               value="{{ $product->id }}" 
+                                               x-model="selected"
+                                               class="rounded bg-gray-100 dark:bg-white/5 border-gray-300 dark:border-white/10 text-primary focus:ring-primary w-4 h-4">
+                                    </td>
+                                    <td class="px-2 py-4">
                                         <span class="text-sm font-mono font-bold text-gray-500 dark:text-slate-400 bg-gray-100 dark:bg-white/5 px-2 py-1 rounded-md border border-gray-200 dark:border-white/5">
                                             {{ $product->code }}
                                         </span>
@@ -212,7 +231,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="7" class="px-6 py-12 text-center">
+                                    <td colspan="8" class="px-6 py-12 text-center">
                                         <div class="flex flex-col items-center justify-center">
                                             <div class="w-16 h-16 bg-gray-50 dark:bg-white/5 rounded-2xl flex items-center justify-center mb-4 border border-gray-100 dark:border-white/5">
                                                 <span class="material-symbols-outlined text-gray-300 dark:text-slate-600 text-[32px]">inventory_2</span>

@@ -255,4 +255,69 @@ class ProductController extends Controller
         return redirect()->route('inventory.products.index')
             ->with('success', 'Ürün başarıyla silindi.');
     }
+
+    public function bulkEdit(Request $request)
+    {
+        $ids = $request->input('product_ids', []);
+        if (empty($ids)) {
+            return back()->with('error', 'Lütfen en az bir ürün seçin.');
+        }
+
+        $products = Product::whereIn('id', $ids)
+            ->where('company_id', auth()->user()->company_id)
+            ->get();
+
+        $units = \Modules\Inventory\Models\Unit::all();
+        $categories = \Modules\Inventory\Models\Category::all();
+        $brands = \Modules\Inventory\Models\Brand::all();
+        $productTypes = ProductType::where('is_active', true)->get();
+
+        return view('inventory::products.bulk-edit', compact('products', 'units', 'categories', 'brands', 'productTypes'));
+    }
+
+    public function bulkUpdate(Request $request)
+    {
+        $ids = $request->input('product_ids', []);
+        $updateFields = $request->input('fields', []);
+        
+        if (empty($ids) || empty($updateFields)) {
+            return redirect()->route('inventory.products.index')->with('error', 'Geçersiz istek.');
+        }
+
+        $validated = $request->validate([
+            'fields.product_type_id' => 'nullable|exists:product_types,id',
+            'fields.category_id' => 'nullable|exists:categories,id',
+            'fields.brand_id' => 'nullable|exists:brands,id',
+            'fields.unit_id' => 'nullable|exists:units,id',
+            'fields.sale_price' => 'nullable|numeric|min:0',
+            'fields.purchase_price' => 'nullable|numeric|min:0',
+            'fields.vat_rate' => 'nullable|numeric|min:0|max:100',
+            'fields.stock_track' => 'nullable|boolean',
+        ]);
+
+        // Filter out null values to only update what was provided
+        $dataToUpdate = array_filter($validated['fields'], fn($value) => !is_null($value));
+
+        if (!empty($dataToUpdate)) {
+            Product::whereIn('id', $ids)
+                ->where('company_id', auth()->user()->company_id)
+                ->update($dataToUpdate);
+        }
+
+        return redirect()->route('inventory.products.index')->with('success', count($ids) . ' ürün başarıyla güncellendi.');
+    }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('product_ids', []);
+        if (empty($ids)) {
+            return back()->with('error', 'Lütfen en az bir ürün seçin.');
+        }
+
+        $count = Product::whereIn('id', $ids)
+            ->where('company_id', auth()->user()->company_id)
+            ->delete();
+
+        return redirect()->route('inventory.products.index')->with('success', $count . ' ürün başarıyla silindi.');
+    }
 }
