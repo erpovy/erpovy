@@ -139,10 +139,13 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
+        $perPage = $request->get('per_page', 50);
+
         $products = Product::with(['unit', 'productType', 'category', 'brand'])
             ->withSum('stockMovements as current_stock', 'quantity')
             ->latest()
-            ->paginate(10);
+            ->paginate($perPage)
+            ->withQueryString();
 
         $companyId = auth()->user()->company_id;
 
