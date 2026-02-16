@@ -35,7 +35,7 @@
                             <!-- Ticari Unvan -->
                             <div class="col-span-2">
                                 <label class="input-label">Ticari Unvan (Tam Ad)</label>
-                                <input type="text" name="title" value="{{ old('title', $details['title'] ?? $company->name) }}" class="custom-input" placeholder="Örn: Artovy Yazılım A.Ş." required>
+                                <input type="text" name="title" value="{{ old('title', $details['title'] ?? $company?->name) }}" class="custom-input" placeholder="Örn: Artovy Yazılım A.Ş." required>
                                 @error('title') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
 
@@ -95,13 +95,13 @@
                              <!-- E-posta -->
                              <div>
                                 <label class="input-label">Fatura E-posta Adresi</label>
-                                <input type="email" name="email" value="{{ old('email', $details['email'] ?? $company->users->first()->email ?? '') }}" class="custom-input" required>
+                                <input type="email" name="email" value="{{ old('email', $details['email'] ?? $company?->users->first()->email ?? '') }}" class="custom-input" required>
                             </div>
                              
                              <!-- Web -->
                              <div class="col-span-2">
                                 <label class="input-label">Web Sitesi</label>
-                                <input type="url" name="website" value="{{ old('website', $details['website'] ?? $company->domain ? 'https://'.$company->domain : '') }}" class="custom-input" placeholder="https://example.com">
+                                <input type="url" name="website" value="{{ old('website', $details['website'] ?? ($company?->domain ? 'https://'.$company->domain : '')) }}" class="custom-input" placeholder="https://example.com">
                             </div>
                         </div>
 

@@ -12,7 +12,7 @@ class CompanySetupController extends Controller
         $company = auth()->user()->company;
         
         // Ensure settings is valid array/object
-        $settings = $company->settings ?? [];
+        $settings = $company?->settings ?? [];
         
         return view('setup.accounting', compact('company', 'settings'));
     }
@@ -35,6 +35,10 @@ class CompanySetupController extends Controller
         ]);
 
         $company = auth()->user()->company;
+        if (!$company) {
+            return back()->with('error', 'Şirket kaydı bulunamadı.');
+        }
+
         $settings = $company->settings ?? [];
 
         // Update specific accounting fields
@@ -58,7 +62,7 @@ class CompanySetupController extends Controller
     public function invoice()
     {
         $company = auth()->user()->company;
-        $settings = $company->settings ?? [];
+        $settings = $company?->settings ?? [];
         
         return view('setup.invoice', compact('company', 'settings'));
     }
@@ -71,6 +75,10 @@ class CompanySetupController extends Controller
         ]);
 
         $company = auth()->user()->company;
+        if (!$company) {
+            return back()->with('error', 'Şirket kaydı bulunamadı.');
+        }
+
         $settings = $company->settings ?? [];
 
         // Save GIB Credentials to Company columns
@@ -79,22 +87,16 @@ class CompanySetupController extends Controller
             $company->gib_password = $request->gib_password;
         }
 
-        // Update invoice specific settings
-        // $settings['invoice_settings'] = $request->only([
-        //     'smtp_host', 'smtp_port', 'smtp_username', 'smtp_password', 
-        //     'smtp_encryption', 'mail_from_address', 'mail_from_name', 
-        //     'invoice_template', 'pdf_template'
-        // ]);
-
         $company->settings = $settings;
         $company->save();
 
         return back()->with('success', 'Fatura ve e-posta ayarları başarıyla güncellendi.');
     }
+
     public function crm()
     {
         $company = auth()->user()->company;
-        $settings = $company->settings ?? [];
+        $settings = $company?->settings ?? [];
         
         return view('setup.crm', compact('company', 'settings'));
     }
@@ -110,6 +112,10 @@ class CompanySetupController extends Controller
         ]);
 
         $company = auth()->user()->company;
+        if (!$company) {
+            return back()->with('error', 'Şirket kaydı bulunamadı.');
+        }
+
         $settings = $company->settings ?? [];
 
         // Update CRM specific settings
