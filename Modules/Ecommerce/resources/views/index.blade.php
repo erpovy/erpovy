@@ -21,7 +21,34 @@
         </div>
     </x-slot>
 
-    <div class="py-8">
+    <div class="py-8" x-data="{ loading: false }">
+        <!-- Preloader Overlay -->
+        <div x-show="loading" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             class="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-900/60 backdrop-blur-md"
+             style="display: none;">
+            <div class="bg-white dark:bg-slate-900 p-10 rounded-[40px] shadow-2xl flex flex-col items-center gap-6 max-w-md w-full mx-4 border border-white/10 border-t-primary/50">
+                <div class="relative w-24 h-24">
+                    <div class="absolute inset-0 border-[6px] border-primary/10 rounded-full"></div>
+                    <div class="absolute inset-0 border-[6px] border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-5xl animate-pulse">sync</span>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">Veriler Senkronize Ediliyor</h3>
+                    <p class="text-gray-500 dark:text-slate-400 font-medium">Bu işlem ürün sayısına bağlı olarak birkaç dakika sürebilir. Lütfen sayfayı kapatmayın.</p>
+                </div>
+                
+                <!-- Simple progress bar simulation/animation -->
+                <div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-full bg-primary animate-[loading_2s_ease-in-out_infinite]" style="width: 30%"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="container mx-auto max-w-[1920px] px-6 lg:px-8 space-y-8">
             @if($platforms->isEmpty())
                 <x-card class="p-12 border-none bg-gradient-to-br from-primary/10 to-purple-600/5 backdrop-blur-xl flex flex-col items-center text-center">
@@ -72,14 +99,14 @@
                                 </div>
 
                                 <div class="flex gap-3 mt-2">
-                                    <form action="{{ route('ecommerce.platforms.sync-products', $platform) }}" method="POST" class="flex-1">
+                                    <form action="{{ route('ecommerce.platforms.sync-products', $platform) }}" method="POST" class="flex-1" @submit="loading = true">
                                         @csrf
                                         <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest hover:bg-primary/20 transition-all">
                                             <span class="material-symbols-outlined text-[18px]">inventory</span>
                                             Ürünleri Çek
                                         </button>
                                     </form>
-                                    <form action="{{ route('ecommerce.platforms.sync-orders', $platform) }}" method="POST" class="flex-1">
+                                    <form action="{{ route('ecommerce.platforms.sync-orders', $platform) }}" method="POST" class="flex-1" @submit="loading = true">
                                         @csrf
                                         <button type="submit" class="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-purple-500/10 text-purple-500 font-bold text-xs uppercase tracking-widest hover:bg-purple-500/20 transition-all">
                                             <span class="material-symbols-outlined text-[18px]">list_alt</span>
@@ -145,4 +172,13 @@
             </div>
         </div>
     </div>
+
+    @push('styles')
+    <style>
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(300%); }
+        }
+    </style>
+    @endpush
 </x-app-layout>
