@@ -139,7 +139,8 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $products = Product::with(['unit', 'productType'])
+        $products = Product::with(['unit', 'productType', 'category', 'brand'])
+            ->withSum('stockMovements as current_stock', 'quantity')
             ->latest()
             ->paginate(10);
 

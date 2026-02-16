@@ -132,9 +132,9 @@
                                 </th>
                                 <th class="px-2 py-4 text-left text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kod (SKU)</th>
                                 <th class="px-6 py-4 text-left text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Ürün Adı</th>
+                                <th class="px-6 py-4 text-left text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kategori / Marka</th>
                                 <th class="px-6 py-4 text-left text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Tür</th>
-                                <th class="px-6 py-4 text-right text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Alış Fiyatı</th>
-                                <th class="px-6 py-4 text-right text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Satış Fiyatı</th>
+                                <th class="px-6 py-4 text-right text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Fiyat / KDV</th>
                                 <th class="px-6 py-4 text-center text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">Stok</th>
                                 <th class="px-6 py-4 text-right text-[11px] font-black text-gray-500 dark:text-slate-400 uppercase tracking-wider">İşlem</th>
                             </tr>
@@ -165,42 +165,45 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4">
-                                        @if($product->type == 'good')
+                                        <div class="flex flex-col">
+                                            <span class="text-xs font-bold text-gray-700 dark:text-white">{{ $product->category?->name ?? 'Kategorisiz' }}</span>
+                                            <span class="text-[10px] text-gray-500 dark:text-slate-400 uppercase tracking-tight">{{ $product->brand?->name ?? '-' }}</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        @if($product->productType?->code == 'good' || $product->type == 'good')
                                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 text-xs font-bold border border-blue-200 dark:border-blue-500/20">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                                                Ürün
+                                                {{ $product->productType?->name ?? 'Ürün' }}
                                             </span>
                                         @else
                                             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 text-xs font-bold border border-purple-200 dark:border-purple-500/20">
                                                 <span class="w-1.5 h-1.5 rounded-full bg-purple-500"></span>
-                                                Hizmet
+                                                {{ $product->productType?->name ?? 'Hizmet' }}
                                             </span>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 text-right">
-                                        <span class="text-sm font-medium text-gray-500 dark:text-slate-400">
-                                            {{ number_format($product->purchase_price, 2) }} ₺
-                                        </span>
-                                    </td>
-                                    <td class="px-6 py-4 text-right">
-                                        <span class="text-sm font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-100 dark:border-emerald-500/20">
-                                            {{ number_format($product->sale_price, 2) }} ₺
-                                        </span>
+                                        <div class="flex flex-col items-end">
+                                            <span class="text-sm font-bold text-gray-900 dark:text-white">{{ number_format($product->sale_price, 2) }} ₺</span>
+                                            <span class="text-[11px] text-gray-500 dark:text-slate-400">KDV: %{{ number_format($product->vat_rate, 0) }}</span>
+                                        </div>
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        @if($product->type == 'good' && $product->stock_track)
-                                            @if($product->stock <= 0)
+                                        @php $stock = $product->current_stock ?? 0; @endphp
+                                        @if(($product->productType?->code == 'good' || $product->type == 'good') && $product->stock_track)
+                                            @if($stock <= 0)
                                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-red-50 dark:bg-red-500/10 text-red-600 dark:text-red-400 text-xs font-bold border border-red-200 dark:border-red-500/20">
                                                     Stok Yok
                                                 </span>
-                                            @elseif($product->stock <= $product->min_stock_level)
+                                            @elseif($stock <= ($product->min_stock_level ?? 0))
                                                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-bold border border-orange-200 dark:border-orange-500/20">
-                                                    {{ $product->stock }} {{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}
+                                                    {{ $stock }} {{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}
                                                     <span class="text-[10px] opacity-75">(Kritik)</span>
                                                 </span>
                                             @else
                                                 <span class="text-sm font-bold text-gray-700 dark:text-white">
-                                                    {{ $product->stock }} <span class="text-xs text-gray-400 font-normal">{{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}</span>
+                                                    {{ $stock }} <span class="text-xs text-gray-400 font-normal">{{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}</span>
                                                 </span>
                                             @endif
                                         @else
@@ -210,7 +213,7 @@
                                     <td class="px-6 py-4 text-right">
                                         <div class="flex items-center justify-end gap-2">
                                             @if($product->type == 'good' && $product->stock_track)
-                                                <button @click="openAdjustmentModal('{{ $product->id }}', '{{ $product->name }}', '{{ $product->stock }}', '{{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}')" 
+                                                <button @click="openAdjustmentModal('{{ $product->id }}', '{{ $product->name }}', '{{ $stock }}', '{{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}')" 
                                                         class="p-2 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-500/20 border border-blue-200 dark:border-blue-500/20 transition-all" title="Stok Düzeltme">
                                                     <span class="material-symbols-outlined text-[18px]">swap_vert</span>
                                                 </button>
