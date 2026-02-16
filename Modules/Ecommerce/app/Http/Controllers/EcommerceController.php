@@ -25,12 +25,16 @@ class EcommerceController extends Controller
     {
         $service = new WooCommerceService($platform);
         try {
-            $wcProducts = $service->fetchAllProducts();
-            $count = 0;
+            $defaultWarehouse = \Modules\Inventory\Models\Warehouse::where('company_id', $platform->company_id)
+                ->where('is_active', true)
+                ->orderBy('is_default', 'desc')
+                ->first();
 
             foreach ($wcProducts as $wcProduct) {
                 // Determine SKU/Code
                 $sku = $wcProduct['sku'] ?: 'WC-' . $wcProduct['id'];
+                $manageStock = $wcProduct['manage_stock'] ?? false;
+                $wcStock = $wcProduct['stock_quantity'] ?? 0;
 
                 // Check mapping first
                 $mapping = \Modules\Ecommerce\Models\EcommerceMapping::where('ecommerce_platform_id', $platform->id)
@@ -49,8 +53,8 @@ class EcommerceController extends Controller
                             'name' => $wcProduct['name'],
                             'sale_price' => $wcProduct['price'] ?: 0,
                             'description' => strip_tags($wcProduct['description']),
+                            'stock_track' => $manageStock,
                         ]);
-                        $count++;
                     }
                 } else {
                     // Try to find by SKU in Inventory (including trashed)
@@ -67,6 +71,7 @@ class EcommerceController extends Controller
                             'name' => $wcProduct['name'],
                             'sale_price' => $wcProduct['price'] ?: 0,
                             'description' => strip_tags($wcProduct['description']),
+                            'stock_track' => $manageStock,
                         ]);
                     } else {
                         // Create new product
@@ -77,7 +82,7 @@ class EcommerceController extends Controller
                             'sale_price' => $wcProduct['price'] ?: 0,
                             'description' => strip_tags($wcProduct['description']),
                             'is_active' => true,
-                            'stock_track' => true,
+                            'stock_track' => $manageStock,
                         ]);
                     }
 
@@ -90,8 +95,27 @@ class EcommerceController extends Controller
                         'external_id' => $wcProduct['id'],
                         'remote_data' => $wcProduct,
                     ]);
-                    $count++;
                 }
+
+                if ($product && $manageStock && $defaultWarehouse) {
+                    $localStock = $product->stock;
+                    $diff = $wcStock - $localStock;
+
+                    if ($diff != 0) {
+                        \Modules\Inventory\Models\StockMovement::create([
+                            'company_id' => $platform->company_id,
+                            'user_id' => auth()->id() ?? 1,
+                            'product_id' => $product->id,
+                            'warehouse_id' => $defaultWarehouse->id,
+                            'quantity' => $diff,
+                            'type' => $diff > 0 ? 'in' : 'out',
+                            'notes' => 'WooCommerce Senkronizasyonu (Stok Güncelleme)',
+                            'reference' => 'WC-' . $wcProduct['id'],
+                        ]);
+                    }
+                }
+
+                $count++;
             }
             
             $platform->update(['last_sync_at' => now()]);
