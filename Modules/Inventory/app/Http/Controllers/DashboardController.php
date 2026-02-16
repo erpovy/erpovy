@@ -25,11 +25,13 @@ class DashboardController extends Controller
             ->selectRaw('SUM((SELECT SUM(quantity) FROM stock_movements WHERE product_id = products.id) * purchase_price) as total_value')
             ->value('total_value') ?? 0;
 
-        $criticalStockCount = Product::where('company_id', $companyId)
+        $criticalProductsQuery = Product::where('company_id', $companyId)
             ->where('stock_track', true)
-            ->whereNotNull('min_stock_level')
-            ->whereRaw('(SELECT SUM(quantity) FROM stock_movements WHERE product_id = products.id) <= min_stock_level')
-            ->count();
+            ->whereRaw('(SELECT SUM(quantity) FROM stock_movements WHERE product_id = products.id) <= COALESCE(critical_stock_level, min_stock_level, 0)');
+
+        $criticalStockCount = (clone $criticalProductsQuery)->count();
+        $criticalProducts = $criticalProductsQuery->withSum('stockMovements as current_stock', 'quantity')
+            ->with(['unit', 'category'])->latest()->take(5)->get();
 
         $outOfStockCount = Product::where('company_id', $companyId)
             ->where('stock_track', true)
@@ -70,7 +72,8 @@ class DashboardController extends Controller
             'outOfStockCount',
             'stockByCategory',
             'recentMovements',
-            'weeklyMovements'
+            'weeklyMovements',
+            'criticalProducts'
         ));
     }
 }

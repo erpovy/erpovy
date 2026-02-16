@@ -293,8 +293,8 @@
                 @endforeach
             </div>
 
-            <!-- Row 4: Lists (2 Cols) -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Row 4: Lists (3 Cols) -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Recent Invoices -->
                 @if(auth()->user()->hasModuleAccess('accounting.invoices'))
                 <x-card class="h-full p-0 border-gray-200 dark:border-white/10 bg-white/5 overflow-hidden flex flex-col">
@@ -303,7 +303,7 @@
                             <span class="material-symbols-outlined text-primary">description</span>
                             Son Faturalar
                         </h3>
-                        <a href="{{ route('accounting.invoices.index') }}" class="text-xs text-primary font-bold uppercase tracking-wider hover:text-gray-900 dark:text-white transition-colors">Tümünü Gör</a>
+                        <a href="{{ route('accounting.invoices.index') }}" class="text-xs text-primary font-bold uppercase tracking-wider hover:text-gray-900 dark:text-white transition-colors">Tümünü</a>
                     </div>
                     <div class="flex-1 overflow-auto divide-y divide-white/5 max-h-[400px] custom-scrollbar">
                         @forelse($recentInvoices as $invoice)
@@ -321,7 +321,6 @@
                             </div>
                             <div class="text-right">
                                 <div class="text-sm font-black text-gray-900 dark:text-white">₺{{ number_format($invoice->total_amount, 2, ',', '.') }}</div>
-                                <!-- Standardized Badge -->
                                 <div class="text-[10px] font-bold uppercase tracking-widest px-2 py-0.5 rounded-md border mt-1 inline-block
                                     {{ $invoice->is_paid_status ? 'bg-green-900/30 text-green-400 border-green-500/30' : 'bg-yellow-900/30 text-yellow-400 border-yellow-500/30' }}">
                                     {{ $invoice->is_paid_status ? 'Ödendi' : 'Bekliyor' }}
@@ -343,7 +342,7 @@
                             <span class="material-symbols-outlined text-purple-400">group</span>
                             Son Kişiler
                         </h3>
-                        <a href="{{ route('crm.contacts.index') }}" class="text-xs text-purple-400 font-bold uppercase tracking-wider hover:text-gray-900 dark:text-white transition-colors">Rehbere Git</a>
+                        <a href="{{ route('crm.contacts.index') }}" class="text-xs text-purple-400 font-bold uppercase tracking-wider hover:text-gray-900 dark:text-white transition-colors">Rehber</a>
                     </div>
                     <div class="flex-1 overflow-auto divide-y divide-white/5 max-h-[400px] custom-scrollbar">
                         @forelse($recentContacts as $contact)
@@ -371,6 +370,44 @@
                         </div>
                         @empty
                         <div class="p-12 text-center text-gray-600 dark:text-slate-500">Kayıt yok.</div>
+                        @endforelse
+                    </div>
+                </x-card>
+                @endif
+
+                <!-- Critical Stocks -->
+                @if(auth()->user()->hasModuleAccess('inventory.products'))
+                <x-card class="h-full p-0 border-gray-200 dark:border-white/10 bg-white/5 overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-gray-200 dark:border-white/10 flex items-center justify-between bg-white/[0.02]">
+                        <h3 class="text-lg font-black text-gray-900 dark:text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-red-500">warning</span>
+                            Kritik Stoklar
+                        </h3>
+                        <a href="{{ route('inventory.products.index') }}" class="text-xs text-red-500 font-bold uppercase tracking-wider hover:text-gray-900 dark:text-white transition-colors">Yönet</a>
+                    </div>
+                    <div class="flex-1 overflow-auto divide-y divide-white/5 max-h-[400px] custom-scrollbar">
+                        @forelse($criticalProductsList as $product)
+                        <div class="p-4 flex items-center justify-between hover:bg-white/5 transition-colors group cursor-pointer">
+                            <div class="flex items-center gap-4">
+                                <div class="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center border border-gray-200 dark:border-white/10 text-red-500 group-hover:border-red-500/30 transition-colors">
+                                    <span class="material-symbols-outlined text-[20px]">inventory_2</span>
+                                </div>
+                                <div>
+                                    <div class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-red-500 transition-colors">{{ $product->name }}</div>
+                                    <div class="text-[11px] text-gray-600 dark:text-slate-500 font-bold uppercase tracking-wider">
+                                        {{ $product->category->name ?? 'Kategorisiz' }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-sm font-black text-red-500">{{ number_format($product->current_stock) }}</div>
+                                <div class="text-[10px] text-gray-600 dark:text-slate-400 font-bold uppercase">
+                                    {{ $product->unit->symbol ?? 'Adet' }}
+                                </div>
+                            </div>
+                        </div>
+                        @empty
+                        <div class="p-12 text-center text-gray-600 dark:text-slate-500 text-sm">Tüm stoklar güvenli seviyede.</div>
                         @endforelse
                     </div>
                 </x-card>

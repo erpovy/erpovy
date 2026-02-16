@@ -35,16 +35,14 @@ class DashboardController extends Controller
         // Total Contacts (CRM)
         $totalContacts = Contact::count();
 
-        // Low Stock Products (Inventory) - Optimized Query
-        $lowStockProducts = Product::where('stock_track', true)
-            ->whereNotNull('min_stock_level')
-            ->whereHas('stockMovements', function($query) {
-                // This is a bit complex for a simple whereHas, 
-                // but we can use a raw subquery or just a threshold.
-            })
-            // Alternative: use a raw join or subselect for performance
-            ->whereRaw('(SELECT SUM(quantity) FROM stock_movements WHERE product_id = products.id) < 10')
-            ->count();
+        // Critical Stock Products (Inventory) - Optimized Query with total sum
+        $criticalProductsQuery = Product::where('company_id', auth()->user()->company_id)
+            ->where('stock_track', true)
+            ->whereRaw('(SELECT SUM(quantity) FROM stock_movements WHERE product_id = products.id) <= COALESCE(critical_stock_level, min_stock_level, 0)');
+
+        $lowStockProducts = (clone $criticalProductsQuery)->count();
+        $criticalProductsList = $criticalProductsQuery->withSum('stockMovements as current_stock', 'quantity')
+            ->with(['unit', 'category'])->latest()->take(5)->get();
 
 
         // Recent Invoices with Contact relation
@@ -96,6 +94,7 @@ class DashboardController extends Controller
             'pendingInvoicesCount',
             'totalContacts',
             'lowStockProducts',
+            'criticalProductsList',
             'recentInvoices',
             'recentContacts',
             'activities',

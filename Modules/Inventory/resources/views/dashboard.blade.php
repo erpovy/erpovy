@@ -192,6 +192,62 @@
                 </div>
             </div>
 
+            <!-- Kritik Stok Listesi -->
+            <div class="grid grid-cols-1 gap-6">
+                <x-card class="p-0 border-gray-200 dark:border-white/10 bg-white/5 overflow-hidden flex flex-col">
+                    <div class="p-6 border-b border-gray-200 dark:border-white/10 flex items-center justify-between bg-white/[0.02]">
+                        <h3 class="text-lg font-black text-gray-900 dark:text-white flex items-center gap-2">
+                            <span class="material-symbols-outlined text-orange-500">warning</span>
+                            Kritik Stoktaki Ürünler
+                        </h3>
+                        <div class="text-xs font-bold text-gray-500 uppercase">Eşik Değer Altı</div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-white/5">
+                                    <th class="p-4 text-[10px] font-black uppercase tracking-wider text-gray-500">Ürün</th>
+                                    <th class="p-4 text-[10px] font-black uppercase tracking-wider text-gray-500">Kategori</th>
+                                    <th class="p-4 text-[10px] font-black uppercase tracking-wider text-gray-500 text-center">Mevcut Stok</th>
+                                    <th class="p-4 text-[10px] font-black uppercase tracking-wider text-gray-500 text-center">Kritik Eşik</th>
+                                    <th class="p-4 text-[10px] font-black uppercase tracking-wider text-gray-500 text-right">İşlem</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-white/5">
+                                @forelse($criticalProducts as $product)
+                                <tr class="hover:bg-white/5 transition-colors group">
+                                    <td class="p-4">
+                                        <div class="flex items-center gap-3">
+                                            <div class="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-500 flex items-center justify-center">
+                                                <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+                                            </div>
+                                            <div class="text-sm font-bold text-gray-900 dark:text-white">{{ $product->name }}</div>
+                                        </div>
+                                    </td>
+                                    <td class="p-4 text-xs font-medium text-gray-500">{{ $product->category->name ?? '-' }}</td>
+                                    <td class="p-4 text-center">
+                                        <span class="px-2 py-1 rounded-md bg-red-900/30 text-red-500 text-xs font-black">{{ number_format($product->current_stock) }} {{ $product->unit->symbol ?? '' }}</span>
+                                    </td>
+                                    <td class="p-4 text-center text-xs font-black text-gray-400">
+                                        {{ number_format($product->critical_stock_level ?? $product->min_stock_level ?? 0) }}
+                                    </td>
+                                    <td class="p-4 text-right">
+                                        <a href="{{ route('inventory.products.edit', $product->id) }}" class="p-2 rounded-lg hover:bg-white/10 text-gray-500 hover:text-white transition-all">
+                                            <span class="material-symbols-outlined text-[18px]">edit</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="p-12 text-center text-gray-500 text-sm">Harika! Şu an kritik seviyede ürün bulunmuyor.</td>
+                                </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </div>
+                </x-card>
+            </div>
+
             <!-- Hızlı Aksiyonlar -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach([
