@@ -25,7 +25,32 @@
         </div>
     </x-slot>
 
-    <div class="py-8">
+    <div class="py-8" x-data="{ loading: false }">
+        <!-- Preloader Overlay -->
+        <div x-show="loading" 
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="opacity-0"
+             x-transition:enter-end="opacity-100"
+             class="fixed inset-0 z-[100000] flex items-center justify-center bg-gray-900/60 backdrop-blur-md text-white"
+             style="display: none;">
+            <div class="bg-white dark:bg-slate-900 p-10 rounded-[40px] shadow-2xl flex flex-col items-center gap-6 max-w-md w-full mx-4 border border-white/10 border-t-primary/50">
+                <div class="relative w-24 h-24">
+                    <div class="absolute inset-0 border-[6px] border-primary/10 rounded-full"></div>
+                    <div class="absolute inset-0 border-[6px] border-primary border-t-transparent rounded-full animate-spin"></div>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-primary text-5xl animate-pulse">sync</span>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <h3 class="text-2xl font-black text-gray-900 dark:text-white mb-2 tracking-tight">İşlem Yapılıyor</h3>
+                    <p class="text-gray-500 dark:text-slate-400 font-medium">Lütfen bekleyin, bağlantı kontrol ediliyor...</p>
+                </div>
+                <div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                    <div class="h-full bg-primary animate-[loading_2s_ease-in-out_infinite]" style="width: 30%"></div>
+                </div>
+            </div>
+        </div>
+
         <div class="container mx-auto max-w-[1920px] px-6 lg:px-8">
             <x-card class="overflow-hidden border-none bg-white/5 backdrop-blur-xl">
                 <div class="overflow-x-auto">
@@ -99,6 +124,10 @@
         function testConnection(id) {
             if (!confirm('Bağlantı testi yapılsın mı?')) return;
             
+            // Access Alpine data
+            const alpineData = document.querySelector('[x-data]').__x.$data;
+            alpineData.loading = true;
+            
             fetch(`/ecommerce/platforms/${id}/test-connection`, {
                 method: 'POST',
                 headers: {
@@ -108,12 +137,20 @@
             })
             .then(response => response.json())
             .then(data => {
+                alpineData.loading = false;
                 alert(data.message);
             })
             .catch(error => {
+                alpineData.loading = false;
                 alert('Bağlantı sırasında bir hata oluştu.');
             });
         }
     </script>
+    <style>
+        @keyframes loading {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(300%); }
+        }
+    </style>
     @endpush
 </x-app-layout>

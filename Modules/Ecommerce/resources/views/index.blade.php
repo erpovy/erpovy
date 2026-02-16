@@ -27,7 +27,7 @@
              x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="opacity-0"
              x-transition:enter-end="opacity-100"
-             class="fixed inset-0 z-[9999] flex items-center justify-center bg-gray-900/60 backdrop-blur-md"
+             class="fixed inset-0 z-[100000] flex items-center justify-center bg-gray-900/60 backdrop-blur-md text-white"
              style="display: none;">
             <div class="bg-white dark:bg-slate-900 p-10 rounded-[40px] shadow-2xl flex flex-col items-center gap-6 max-w-md w-full mx-4 border border-white/10 border-t-primary/50">
                 <div class="relative w-24 h-24">
