@@ -17,7 +17,7 @@ trait BelongsToCompany
         static::addGlobalScope(new TenantScope);
 
         static::creating(function ($model) {
-            if (Auth::check()) {
+            if (!$model->company_id && Auth::check()) {
                 if (Auth::user()->company_id) {
                     $model->company_id = Auth::user()->company_id;
                 } elseif (session()->has('is_inspecting')) {

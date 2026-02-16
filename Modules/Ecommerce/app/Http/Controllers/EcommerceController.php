@@ -39,21 +39,36 @@ class EcommerceController extends Controller
                     ->first();
 
                 if ($mapping) {
-                    $product = $mapping->mappable;
+                    $product = $mapping->mappable()->withTrashed()->first();
                     if ($product) {
+                        if ($product->trashed()) {
+                            $product->restore();
+                        }
+                        
                         $product->update([
                             'name' => $wcProduct['name'],
                             'sale_price' => $wcProduct['price'] ?: 0,
                             'description' => strip_tags($wcProduct['description']),
                         ]);
+                        $count++;
                     }
                 } else {
-                    // Try to find by SKU in Inventory
+                    // Try to find by SKU in Inventory (including trashed)
                     $product = \Modules\Inventory\Models\Product::where('company_id', $platform->company_id)
                         ->where('code', $sku)
+                        ->withTrashed()
                         ->first();
 
-                    if (!$product) {
+                    if ($product) {
+                        if ($product->trashed()) {
+                            $product->restore();
+                        }
+                        $product->update([
+                            'name' => $wcProduct['name'],
+                            'sale_price' => $wcProduct['price'] ?: 0,
+                            'description' => strip_tags($wcProduct['description']),
+                        ]);
+                    } else {
                         // Create new product
                         $product = \Modules\Inventory\Models\Product::create([
                             'company_id' => $platform->company_id,
@@ -75,8 +90,8 @@ class EcommerceController extends Controller
                         'external_id' => $wcProduct['id'],
                         'remote_data' => $wcProduct,
                     ]);
+                    $count++;
                 }
-                $count++;
             }
             
             $platform->update(['last_sync_at' => now()]);
