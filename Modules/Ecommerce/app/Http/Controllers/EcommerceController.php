@@ -30,7 +30,7 @@ class EcommerceController extends Controller
                 ->orderBy('is_default', 'desc')
                 ->first();
 
-            $wcProducts = $service->getProducts();
+            $wcProducts = $service->fetchAllProducts();
             $count = 0;
 
             foreach ($wcProducts as $wcProduct) {
