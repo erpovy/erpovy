@@ -206,6 +206,15 @@ class CompanyManagementController extends Controller
                     'logistics.settings' => 'Lojistik Ayarları',
                 ]
             ],
+            'Ecommerce' => [
+                'name' => 'e-Ticaret',
+                'icon' => 'shopping_cart',
+                'items' => [
+                    'ecommerce' => 'e-Ticaret Entegrasyonu',
+                    'ecommerce.index' => 'Genel Bakış',
+                    'ecommerce.platforms.index' => 'Mağaza Ayarları',
+                ]
+            ],
             'FixedAssets' => [
                 'name' => 'Demirbaş Yönetimi',
                 'icon' => 'inventory_2',

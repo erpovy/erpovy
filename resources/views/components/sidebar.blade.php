@@ -62,6 +62,7 @@
             elseif (request()->routeIs('purchasing.*')) $activeMenu = 'purchasing';
             elseif (request()->routeIs('logistics.*')) $activeMenu = 'logistics';
             elseif (request()->routeIs('servicemanagement.*')) $activeMenu = 'servicemanagement';
+            elseif (request()->routeIs('ecommerce.*')) $activeMenu = 'ecommerce';
             elseif (request()->routeIs('setup.*')) $activeMenu = 'setup';
         @endphp
 
@@ -454,6 +455,35 @@
                         <a href="{{ route('crm.contacts.create', ['type' => 'vendor']) }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request('type') == 'vendor' && request()->routeIs('crm.contacts.create') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
                             <span class="w-1.5 h-1.5 rounded-full {{ request('type') == 'vendor' && request()->routeIs('crm.contacts.create') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Yeni Tedarikçi
+                        </a>
+                    </div>
+                </div>
+                @endif
+
+                <!-- Ecommerce Group -->
+                @if(auth()->user()->hasModuleAccess('Ecommerce'))
+                <div>
+                    <button type="button" @click.stop.prevent="toggle('ecommerce')" 
+                        class="w-full group relative flex items-center justify-between gap-3 rounded-xl px-4 py-3 transition-all hover:bg-gray-100 dark:hover:bg-white/5 {{ request()->routeIs('ecommerce.*') ? 'text-gray-900 bg-gray-100 dark:text-white dark:bg-white/5' : 'text-slate-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white' }}">
+                        @if(request()->routeIs('ecommerce.*'))
+                                <div class="absolute inset-0 rounded-xl bg-neon-active opacity-100 pointer-events-none"></div>
+                                <div class="absolute left-0 h-6 w-1 rounded-r-full bg-primary shadow-[0_0_10px_#137fec] pointer-events-none"></div>
+                        @endif
+                        <div class="flex items-center gap-3">
+                            <span class="material-symbols-outlined {{ request()->routeIs('ecommerce.*') ? 'icon-filled text-primary drop-shadow-[0_0_8px_rgba(19,127,236,0.8)]' : 'group-hover:text-primary group-hover:drop-shadow-[0_0_8px_rgba(19,127,236,0.6)]' }}">shopping_bag</span>
+                            <span class="font-medium transition-opacity duration-200 whitespace-nowrap" :class="isCollapsed ? 'opacity-0 w-0 hidden' : 'opacity-100'">e-Ticaret</span>
+                        </div>
+                        <span class="material-symbols-outlined text-[18px] transition-transform duration-300 opacity-50" :class="{'rotate-90': isOpen('ecommerce'), 'hidden': isCollapsed}">chevron_right</span>
+                    </button>
+                    
+                    <div x-show="isOpen('ecommerce')" x-cloak class="mt-1 space-y-1 pl-4">
+                        <a href="{{ route('ecommerce.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('ecommerce.index') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-gray-600 hover:text-gray-900 dark:text-slate-400 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('ecommerce.index') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Genel Bakış
+                        </a>
+                        <a href="{{ route('ecommerce.platforms.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('ecommerce.platforms.*') ? 'text-white bg-primary/20 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('ecommerce.platforms.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Mağaza Ayarları
                         </a>
                     </div>
                 </div>

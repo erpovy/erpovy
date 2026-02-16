@@ -39,6 +39,8 @@
             "Modules\\CRM\\Database\\Seeders\\": "Modules/CRM/database/seeders/",
             "Modules\\Inventory\\": "Modules/Inventory/app/",
             "Modules\\Inventory\\Database\\Seeders\\": "Modules/Inventory/database/seeders/",
+            "Modules\\Ecommerce\\": "Modules/Ecommerce/app/",
+            "Modules\\Ecommerce\\Database\\Seeders\\": "Modules/Ecommerce/database/seeders/",
             "Modules\\SuperAdmin\\": "Modules/SuperAdmin/app/",
             "Modules\\SuperAdmin\\Database\\Seeders\\": "Modules/SuperAdmin/database/seeders/",
             "Modules\\HumanResources\\": "Modules/HumanResources/app/",

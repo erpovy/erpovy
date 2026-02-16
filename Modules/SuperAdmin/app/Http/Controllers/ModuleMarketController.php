@@ -86,9 +86,9 @@ class ModuleMarketController extends Controller
                 'icon' => 'shopping_cart',
                 'color' => 'green',
                 'style_classes' => 'bg-green-500/20 text-green-400 ring-green-500/30 group-hover:bg-green-500',
-                'version' => 'v0.5.0',
-                'status' => 'coming_soon',
-                'is_installed' => false,
+                'version' => 'v1.0.0',
+                'status' => 'active',
+                'is_installed' => true,
             ],
              [
                 'id' => 'project',

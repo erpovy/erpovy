@@ -9,5 +9,6 @@
     "FixedAssets": true,
     "ServiceManagement": true,
     "Logistics": true,
-    "Purchasing": true
+    "Purchasing": true,
+    "Ecommerce": true
 }
