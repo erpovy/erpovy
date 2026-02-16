@@ -23,21 +23,45 @@ class GibPortalService
      */
     public function login()
     {
+        \Illuminate\Support\Facades\Log::info('GİB Login Metodu Tetiklendi');
         if (empty($this->company->gib_username) || empty($this->company->gib_password)) {
             throw new \Exception('Şirket ayarlarında GİB Portal kullanıcı adı veya şifresi eksik.');
         }
 
-        $response = Http::withoutVerifying()->asForm()->post($this->baseUrl . '/earsiv-services/assos-login', [
-            'assoscmd' => 'login',
-            'userid' => $this->company->gib_username,
-            'username' => $this->company->gib_username,
-            'password' => $this->company->gib_password,
-        ]);
+        // 1. Oturum hazırlığı için giriş sayfasını ziyaret et (Cookie/Referer hazırlığı)
+        Http::withoutVerifying()
+            ->withHeaders([
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+            ])
+            ->get($this->baseUrl . '/intragiris.html');
+
+        // 2. Login İsteği
+        $response = Http::withoutVerifying()
+            ->withHeaders([
+                'Referer' => 'https://earsivportal.efatura.gov.tr/intragiris.html',
+                'Origin' => 'https://earsivportal.efatura.gov.tr',
+                'Accept' => 'application/json, text/javascript, */*; q=0.01',
+                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+                'X-Requested-With' => 'XMLHttpRequest',
+            ])
+            ->asForm()
+            ->post($this->baseUrl . '/earsiv-services/assos-login', [
+                'assoscmd' => 'anologin',
+                'rtype' => 'json',
+                'userid' => $this->company->gib_username,
+                'sifre' => $this->company->gib_password,
+                'sifre2' => $this->company->gib_password,
+                'parola' => '1',
+            ]);
 
         $data = $response->json();
 
-        if (isset($data['error'])) {
-            throw new \Exception('GİB Giriş Hatası: ' . $data['messages'][0]['text'] ?? 'Bilinmeyen hata');
+        \Illuminate\Support\Facades\Log::info('GİB Login Yanıtı:', ['data' => $data]);
+
+        if (isset($data['error']) || (isset($data['messages']) && !empty($data['messages']))) {
+            $errorMsg = $data['messages'][0]['text'] ?? ($data['error'] ?? 'Bilinmeyen hata');
+            \Illuminate\Support\Facades\Log::error('GİB Giriş Hatası Detayı:', ['error' => $errorMsg, 'response' => $data]);
+            throw new \Exception('GİB Giriş Hatası: ' . $errorMsg);
         }
 
         if (!isset($data['token'])) {

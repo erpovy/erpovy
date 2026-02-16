@@ -131,7 +131,8 @@ class ETransformationController extends Controller
 
             return back()->with('success', "{$count} yeni gelen fatura başarıyla senkronize edildi.");
         } catch (\Exception $e) {
-            return back()->with('error', 'Senkronizasyon Hatası: ' . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Senkronizasyon Hatası:', ['message' => $e->getMessage(), 'trace' => $e->getTraceAsString()]);
+            return back()->with('error', 'Senkronizasyon Hatası Detayı: ' . $e->getMessage());
         }
     }
 
