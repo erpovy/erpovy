@@ -4,14 +4,13 @@ namespace Modules\Sales\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Company;
+use App\Traits\BelongsToCompany;
 use Modules\CRM\Models\Contact;
 use Modules\Inventory\Models\Product;
-use App\Scopes\TenantScope;
 
 class Rental extends Model
 {
-    use HasFactory;
+    use HasFactory, BelongsToCompany;
 
     protected $table = 'sales_rentals';
 
@@ -32,11 +31,6 @@ class Rental extends Model
         'end_date' => 'date',
         'daily_price' => 'decimal:2',
     ];
-
-    protected static function booted()
-    {
-        static::addGlobalScope(new TenantScope);
-    }
 
     public function company()
     {

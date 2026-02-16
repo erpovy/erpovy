@@ -5,13 +5,13 @@ namespace Modules\Sales\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Models\Company;
+use App\Traits\BelongsToCompany;
 use Modules\CRM\Models\Contact;
 use Modules\Inventory\Models\Product;
 
 class Subscription extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, BelongsToCompany;
 
     protected $fillable = [
         'company_id',
