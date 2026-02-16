@@ -27,11 +27,11 @@
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
                                     <label class="input-label">GİB Portal Kullanıcı Kodu</label>
-                                    <input type="text" name="gib_username" value="{{ old('gib_username', $company->gib_username ?? '') }}" class="custom-input" placeholder="Kullanıcı Kodu">
+                                    <input type="text" name="gib_username" value="{{ old('gib_username', $company?->gib_username ?? '') }}" class="custom-input" placeholder="Kullanıcı Kodu">
                                 </div>
                                 <div>
                                     <label class="input-label">GİB Portal Şifresi</label>
-                                    <input type="password" name="gib_password" value="{{ old('gib_password', $company->gib_password ? '********' : '') }}" class="custom-input" placeholder="Şifre">
+                                    <input type="password" name="gib_password" value="{{ old('gib_password', ($company?->gib_password ?? false) ? '********' : '') }}" class="custom-input" placeholder="Şifre">
                                     <p class="text-xs text-slate-500 mt-1">Güvenlik için şifreli saklanır.</p>
                                 </div>
                             </div>
