@@ -11,12 +11,15 @@
                 </p>
             </div>
             <div class="flex items-center gap-3">
-                <button class="group relative px-6 py-3 overflow-hidden rounded-xl bg-primary text-gray-900 dark:text-white font-black text-sm uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(var(--color-primary),0.3)]">
-                    <div class="relative flex items-center gap-2">
-                        <span class="material-symbols-outlined text-[20px]">sync</span>
-                        Portalı Senkronize Et
-                    </div>
-                </button>
+                <form action="{{ route('accounting.e-transformation.sync-incoming') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="group relative px-6 py-3 overflow-hidden rounded-xl bg-primary text-gray-900 dark:text-white font-black text-sm uppercase tracking-widest transition-all hover:scale-105 active:scale-95 shadow-[0_0_20px_rgba(var(--color-primary),0.3)]">
+                        <div class="relative flex items-center gap-2">
+                            <span class="material-symbols-outlined text-[20px]">sync</span>
+                            Portalı Senkronize Et
+                        </div>
+                    </button>
+                </form>
             </div>
         </div>
     </x-slot>
