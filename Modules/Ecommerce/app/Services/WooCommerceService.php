@@ -54,7 +54,7 @@ class WooCommerceService
     }
 
     /**
-     * Ürünleri çek
+     * Ürünleri çek (Sayfalı)
      */
     public function fetchProducts(array $params = [])
     {
@@ -62,11 +62,49 @@ class WooCommerceService
     }
 
     /**
-     * Siparişleri çek
+     * Tüm ürünleri çek (Pagination yönetimi ile)
+     */
+    public function fetchAllProducts(array $params = []): array
+    {
+        $allProducts = [];
+        $page = 1;
+        $params['per_page'] = 100; // Max per page for WooCommerce
+
+        do {
+            $params['page'] = $page;
+            $products = $this->fetchProducts($params);
+            $allProducts = array_merge($allProducts, $products);
+            $page++;
+        } while (count($products) == 100);
+
+        return $allProducts;
+    }
+
+    /**
+     * Siparişleri çek (Sayfalı)
      */
     public function fetchOrders(array $params = [])
     {
         return $this->request('get', 'orders', $params);
+    }
+
+    /**
+     * Tüm siparişleri çek
+     */
+    public function fetchAllOrders(array $params = []): array
+    {
+        $allOrders = [];
+        $page = 1;
+        $params['per_page'] = 100;
+
+        do {
+            $params['page'] = $page;
+            $orders = $this->fetchOrders($params);
+            $allOrders = array_merge($allOrders, $orders);
+            $page++;
+        } while (count($orders) == 100);
+
+        return $allOrders;
     }
 
     /**
@@ -85,7 +123,7 @@ class WooCommerceService
      */
     public function syncOrders(array $params = ['status' => 'processing']): int
     {
-        $wcOrders = $this->fetchOrders($params);
+        $wcOrders = $this->fetchAllOrders($params);
         $count = 0;
 
         foreach ($wcOrders as $wcOrder) {

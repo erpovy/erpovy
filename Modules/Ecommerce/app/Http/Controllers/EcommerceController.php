@@ -25,7 +25,7 @@ class EcommerceController extends Controller
     {
         $service = new WooCommerceService($platform);
         try {
-            $wcProducts = $service->fetchProducts();
+            $wcProducts = $service->fetchAllProducts();
             $count = 0;
 
             foreach ($wcProducts as $wcProduct) {
