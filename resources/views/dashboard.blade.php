@@ -400,9 +400,11 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <div class="text-sm font-black text-red-500">{{ number_format($product->current_stock) }}</div>
+                                <div class="text-sm font-black text-red-500" title="{{ (int)$product->current_stock }} {{ $product->unit?->symbol ?? 'Adet' }}">
+                                    {{ (int)$product->current_stock > 20 ? '20+' : (int)$product->current_stock }}
+                                </div>
                                 <div class="text-[10px] text-gray-600 dark:text-slate-400 font-bold uppercase">
-                                    {{ $product->unit->symbol ?? 'Adet' }}
+                                    {{ $product->unit?->symbol ?? 'Adet' }}
                                 </div>
                             </div>
                         </div>

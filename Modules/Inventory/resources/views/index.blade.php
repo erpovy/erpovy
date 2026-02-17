@@ -210,13 +210,13 @@
                                                     Stok Yok
                                                 </span>
                                             @elseif($stock <= ($product->min_stock_level ?? 0))
-                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-bold border border-orange-200 dark:border-orange-500/20">
-                                                    {{ $stock }} {{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}
+                                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-orange-50 dark:bg-orange-500/10 text-orange-600 dark:text-orange-400 text-xs font-bold border border-orange-200 dark:border-orange-500/20" title="{{ (int)$stock }} {{ $product->unit?->symbol ?? 'Adet' }}">
+                                                    {{ (int)$stock > 20 ? '20+' : (int)$stock }} {{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}
                                                     <span class="text-[10px] opacity-75">(Kritik)</span>
                                                 </span>
                                             @else
-                                                <span class="text-sm font-bold text-gray-700 dark:text-white">
-                                                    {{ $stock }} <span class="text-xs text-gray-400 font-normal">{{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}</span>
+                                                <span class="text-sm font-bold text-gray-700 dark:text-white" title="{{ (int)$stock }} {{ $product->unit?->symbol ?? 'Adet' }}">
+                                                    {{ (int)$stock > 20 ? '20+' : (int)$stock }} <span class="text-xs text-gray-400 font-normal">{{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}</span>
                                                 </span>
                                             @endif
                                         @else

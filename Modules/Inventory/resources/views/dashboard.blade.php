@@ -226,7 +226,9 @@
                                     </td>
                                     <td class="p-4 text-xs font-medium text-gray-500">{{ $product->category->name ?? '-' }}</td>
                                     <td class="p-4 text-center">
-                                        <span class="px-2 py-1 rounded-md bg-red-900/30 text-red-500 text-xs font-black">{{ number_format($product->current_stock) }} {{ $product->unit->symbol ?? '' }}</span>
+                                        <span class="px-2 py-1 rounded-md bg-red-900/30 text-red-500 text-xs font-black" title="{{ (int)$product->current_stock }} {{ $product->unit?->symbol ?? '' }}">
+                                            {{ (int)$product->current_stock > 20 ? '20+' : (int)$product->current_stock }} {{ $product->unit?->symbol ?? '' }}
+                                        </span>
                                     </td>
                                     <td class="p-4 text-center text-xs font-black text-gray-400">
                                         {{ number_format($product->critical_stock_level ?? $product->min_stock_level ?? 0) }}
