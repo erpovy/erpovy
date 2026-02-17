@@ -38,7 +38,14 @@ class EcommercePlatformController extends Controller
             'consumer_key' => 'required|string',
             'consumer_secret' => 'required|string',
             'status' => 'required|string|in:active,passive',
+            'settings' => 'nullable|array',
         ]);
+
+        if (isset($validated['settings']['sync_images'])) {
+            $validated['settings']['sync_images'] = (bool) $validated['settings']['sync_images'];
+        } else {
+            $validated['settings']['sync_images'] = false;
+        }
 
         EcommercePlatform::create($validated);
 
@@ -74,7 +81,14 @@ class EcommercePlatformController extends Controller
             'consumer_key' => 'nullable|string',
             'consumer_secret' => 'nullable|string',
             'status' => 'required|string|in:active,passive',
+            'settings' => 'nullable|array',
         ]);
+
+        if (isset($validated['settings']['sync_images'])) {
+            $validated['settings']['sync_images'] = (bool) $validated['settings']['sync_images'];
+        } else {
+            $validated['settings']['sync_images'] = false;
+        }
 
         if (empty($validated['consumer_key'])) unset($validated['consumer_key']);
         if (empty($validated['consumer_secret'])) unset($validated['consumer_secret']);

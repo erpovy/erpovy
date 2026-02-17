@@ -51,7 +51,20 @@
                         </div>
                     </div>
 
-                    <div class="space-y-2 pt-4">
+                    <div class="space-y-4 pt-4 border-t border-white/5">
+                        <label class="text-xs font-black text-gray-500 uppercase tracking-widest pl-1">Entegrasyon Ayarları</label>
+                        <div class="flex flex-col gap-3">
+                            <label class="flex items-center gap-3 cursor-pointer group">
+                                <div class="relative flex items-center">
+                                    <input type="checkbox" name="settings[sync_images]" value="1" {{ ($platform->settings['sync_images'] ?? true) ? 'checked' : '' }} class="w-5 h-5 rounded border-gray-300 text-primary focus:ring-primary bg-gray-100 dark:bg-white/5">
+                                </div>
+                                <span class="text-sm font-bold text-gray-700 dark:text-slate-300">Ürün Görsellerini Senkronize Et</span>
+                            </label>
+                            <p class="text-[10px] text-gray-500 pl-8">Etkinleştirildiğinde, ürün görselleri WooCommerce'den indirilir. Devre dışı bırakmak disk alanından tasarruf sağlar.</p>
+                        </div>
+                    </div>
+
+                    <div class="space-y-2 pt-4 border-t border-white/5">
                         <label class="text-xs font-black text-gray-500 uppercase tracking-widest pl-1">Durum</label>
                         <div class="flex gap-4">
                             <label class="flex items-center gap-2 cursor-pointer group">

@@ -67,16 +67,23 @@ class EcommerceController extends Controller
 
                 // Handle Image
                 $imagePath = null;
-                if (!empty($wcProduct['images'])) {
+                $syncImages = $platform->settings['sync_images'] ?? true;
+
+                if ($syncImages && !empty($wcProduct['images'])) {
                     $imageUrl = $wcProduct['images'][0]['src'];
                     try {
                         $imageContents = Http::get($imageUrl)->body();
                         $extension = pathinfo(parse_url($imageUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
                         $filename = 'products/' . Str::slug($wcProduct['name']) . '-' . time() . '.' . $extension;
-                        Storage::disk('public')->put($filename, $imageContents);
+                        
+                        // Attempt to save image with disk space check
+                        if (!Storage::disk('public')->put($filename, $imageContents)) {
+                            throw new \Exception('Failed to write image to disk (possibly disk full).');
+                        }
                         $imagePath = $filename;
                     } catch (\Exception $e) {
-                        \Illuminate\Support\Facades\Log::error('WC Image Download Error: ' . $e->getMessage());
+                        \Illuminate\Support\Facades\Log::warning('WC Image Sync Error: ' . $e->getMessage() . ' for product ' . $wcProduct['name']);
+                        // Continue sync without image
                     }
                 }
 
