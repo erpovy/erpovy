@@ -4,7 +4,17 @@
     </x-slot>
 
     <x-card class="p-6">
-        <h2 class="text-xl font-bold text-white mb-6">Ürün Bilgileri</h2>
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-white">Ürün Bilgileri</h2>
+            @if($product->stock_track)
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-primary/10 border border-primary/20">
+                    <span class="material-symbols-outlined text-[18px] text-primary">inventory_2</span>
+                    <span class="text-xs font-black text-primary uppercase tracking-wider">
+                        Mevcut Stok: {{ (int)$product->stock }} {{ $product->unit?->symbol ?? 'Adet' }}
+                    </span>
+                </div>
+            @endif
+        </div>
 
         <form action="{{ route('inventory.products.update', $product) }}" method="POST">
             @csrf
