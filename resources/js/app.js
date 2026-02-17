@@ -29,16 +29,18 @@ Alpine.data('sidebarMenu', (initialState) => ({
 Alpine.start();
 
 // Global Preloader Control
-window.showLoader = (title = 'Veriler İşleniyor', message = 'Lütfen bekleyin, işleminiz gerçekleştiriliyor...') => {
+window.showLoader = (title = 'Veriler İşleniyor', message = 'Lütfen bekleyin...') => {
     const loader = document.getElementById('global-preloader');
     const titleEl = document.getElementById('preloader-title');
     const messageEl = document.getElementById('preloader-message');
 
-    if (loader && titleEl && messageEl) {
-        titleEl.textContent = title;
-        messageEl.textContent = message;
+    if (loader) {
+        if (titleEl) titleEl.textContent = title;
+        if (messageEl) messageEl.textContent = message;
+
         loader.classList.remove('hidden');
-        setTimeout(() => loader.classList.add('active'), 10);
+        // Small delay to trigger transition
+        setTimeout(() => loader.classList.add('active'), 50);
     }
 };
 
@@ -46,7 +48,8 @@ window.hideLoader = () => {
     const loader = document.getElementById('global-preloader');
     if (loader) {
         loader.classList.remove('active');
-        setTimeout(() => loader.classList.add('hidden'), 300);
+        // Wait for transition to finish before hiding
+        setTimeout(() => loader.classList.add('hidden'), 500);
     }
 };
 
