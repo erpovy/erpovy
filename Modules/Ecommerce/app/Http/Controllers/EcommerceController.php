@@ -126,8 +126,16 @@ class EcommerceController extends Controller
                             $product->restore();
                         }
                         $product->update($productData);
+                    } else {
+                        // The product was permanently deleted, but the mapping remains.
+                        // Delete the orphaned mapping to allow re-creation.
+                        $mapping->delete();
+                        $mapping = null; // Set to null so the creation logic below kicks in
                     }
-                } else {
+                }
+                
+                // If no mapping exists (or was just deleted above), try to find by SKU or create
+                if (!$mapping) {
                     // Try to find by SKU in Inventory (including trashed)
                     $product = Product::where('company_id', $platform->company_id)
                         ->where('code', $sku)

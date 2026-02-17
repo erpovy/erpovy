@@ -254,6 +254,11 @@ class ProductController extends Controller
      */
     public function destroy(Product $product): RedirectResponse
     {
+        // Clean up ecommerce mappings before deletion
+        \Modules\Ecommerce\Models\EcommerceMapping::where('mappable_id', $product->id)
+            ->where('mappable_type', Product::class)
+            ->delete();
+
         // Permanently delete the product
         $product->forceDelete();
 
@@ -318,6 +323,11 @@ class ProductController extends Controller
         if (empty($ids)) {
             return back()->with('error', 'Lütfen en az bir ürün seçin.');
         }
+
+        // Clean up ecommerce mappings for bulk deletion
+        \Modules\Ecommerce\Models\EcommerceMapping::whereIn('mappable_id', $ids)
+            ->where('mappable_type', Product::class)
+            ->delete();
 
         $count = Product::whereIn('id', $ids)
             ->where('company_id', auth()->user()->company_id)
