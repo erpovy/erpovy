@@ -6,6 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Modules\Ecommerce\Models\EcommercePlatform;
 use Modules\Ecommerce\Services\WooCommerceService;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use Modules\Inventory\Models\Category;
+use Modules\Inventory\Models\Product;
+use Modules\Inventory\Models\Warehouse;
+use Modules\Inventory\Models\StockMovement;
+use Modules\Ecommerce\Models\EcommerceMapping;
 
 class EcommerceController extends Controller
 {
@@ -39,10 +47,62 @@ class EcommerceController extends Controller
                 $manageStock = $wcProduct['manage_stock'] ?? false;
                 $wcStock = $wcProduct['stock_quantity'] ?? 0;
 
+                // Handle Category
+                $categoryId = null;
+                if (!empty($wcProduct['categories'])) {
+                    $wcCategory = $wcProduct['categories'][0]; // Take the first category
+                    $category = Category::where('company_id', $platform->company_id)
+                        ->where('name', $wcCategory['name'])
+                        ->first();
+                    
+                    if (!$category) {
+                        $category = Category::create([
+                            'company_id' => $platform->company_id,
+                            'name' => $wcCategory['name'],
+                            'is_active' => true
+                        ]);
+                    }
+                    $categoryId = $category->id;
+                }
+
+                // Handle Image
+                $imagePath = null;
+                if (!empty($wcProduct['images'])) {
+                    $imageUrl = $wcProduct['images'][0]['src'];
+                    try {
+                        $imageContents = Http::get($imageUrl)->body();
+                        $extension = pathinfo(parse_url($imageUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
+                        $filename = 'products/' . Str::slug($wcProduct['name']) . '-' . time() . '.' . $extension;
+                        Storage::disk('public')->put($filename, $imageContents);
+                        $imagePath = $filename;
+                    } catch (\Exception $e) {
+                        \Illuminate\Support\Facades\Log::error('WC Image Download Error: ' . $e->getMessage());
+                    }
+                }
+
+                // Prepare Data
+                $productData = [
+                    'name' => $wcProduct['name'],
+                    'sale_price' => $wcProduct['price'] ?: 0,
+                    'description' => strip_tags($wcProduct['description']),
+                    'stock_track' => $manageStock,
+                    'category_id' => $categoryId,
+                    'weight' => $wcProduct['weight'] ?: null,
+                    'dimensions' => [
+                        'length' => $wcProduct['dimensions']['length'] ?? null,
+                        'width' => $wcProduct['dimensions']['width'] ?? null,
+                        'height' => $wcProduct['dimensions']['height'] ?? null,
+                    ],
+                ];
+
+                if ($imagePath) {
+                    $productData['image_path'] = $imagePath;
+                }
+
                 // Check mapping first
-                $mapping = \Modules\Ecommerce\Models\EcommerceMapping::where('ecommerce_platform_id', $platform->id)
+                $mapping = EcommerceMapping::where('ecommerce_platform_id', $platform->id)
                     ->where('external_id', $wcProduct['id'])
-                    ->where('mappable_type', \Modules\Inventory\Models\Product::class)
+                    ->where('mappable_type', Product::class)
                     ->first();
 
                 if ($mapping) {
@@ -51,17 +111,11 @@ class EcommerceController extends Controller
                         if ($product->trashed()) {
                             $product->restore();
                         }
-                        
-                        $product->update([
-                            'name' => $wcProduct['name'],
-                            'sale_price' => $wcProduct['price'] ?: 0,
-                            'description' => strip_tags($wcProduct['description']),
-                            'stock_track' => $manageStock,
-                        ]);
+                        $product->update($productData);
                     }
                 } else {
                     // Try to find by SKU in Inventory (including trashed)
-                    $product = \Modules\Inventory\Models\Product::where('company_id', $platform->company_id)
+                    $product = Product::where('company_id', $platform->company_id)
                         ->where('code', $sku)
                         ->withTrashed()
                         ->first();
@@ -70,31 +124,22 @@ class EcommerceController extends Controller
                         if ($product->trashed()) {
                             $product->restore();
                         }
-                        $product->update([
-                            'name' => $wcProduct['name'],
-                            'sale_price' => $wcProduct['price'] ?: 0,
-                            'description' => strip_tags($wcProduct['description']),
-                            'stock_track' => $manageStock,
-                        ]);
+                        $product->update($productData);
                     } else {
                         // Create new product
-                        $product = \Modules\Inventory\Models\Product::create([
+                        $product = Product::create(array_merge($productData, [
                             'company_id' => $platform->company_id,
-                            'name' => $wcProduct['name'],
                             'code' => $sku,
-                            'sale_price' => $wcProduct['price'] ?: 0,
-                            'description' => strip_tags($wcProduct['description']),
                             'is_active' => true,
-                            'stock_track' => $manageStock,
-                        ]);
+                        ]));
                     }
 
                     // Create mapping
-                    \Modules\Ecommerce\Models\EcommerceMapping::create([
+                    EcommerceMapping::create([
                         'company_id' => $platform->company_id,
                         'ecommerce_platform_id' => $platform->id,
                         'mappable_id' => $product->id,
-                        'mappable_type' => \Modules\Inventory\Models\Product::class,
+                        'mappable_type' => Product::class,
                         'external_id' => $wcProduct['id'],
                         'remote_data' => $wcProduct,
                     ]);
@@ -105,7 +150,7 @@ class EcommerceController extends Controller
                     $diff = $wcStock - $localStock;
 
                     if ($diff != 0) {
-                        \Modules\Inventory\Models\StockMovement::create([
+                        StockMovement::create([
                             'company_id' => $platform->company_id,
                             'user_id' => auth()->id() ?? 1,
                             'product_id' => $product->id,
