@@ -225,7 +225,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-right">
                                         <div class="flex items-center justify-end gap-2">
-                                            @if($product->type == 'good' && $product->stock_track)
+                                            @if(($product->productType?->code == 'good' || $product->type == 'good') && $product->stock_track)
                                                 <button @click="openAdjustmentModal('{{ $product->id }}', '{{ $product->name }}', '{{ $stock }}', '{{ $product->unit?->symbol ?? $product->unit?->name ?? 'Adet' }}')" 
                                                         class="p-2 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-500/20 border border-blue-200 dark:border-blue-500/20 transition-all" title="Stok Düzeltme">
                                                     <span class="material-symbols-outlined text-[18px]">swap_vert</span>
