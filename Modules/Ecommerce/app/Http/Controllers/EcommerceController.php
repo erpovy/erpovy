@@ -40,6 +40,11 @@ class EcommerceController extends Controller
 
             $wcProducts = $service->fetchAllProducts();
             $count = 0;
+            $skipped = 0;
+
+            // Get default product type ID
+            $defaultProductTypeId = \Modules\Inventory\Models\ProductType::where('code', 'good')->value('id') 
+                ?? \Modules\Inventory\Models\ProductType::first()->id;
 
             foreach ($wcProducts as $wcProduct) {
                 // Determine SKU/Code
@@ -90,11 +95,13 @@ class EcommerceController extends Controller
                 // Prepare Data
                 $productData = [
                     'name' => $wcProduct['name'],
+                    'product_type_id' => $defaultProductTypeId, // Set default type
                     'sale_price' => $wcProduct['price'] ?: 0,
                     'description' => strip_tags($wcProduct['description']),
                     'stock_track' => $manageStock,
                     'category_id' => $categoryId,
                     'weight' => $wcProduct['weight'] ?: null,
+                    'is_active' => true,
                     'dimensions' => [
                         'length' => $wcProduct['dimensions']['length'] ?? null,
                         'width' => $wcProduct['dimensions']['width'] ?? null,
@@ -152,6 +159,11 @@ class EcommerceController extends Controller
                     ]);
                 }
 
+                if (!$product) {
+                    $skipped++;
+                    continue;
+                }
+
                 if ($product && $manageStock && $defaultWarehouse) {
                     $localStock = $product->stock;
                     $diff = $wcStock - $localStock;
@@ -175,7 +187,12 @@ class EcommerceController extends Controller
             
             $platform->update(['last_sync_at' => now()]);
             
-            return back()->with('success', $count . ' ürün başarıyla senkronize edildi.');
+            $msg = $count . ' ürün başarıyla senkronize edildi.';
+            if ($skipped > 0) {
+                $msg .= " ($skipped ürün atlandı).";
+            }
+            
+            return back()->with('success', $msg);
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error('WooCommerce Sync Products Error: ' . $e->getMessage());
             return back()->with('error', 'Ürün senkronizasyon hatası: ' . $e->getMessage());
