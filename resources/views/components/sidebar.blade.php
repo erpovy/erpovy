@@ -698,6 +698,10 @@
                             <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('servicemanagement.service-records.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
                             Servis Kayıtları
                         </a>
+                        <a href="{{ route('servicemanagement.pos.index') }}" class="flex items-center gap-3 rounded-lg px-4 py-2 text-sm transition-colors {{ request()->routeIs('servicemanagement.pos.*') ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-white/10' : 'text-slate-500 hover:text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-white/5' }}">
+                            <span class="w-1.5 h-1.5 rounded-full {{ request()->routeIs('servicemanagement.pos.*') ? 'bg-primary shadow-[0_0_5px_#137fec]' : 'bg-gray-600' }}"></span>
+                            Satış Noktası
+                        </a>
                     </div>
                 </div>
                 @endif

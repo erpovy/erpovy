@@ -42,6 +42,7 @@ class Invoice extends Model
         'external_id',
         'ubl_xml',
         'process_status',
+        'plate_number',
     ];
 
     protected static function boot()

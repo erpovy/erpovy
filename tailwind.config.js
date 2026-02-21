@@ -32,6 +32,9 @@ export default {
             boxShadow: {
                 'neon': '0 0 10px rgba(19, 127, 236, 0.5), 0 0 20px rgba(19, 127, 236, 0.3)',
                 'glass': '0 4px 30px rgba(0, 0, 0, 0.1)',
+            },
+            gridTemplateColumns: {
+                '16': 'repeat(16, minmax(0, 1fr))',
             }
         },
     },

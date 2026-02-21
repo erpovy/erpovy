@@ -1,14 +1,15 @@
 <x-app-layout>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <div x-data="posSystem()" class="fixed inset-0 z-50 bg-gray-50 dark:bg-[#0f172a] overflow-hidden flex flex-col font-sans select-none">
         <!-- POS Header -->
         <header class="h-14 bg-white dark:bg-white/5 border-b border-gray-200 dark:border-white/10 backdrop-blur-3xl flex items-center justify-between px-4 shrink-0">
             <div class="flex items-center gap-6">
-                <a href="{{ route('sales.sales.index') }}" class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-white/5 flex items-center justify-center text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white transition-all group shrink-0">
+                <a href="{{ route('servicemanagement.index') }}" class="w-8 h-8 rounded-lg bg-gray-100 dark:bg-white/5 flex items-center justify-center text-gray-500 dark:text-slate-400 hover:bg-gray-200 dark:hover:bg-white/10 hover:text-gray-900 dark:hover:text-white transition-all group shrink-0">
                     <span class="material-symbols-outlined text-lg group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
                 </a>
                 <div class="shrink-0">
-                    <h1 class="text-sm font-black text-gray-900 dark:text-white tracking-tight leading-none uppercase">POS</h1>
-                    <p class="text-[8px] font-bold text-primary uppercase tracking-widest">X1M #01</p>
+                    <h1 class="text-sm font-black text-gray-900 dark:text-white tracking-tight leading-none uppercase">SERVİS POS</h1>
+                    <p class="text-[8px] font-bold text-primary uppercase tracking-widest">X1M #S-01</p>
                 </div>
             </div>
 
@@ -66,10 +67,7 @@
                                 <h3 class="text-[10px] font-black text-gray-900 dark:text-white group-hover:text-primary transition-colors leading-[1.1] mb-0.5" x-text="product.name"></h3>
                             </div>
 
-                            <div class="flex items-center justify-between mt-1 pt-1 border-t border-gray-100 dark:border-white/5">
-                                <div class="text-primary font-black text-xs tracking-tighter">
-                                    ₺<span x-text="formatNumber(product.sale_price)"></span>
-                                </div>
+                            <div class="flex items-center justify-end mt-1 pt-1 border-t border-gray-100 dark:border-white/5">
                                 <div class="w-6 h-6 rounded-md bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 flex items-center justify-center text-gray-400 dark:text-slate-400 group-hover:bg-primary group-hover:text-white transition-all scale-75">
                                     <span class="material-symbols-outlined text-sm">add</span>
                                 </div>
@@ -130,7 +128,6 @@
                                                 <span class="material-symbols-outlined text-[10px]">add</span>
                                             </button>
                                         </div>
-                                        <span class="text-[8px] font-bold text-gray-500 dark:text-slate-500">₺<span x-text="formatNumber(item.sale_price)"></span></span>
                                     </div>
                                     <!-- Line Discount -->
                                     <div class="mt-0.5 flex items-center gap-1.5">
@@ -139,7 +136,6 @@
                                     </div>
                                 </div>
                                 <div class="text-right shrink-0">
-                                    <div class="text-[11px] font-black text-gray-900 dark:text-white tracking-tighter">₺<span x-text="formatNumber(calculateLineTotal(item))"></span></div>
                                     <button @click="removeFromCart(index)" class="absolute top-1.5 right-1.5 text-gray-400 dark:text-slate-600 hover:text-red-500 transition-colors">
                                         <span class="material-symbols-outlined text-sm">close</span>
                                     </button>
@@ -159,75 +155,48 @@
                             </div>
                         </div>
                         <h4 class="text-[10px] font-black text-gray-900 dark:text-white uppercase tracking-[0.2em] mb-1">Sepetiniz Boş</h4>
-                        <p class="text-[8px] text-gray-500 dark:text-slate-500 text-center leading-relaxed max-w-[140px]">Lütfen satışa başlamak için bir ürün seçin.</p>
+                        <p class="text-[8px] text-gray-500 dark:text-slate-500 text-center leading-relaxed max-w-[140px]">Lütfen servis satışına başlamak için bir ürün veya hizmet seçin.</p>
+                    </div>
+                </div>
+
+                <!-- Vehicle Plate Input -->
+                <div class="px-3 py-2 bg-gray-50/50 dark:bg-white/5 border-t border-gray-200 dark:border-white/10">
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-[8px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest pl-1">ARAÇ PLAKASI</label>
+                        <div class="relative flex items-stretch h-14 bg-white dark:bg-slate-900 border-2 border-gray-900 dark:border-white rounded-lg overflow-hidden shadow-sm group">
+                            <!-- TR Stripe -->
+                            <div class="w-8 bg-blue-700 flex flex-col items-center justify-end pb-2 shrink-0">
+                                <span class="text-[8px] font-black text-white leading-none">TR</span>
+                            </div>
+                            <!-- Input -->
+                            <input 
+                                type="text" 
+                                x-model="plateNumber" 
+                                placeholder="34 ABC 123" 
+                                class="flex-1 min-w-0 bg-transparent border-0 text-center text-2xl font-black text-gray-900 dark:text-white uppercase tracking-[0.1em] focus:ring-0 py-0 placeholder:text-gray-200 dark:placeholder:text-white/10"
+                            >
+                            <!-- OCR Trigger -->
+                            <button 
+                                @click="$refs.ocrInput.click()"
+                                class="w-14 flex items-center justify-center bg-gray-100 dark:bg-white/5 hover:bg-primary hover:text-white dark:hover:bg-primary transition-all border-l border-gray-900 dark:border-white group/ocr shrink-0"
+                                title="Plaka Fotoğrafı Okut"
+                            >
+                                <span class="material-symbols-outlined text-2xl group-hover/ocr:scale-110 transition-transform">photo_camera</span>
+                            </button>
+                            <input 
+                                type="file" 
+                                x-ref="ocrInput" 
+                                @change="handleOcr($event)" 
+                                accept="image/*" 
+                                class="hidden"
+                                capture="environment"
+                            >
+                        </div>
                     </div>
                 </div>
 
                 <!-- Footer / Checkout -->
                 <div class="p-3 bg-gray-50/80 dark:bg-[#0f172a]/80 backdrop-blur-4xl border-t border-gray-200 dark:border-white/10 space-y-3 shrink-0">
-                    <div class="grid grid-cols-2 gap-2">
-                        <div class="space-y-1">
-                            <div class="flex justify-between items-center text-[8px] font-black text-gray-500 dark:text-slate-500 uppercase tracking-tighter">
-                                <span>ARA TOPLAM</span>
-                                <span class="text-gray-900 dark:text-white">₺<span x-text="formatNumber(subtotal)"></span></span>
-                            </div>
-                            <div class="flex justify-between items-center text-[8px] font-black text-gray-500 dark:text-slate-500 uppercase tracking-tighter">
-                                <span>KDV (%20)</span>
-                                <span class="text-gray-900 dark:text-white">₺<span x-text="formatNumber(taxTotal)"></span></span>
-                            </div>
-                            <div x-show="discountTotal > 0" class="flex justify-between items-center text-[8px] font-black text-orange-400 uppercase tracking-tighter">
-                                <span>İNDİRİM</span>
-                                <span>-₺<span x-text="formatNumber(discountTotal)"></span></span>
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-end text-right px-2 py-1 rounded-xl bg-primary/5 border border-primary/10 relative overflow-hidden group">
-                            <div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                            <span class="text-[7px] font-black text-primary uppercase tracking-widest leading-none mb-1 relative z-10">TOPLAM</span>
-                            <div class="text-2xl lg:text-3xl font-black text-primary tracking-tighter leading-none relative z-10">
-                                <span class="text-sm opacity-50 mr-0.5">₺</span><span x-text="formatNumber(total)"></span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Payment Section Card -->
-                    <div class="bg-white dark:bg-white/5 rounded-2xl p-2.5 border border-gray-200 dark:border-white/10 shadow-sm relative overflow-hidden">
-                        <div class="flex items-center gap-2.5 mb-2.5 relative z-10">
-                            <div class="flex-1">
-                                <label class="block text-[7px] font-black text-gray-500 dark:text-slate-500 uppercase mb-1 tracking-widest">ALINAN</label>
-                                <div class="relative group">
-                                    <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-primary font-black text-xs group-focus-within:scale-110 transition-transform">₺</span>
-                                    <input type="number" x-model.number="receivedAmount" @input="calculateChange()" class="w-full bg-gray-50 dark:bg-slate-900/50 border-gray-200 dark:border-white/5 rounded-lg py-1 pl-6 pr-2 text-base font-black text-gray-900 dark:text-white focus:border-primary focus:ring-0 tracking-tighter transition-all">
-                                </div>
-                            </div>
-                            <div class="w-px h-8 bg-gray-200 dark:bg-white/10 self-end mb-1"></div>
-                            <div class="flex-1">
-                                <label class="block text-[7px] font-black text-gray-500 dark:text-slate-500 uppercase mb-1 tracking-widest">ÜSTÜ</label>
-                                <div class="text-xl font-black text-green-500 tracking-tighter leading-none py-1">
-                                    ₺<span x-text="formatNumber(changeAmount)"></span>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="grid grid-cols-2 gap-2 relative z-10">
-                            <button 
-                                @click="paymentMethod = 'cash'" 
-                                :class="paymentMethod === 'cash' ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20 scale-[1.02]' : 'bg-gray-50 dark:bg-white/5 text-gray-500 border-gray-200 dark:border-white/5'"
-                                class="flex items-center justify-center gap-1.5 py-2.5 rounded-xl border transition-all font-black uppercase text-[9px] group"
-                            >
-                                <span class="material-symbols-outlined text-sm group-hover:rotate-12 transition-transform">payments</span>
-                                NAKİT
-                            </button>
-                            <button 
-                                @click="paymentMethod = 'card'"
-                                :class="paymentMethod === 'card' ? 'bg-blue-600 text-white border-blue-600 shadow-lg shadow-blue-600/20 scale-[1.02]' : 'bg-gray-50 dark:bg-white/5 text-gray-500 border-gray-200 dark:border-white/5'"
-                                class="flex items-center justify-center gap-1.5 py-2.5 rounded-xl border transition-all font-black uppercase text-[9px] group"
-                            >
-                                <span class="material-symbols-outlined text-sm group-hover:rotate-12 transition-transform">credit_card</span>
-                                KART
-                            </button>
-                        </div>
-                    </div>
-
                     <!-- Checkout Button Container -->
                     <div class="pt-1">
                         <button 
@@ -237,7 +206,7 @@
                         >
                             <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/10 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                             <span x-show="!isProcessing" class="flex items-center justify-center gap-2 relative z-10">
-                                SİPARİŞİ TAMAMLA
+                                SERVİSİ TAMAMLA
                                 <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform">rocket_launch</span>
                             </span>
                             <span x-show="isProcessing" class="flex items-center justify-center gap-2 relative z-10">
@@ -257,15 +226,37 @@
                 <div class="w-16 h-16 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center mx-auto mb-4 animate-bounce">
                     <span class="material-symbols-outlined text-4xl">check_circle</span>
                 </div>
-                <h2 class="text-xl font-black text-gray-900 dark:text-white mb-2 uppercase tracking-tighter">Satış Tamamlandı!</h2>
+                <h2 class="text-xl font-black text-gray-900 dark:text-white mb-2 uppercase tracking-tighter">Servis Tamamlandı!</h2>
                 <div class="text-xs text-gray-500 dark:text-slate-400 mb-6">İşlem başarıyla kaydedildi.</div>
                 
                 <button 
-                    @click="showSuccessModal = false" 
+                    @click="closeSuccessModal()" 
                     class="w-full py-2 rounded-lg bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white font-black text-xs uppercase hover:bg-gray-200 dark:hover:bg-white/10 transition-all"
                 >
                     TAMAM
                 </button>
+            </div>
+        </div>
+
+        <!-- OCR Scanning Overlay -->
+        <div x-show="isOcrScanning" 
+             x-cloak
+             class="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/80 backdrop-blur-md">
+            <div class="text-center max-w-md px-6">
+                <!-- Preview of what the OCR is seeing -->
+                <div x-show="ocrPreview" class="mb-6 rounded-2xl overflow-hidden border-2 border-primary/30 shadow-2xl">
+                    <img :src="ocrPreview" class="w-full h-auto max-h-48 object-contain bg-slate-900" alt="OCR Target">
+                    <div class="bg-primary/10 py-2 text-[10px] text-primary font-black uppercase tracking-widest border-t border-primary/20">ODAKLANAN BÖLGE</div>
+                </div>
+
+                <div x-show="!ocrPreview" class="relative w-24 h-24 mx-auto mb-6">
+                    <div class="absolute inset-0 border-4 border-primary/20 rounded-2xl"></div>
+                    <div class="absolute inset-x-0 top-0 h-0.5 bg-primary animate-[scan_2s_ease-in-out_infinite] shadow-[0_0_15px_#137fec]"></div>
+                    <span class="material-symbols-outlined text-[48px] text-primary absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">document_scanner</span>
+                </div>
+                
+                <h3 class="text-xl font-black text-white mb-2 uppercase tracking-tighter" x-text="ocrStatus">Karakterler Okunuyor</h3>
+                <p class="text-slate-400 text-sm font-bold uppercase tracking-widest animate-pulse">Lütfen bekleyin...</p>
             </div>
         </div>
     </div>
@@ -299,6 +290,11 @@
         .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.05); border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.1); }
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+        
+        @keyframes scan {
+            0%, 100% { top: 0; }
+            50% { top: 100%; }
+        }
     </style>
 
     <script>
@@ -313,6 +309,11 @@
                 receivedAmount: 0,
                 changeAmount: 0,
                 isProcessing: false,
+                // OCR Properties
+                isOcrScanning: false,
+                ocrStatus: 'Analiz Ediliyor',
+                ocrPreview: null,
+                plateNumber: '',
                 subtotal: 0,
                 taxTotal: 0,
                 discountTotal: 0,
@@ -333,7 +334,7 @@
 
                 async searchProducts() {
                     try {
-                        let url = `{{ route('sales.pos.products') }}?search=${this.searchQuery}`;
+                        let url = `{{ route('servicemanagement.pos.products') }}?search=${this.searchQuery}`;
                         if (this.filterType !== 'all') url += `&type=${this.filterType}`;
                         const response = await fetch(url);
                         this.products = await response.json();
@@ -357,7 +358,7 @@
                         });
                     }
                     this.calculateTotals();
-                    this.notify('Ürün eklendi');
+                    this.notify('Ürün/Hizmet eklendi');
                 },
 
                 removeFromCart(index) {
@@ -412,7 +413,7 @@
                     this.isProcessing = true;
                     
                     try {
-                        const response = await fetch(`{{ route('sales.pos.checkout') }}`, {
+                        const response = await fetch(`{{ route('servicemanagement.pos.checkout') }}`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
@@ -423,7 +424,8 @@
                                 contact_id: this.selectedCustomer,
                                 payment_method: this.paymentMethod,
                                 discount_total: this.discountTotal,
-                                received_amount: this.receivedAmount
+                                received_amount: this.receivedAmount,
+                                plate_number: this.plateNumber
                             })
                         });
 
@@ -446,43 +448,9 @@
                     this.cart = [];
                     this.receivedAmount = 0;
                     this.changeAmount = 0;
+                    this.plateNumber = '';
                     this.calculateTotals();
                     this.searchProducts();
-                },
-
-                printReceipt() {
-                    // Quick and dirty receipt print
-                    const printWindow = window.open('', '', 'width=300,height=600');
-                    if (!printWindow) return;
-                    
-                    let productsHtml = '';
-                    this.cart.forEach(item => {
-                        productsHtml += `
-                            <div style="display:flex;justify-content:space-between;font-size:12px;">
-                                <span>${item.name} x${item.quantity}</span>
-                                <span>${this.formatNumber(this.calculateLineTotal(item))}TL</span>
-                            </div>
-                        `;
-                    });
-
-                    printWindow.document.write(`
-                        <div style="font-family:monospace;padding:20px;width:260px;">
-                            <h2 style="text-align:center;margin-bottom:5px;">ERPOVY X1M</h2>
-                            <p style="text-align:center;font-size:10px;margin-bottom:20px;">Bilgi Fişi<br>${new Date().toLocaleString()}</p>
-                            <hr style="border-top:1px dashed #000;">
-                            <div style="margin:10px 0;">${productsHtml}</div>
-                            <hr style="border-top:1px dashed #000;">
-                            <div style="font-weight:bold;display:flex;justify-content:space-between;font-size:14px;margin-top:10px;">
-                                <span>TOPLAM:</span>
-                                <span>${this.formatNumber(this.total)}TL</span>
-                            </div>
-                            <p style="text-align:center;font-size:10px;margin-top:30px;">Teşekkür Ederiz!</p>
-                        </div>
-                    `);
-                    printWindow.document.close();
-                    printWindow.focus();
-                    printWindow.print();
-                    printWindow.close();
                 },
 
                 clearCart() {
@@ -497,6 +465,161 @@
                         document.documentElement.requestFullscreen();
                     } else {
                         if (document.exitFullscreen) document.exitFullscreen();
+                    }
+                },
+
+                preprocessImage(file) {
+                    return new Promise((resolve) => {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            const img = new Image();
+                            img.onload = () => {
+                                const canvas = document.createElement('canvas');
+                                const ctx = canvas.getContext('2d');
+                                
+                                const focusWidth = img.width * 0.8;
+                                const focusHeight = img.height * 0.5;
+                                const focusX = (img.width - focusWidth) / 2;
+                                const focusY = img.height * 0.4;
+                                
+                                canvas.width = focusWidth;
+                                canvas.height = focusHeight;
+                                ctx.drawImage(img, focusX, focusY, focusWidth, focusHeight, 0, 0, focusWidth, focusHeight);
+
+                                const imageData = ctx.getImageData(0, 0, focusWidth, focusHeight);
+                                const data = imageData.data;
+                                
+                                // Copy for Pass 1 (Grayscale)
+                                const grayData = new Uint8ClampedArray(data);
+                                for (let i = 0; i < grayData.length; i += 4) {
+                                    const gray = (data[i] * 0.299 + data[i+1] * 0.587 + data[i+2] * 0.114);
+                                    grayData[i] = grayData[i+1] = grayData[i+2] = gray;
+                                }
+                                
+                                // Thresholding logic for Pass 2
+                                const hist = new Array(256).fill(0);
+                                for (let i = 0; i < grayData.length; i += 4) hist[Math.round(grayData[i])]++;
+                                
+                                let total = grayData.length / 4, sum = 0;
+                                for (let i = 0; i < 256; i++) sum += i * hist[i];
+                                let sumB = 0, wB = 0, wF = 0, varMax = 0, threshold = 0;
+                                for (let i = 0; i < 256; i++) {
+                                    wB += hist[i];
+                                    if (wB === 0) continue;
+                                    wF = total - wB;
+                                    if (wF === 0) break;
+                                    sumB += i * hist[i];
+                                    let mB = sumB / wB;
+                                    let mF = (sum - sumB) / wF;
+                                    let varBetween = wB * wF * (mB - mF) * (mB - mF);
+                                    if (varBetween > varMax) {
+                                        varMax = varBetween;
+                                        threshold = i;
+                                    }
+                                }
+
+                                const pass2Data = new ImageData(new Uint8ClampedArray(grayData), focusWidth, focusHeight);
+                                for (let i = 0; i < pass2Data.data.length; i += 4) {
+                                    const v = pass2Data.data[i] > threshold ? 255 : 0;
+                                    pass2Data.data[i] = pass2Data.data[i+1] = pass2Data.data[i+2] = v;
+                                }
+
+                                ctx.putImageData(new ImageData(grayData, focusWidth, focusHeight), 0, 0);
+                                const pass1Url = canvas.toDataURL('image/jpeg', 0.9);
+                                
+                                ctx.putImageData(pass2Data, 0, 0);
+                                const pass2Url = canvas.toDataURL('image/jpeg', 0.9);
+
+                                this.ocrPreview = pass2Url;
+                                resolve({ pass1: pass1Url, pass2: pass2Url });
+                            };
+                            img.src = e.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    });
+                },
+
+                scoreResult(text) {
+                    if (!text) return -1;
+                    const cleaned = text.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                    
+                    // Standard Turkish Patterns:
+                    // 1. 00 A 0000 (7)
+                    // 2. 00 AA 000 (7)
+                    // 3. 00 AAA 00 (7)
+                    // 4. 00 AA 0000 (8)
+                    // 5. 00 AAA 000 (8)
+                    
+                    let score = 0;
+                    if (/[0-8][0-9][A-Z]{1,3}[0-9]{2,4}/.test(cleaned)) {
+                        score += 100;
+                        // High priority for standard lengths (7 or 8)
+                        if (cleaned.length === 7 || cleaned.length === 8) score += 50;
+                        // Penalty for unusually long plates (likely noise)
+                        if (cleaned.length > 8) score -= (cleaned.length - 8) * 10;
+                    }
+
+                    return score + cleaned.length;
+                },
+
+                async handleOcr(event) {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    this.isOcrScanning = true;
+                    this.ocrStatus = 'Hazırlanıyor...';
+                    
+                    try {
+                        const { pass1, pass2 } = await this.preprocessImage(file);
+                        this.ocrStatus = 'Taranıyor (Hassas)...';
+
+                        const worker = await Tesseract.createWorker('eng', 1);
+                        await worker.setParameters({
+                            tessedit_char_whitelist: '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                            tessedit_pageseg_mode: '11',
+                        });
+
+                        // Recognition Pass 1
+                        const res1 = await worker.recognize(pass1);
+                        // Recognition Pass 2
+                        const res2 = await worker.recognize(pass2);
+                        await worker.terminate();
+
+                        const score1 = this.scoreResult(res1.data.text);
+                        const score2 = this.scoreResult(res2.data.text);
+                        
+                        let bestText = score1 >= score2 ? res1.data.text : res2.data.text;
+                        console.log('Pass 1 Score:', score1, 'Text:', res1.data.text);
+                        console.log('Pass 2 Score:', score2, 'Text:', res2.data.text);
+
+                        const raw = (bestText || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+                        
+                        // Refined Regex for Turkish plates (prioritizes standard formats)
+                        const plateRegex = /([0-8][0-9][A-Z]{1,3}[0-9]{2,4})/;
+                        const plateMatch = raw.match(plateRegex);
+                        
+                        if (plateMatch) {
+                            let candidate = plateMatch[0];
+                            
+                            // Heuristic: If we have 4 digits at the end but the total length is 9, 
+                            // it's highly likely the last digit is noise (like a frame edge interpreted as '5' or '1')
+                            if (candidate.length === 9 && /[0-9]{4}$/.test(candidate)) {
+                                candidate = candidate.substring(0, 8);
+                            }
+
+                            this.plateNumber = candidate;
+                            this.notify('Plaka doğrulandı: ' + this.plateNumber);
+                        } else if (raw.length >= 5) {
+                            this.plateNumber = raw.substring(0, 10);
+                            this.notify('Plaka yakalandı (Tahmin): ' + this.plateNumber);
+                        } else {
+                            this.notify('Okuma başarısız. Lütfen tekrar deneyin.', 'error');
+                        }
+                    } catch (err) {
+                        this.notify('Sistem Hatası: ' + err.message, 'error');
+                    } finally {
+                        this.isOcrScanning = false;
+                        event.target.value = '';
                     }
                 },
 

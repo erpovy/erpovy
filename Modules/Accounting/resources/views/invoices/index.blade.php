@@ -116,6 +116,9 @@
                         <thead>
                             <tr class="bg-gray-50 dark:bg-white/[0.02] border-b border-gray-200 dark:border-white/5">
                                 <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-center w-36">Fatura No</th>
+                                @if(auth()->user()->hasModuleAccess('ServiceManagement'))
+                                    <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-center">Plaka</th>
+                                @endif
                                 <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest">Müşteri / Kurum</th>
                                 <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-center">Tarih</th>
                                 <th class="p-4 text-[11px] font-black text-gray-600 dark:text-slate-500 uppercase tracking-widest text-right">KDV Hariç</th>
@@ -132,6 +135,22 @@
                                         {{ $invoice->invoice_number }}
                                     </span>
                                 </td>
+                                @if(auth()->user()->hasModuleAccess('ServiceManagement'))
+                                    <td class="p-4 text-center">
+                                        @if($invoice->plate_number)
+                                            <div class="inline-flex items-stretch h-7 bg-white dark:bg-slate-900 border-2 border-gray-900 dark:border-white rounded-md overflow-hidden shadow-sm">
+                                                <div class="w-3 bg-blue-700 flex flex-col items-center justify-end pb-0.5 shrink-0">
+                                                    <span class="text-[5px] font-black text-white leading-none">TR</span>
+                                                </div>
+                                                <div class="px-2 py-0.5 text-xs font-black text-gray-900 dark:text-white uppercase tracking-wider flex items-center">
+                                                    {{ $invoice->plate_number }}
+                                                </div>
+                                            </div>
+                                        @else
+                                            <span class="text-xs text-gray-400 italic">N/A</span>
+                                        @endif
+                                    </td>
+                                @endif
                                 <td class="p-4">
                                     <div class="text-sm font-bold text-gray-900 dark:text-white group-hover:text-primary transition-colors">
                                         {{ $invoice->contact->name ?? 'Müşteri Bilgisi Yok' }}
