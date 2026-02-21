@@ -47,7 +47,7 @@
         </header>
 
         <!-- Main Content -->
-        <main class="flex-1 flex overflow-hidden">
+        <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
             <!-- Left: Products Grid -->
             <section class="flex-1 overflow-y-auto p-2 lg:p-3 custom-scrollbar bg-gray-50 dark:bg-[#0f172a]">
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5 gap-2">
@@ -86,7 +86,7 @@
             </section>
 
             <!-- Right: Checkout Sidebar -->
-            <aside class="w-full md:w-[240px] lg:w-[280px] xl:w-[320px] bg-white dark:bg-[#1e293b]/80 border-l border-gray-200 dark:border-white/10 backdrop-blur-3xl flex flex-col shrink-0 overflow-hidden">
+            <aside class="w-full md:w-64 lg:w-72 xl:w-80 bg-white dark:bg-[#1e293b]/80 border-l border-gray-200 dark:border-white/10 backdrop-blur-3xl flex flex-col shrink-0 overflow-hidden">
                 <!-- Customer & Actions -->
                 <div class="p-2.5 border-b border-gray-200 dark:border-white/10 flex items-center gap-2">
                     <div class="flex-1 relative group">
