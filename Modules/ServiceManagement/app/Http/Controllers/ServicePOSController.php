@@ -10,6 +10,8 @@ use Modules\Accounting\Models\Invoice;
 use Modules\Accounting\Models\InvoiceItem;
 use Modules\Accounting\Models\Transaction;
 use Modules\Accounting\Models\FiscalPeriod;
+use Modules\ServiceManagement\Models\Vehicle;
+use Modules\ServiceManagement\Models\ServiceRecord;
 use Illuminate\Support\Facades\DB;
 
 class ServicePOSController extends Controller
@@ -158,6 +160,48 @@ class ServicePOSController extends Controller
             ]);
 
             $invoice->update(['transaction_id' => $transaction->id]);
+
+            // Create Service Record linkage if plate number is provided
+            if ($request->plate_number) {
+                $normalizedPlate = strtoupper(str_replace(' ', '', $request->plate_number));
+                
+                // Find or create vehicle
+                $vehicle = Vehicle::firstOrCreate(
+                    [
+                        'company_id' => $companyId,
+                        'plate_number' => $normalizedPlate
+                    ],
+                    [
+                        'customer_id' => $contactId,
+                        'brand' => 'Bilinmiyor',
+                        'model' => 'Bilinmiyor',
+                        'status' => 'active'
+                    ]
+                );
+
+                // Update vehicle customer if it was found but belongs to a different contact (optional, but good for data integrity)
+                if ($vehicle->customer_id != $contactId) {
+                    $vehicle->update(['customer_id' => $contactId]);
+                }
+
+                // Create Service Record
+                $itemNames = collect($request->items)->map(function($item) {
+                    return Product::find($item['product_id'])->name . " (x" . $item['quantity'] . ")";
+                })->implode(', ');
+
+                ServiceRecord::create([
+                    'company_id' => $companyId,
+                    'vehicle_id' => $vehicle->id,
+                    'service_type' => 'Hızlı Satış',
+                    'service_date' => now(),
+                    'mileage_at_service' => $vehicle->current_mileage ?? 0,
+                    'description' => 'Servis POS üzerinden otomatik oluşturuldu. Ürünler: ' . $itemNames,
+                    'total_cost' => $grandTotal,
+                    'status' => 'completed',
+                    'completed_at' => now(),
+                    'performed_by' => auth()->user()->name
+                ]);
+            }
 
             return response()->json([
                 'success' => true,
