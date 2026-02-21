@@ -132,13 +132,24 @@ class VehicleController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Get maintenance status by plate number for POS alerts.
      */
-    public function destroy(Vehicle $vehicle)
+    public function statusByPlate($plate)
     {
-        $vehicle->delete();
+        $vehicle = Vehicle::where('company_id', auth()->user()->company_id)
+            ->where('plate_number', strtoupper(str_replace(' ', '', $plate)))
+            ->first();
 
-        return redirect()->route('servicemanagement.vehicles.index')
-            ->with('success', 'Araç kaydı silindi.');
+        if (!$vehicle) {
+            return response()->json(['status' => 'new']);
+        }
+
+        return response()->json([
+            'status' => 'exists',
+            'maintenance_status' => $vehicle->maintenance_status, // healthy, upcoming, overdue
+            'current_mileage' => $vehicle->current_mileage,
+            'brand' => $vehicle->brand,
+            'model' => $vehicle->model
+        ]);
     }
 }

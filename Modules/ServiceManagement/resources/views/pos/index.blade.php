@@ -159,10 +159,27 @@
                     </div>
                 </div>
 
-                <!-- Vehicle Plate Input -->
-                <div class="px-3 py-2 bg-gray-50/50 dark:bg-white/5 border-t border-gray-200 dark:border-white/10">
+                <!-- Vehicle & Maintenance Info -->
+                <div class="px-3 py-2 bg-gray-50/50 dark:bg-white/5 border-t border-gray-200 dark:border-white/10 space-y-2">
+                    <!-- Maintenance Alert Badge -->
+                    <template x-if="vehicleStatus && vehicleStatus.status === 'exists'">
+                        <div class="flex items-center justify-between px-3 py-1.5 rounded-lg border animate-pulse"
+                            :class="{
+                                'bg-rose-500/10 border-rose-500/20 text-rose-500': vehicleStatus.maintenance_status === 'overdue',
+                                'bg-amber-500/10 border-amber-500/20 text-amber-500': vehicleStatus.maintenance_status === 'upcoming',
+                                'bg-emerald-500/10 border-emerald-500/20 text-emerald-500': vehicleStatus.maintenance_status === 'healthy'
+                            }"
+                        >
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm" x-text="vehicleStatus.maintenance_status === 'healthy' ? 'check_circle' : 'warning'"></span>
+                                <span class="text-[9px] font-black uppercase tracking-widest" x-text="vehicleStatus.maintenance_status === 'overdue' ? 'KRİTİK BAKIM ZAMANI' : (vehicleStatus.maintenance_status === 'upcoming' ? 'BAKIM YAKLAŞTI' : 'ARAÇ DURUMU İYİ')"></span>
+                            </div>
+                            <span class="text-[9px] font-bold opacity-70" x-text="vehicleStatus.brand + ' ' + vehicleStatus.model"></span>
+                        </div>
+                    </template>
+
                     <div class="flex flex-col gap-1.5">
-                        <label class="text-[8px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest pl-1">ARAÇ PLAKASI</label>
+                        <label class="text-[8px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest pl-1 text-left">ARAÇ PLAKASI</label>
                         <div class="relative flex items-stretch h-14 bg-white dark:bg-slate-900 border-2 border-gray-900 dark:border-white rounded-lg overflow-hidden shadow-sm group">
                             <!-- TR Stripe -->
                             <div class="w-8 bg-blue-700 flex flex-col items-center justify-end pb-2 shrink-0">
@@ -172,6 +189,7 @@
                             <input 
                                 type="text" 
                                 x-model="plateNumber" 
+                                @input.debounce.500ms="checkVehicleStatus()"
                                 placeholder="34 ABC 123" 
                                 class="flex-1 min-w-0 bg-transparent border-0 text-center text-2xl font-black text-gray-900 dark:text-white uppercase tracking-[0.1em] focus:ring-0 py-0 placeholder:text-gray-200 dark:placeholder:text-white/10"
                             >
@@ -190,6 +208,20 @@
                                 accept="image/*" 
                                 class="hidden"
                                 capture="environment"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Current Mileage Input -->
+                    <div class="flex flex-col gap-1.5 mt-2">
+                        <label class="text-[8px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest pl-1 text-left">GÜNCEL KM</label>
+                        <div class="relative group">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-sm text-gray-400">speed</span>
+                            <input 
+                                type="number" 
+                                x-model.number="currentMileage"
+                                placeholder="0" 
+                                class="w-full bg-white dark:bg-slate-900 border-2 border-gray-200 dark:border-white/10 rounded-lg py-2 pl-9 pr-4 text-sm font-black text-gray-900 dark:text-white focus:border-primary focus:ring-0 transition-all"
                             >
                         </div>
                     </div>
@@ -318,6 +350,8 @@
                 taxTotal: 0,
                 discountTotal: 0,
                 total: 0,
+                currentMileage: 0,
+                vehicleStatus: null,
                 showSuccessModal: false,
 
                 init() {
@@ -425,7 +459,8 @@
                                 payment_method: this.paymentMethod,
                                 discount_total: this.discountTotal,
                                 received_amount: this.receivedAmount,
-                                plate_number: this.plateNumber
+                                plate_number: this.plateNumber,
+                                current_mileage: this.currentMileage
                             })
                         });
 
@@ -449,8 +484,35 @@
                     this.receivedAmount = 0;
                     this.changeAmount = 0;
                     this.plateNumber = '';
+                    this.currentMileage = 0;
+                    this.vehicleStatus = null;
                     this.calculateTotals();
                     this.searchProducts();
+                },
+
+                async checkVehicleStatus() {
+                    if (!this.plateNumber || this.plateNumber.length < 5) {
+                        this.vehicleStatus = null;
+                        return;
+                    }
+
+                    try {
+                        const cleanPlate = this.plateNumber.replace(/\s+/g, '');
+                        const response = await fetch(`/service-management/api/vehicle-status/${encodeURIComponent(cleanPlate)}`);
+                        const result = await response.json();
+                        this.vehicleStatus = result;
+                        
+                        if (result.status === 'exists') {
+                            if (this.currentMileage === 0) {
+                                this.currentMileage = result.current_mileage;
+                            }
+                            if (result.maintenance_status === 'overdue') {
+                                this.notify('DİKKAT: Aracın periyodik bakım zamanı geçmiş!', 'error');
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Araç durumu kontrol edilemedi:', error);
+                    }
                 },
 
                 clearCart() {
@@ -608,6 +670,7 @@
                             }
 
                             this.plateNumber = candidate;
+                            this.checkVehicleStatus();
                             this.notify('Plaka doğrulandı: ' + this.plateNumber);
                         } else if (raw.length >= 5) {
                             this.plateNumber = raw.substring(0, 10);

@@ -54,7 +54,8 @@ class ServicePOSController extends Controller
             'contact_id' => 'nullable|exists:contacts,id',
             'payment_method' => 'required|string',
             'received_amount' => 'nullable|numeric',
-            'plate_number' => 'nullable|string|max:20'
+            'plate_number' => 'nullable|string|max:20',
+            'current_mileage' => 'nullable|integer|min:0'
         ]);
 
         return DB::transaction(function () use ($request) {
@@ -175,11 +176,17 @@ class ServicePOSController extends Controller
                         'customer_id' => $contactId,
                         'brand' => 'Bilinmiyor',
                         'model' => 'Bilinmiyor',
+                        'current_mileage' => $request->current_mileage ?? 0,
                         'status' => 'active'
                     ]
                 );
 
-                // Update vehicle customer if it was found but belongs to a different contact (optional, but good for data integrity)
+                // Update vehicle mileage if provided and higher
+                if ($request->filled('current_mileage') && $request->current_mileage > $vehicle->current_mileage) {
+                    $vehicle->update(['current_mileage' => $request->current_mileage]);
+                }
+
+                // Update vehicle customer if it was found but belongs to a different contact
                 if ($vehicle->customer_id != $contactId) {
                     $vehicle->update(['customer_id' => $contactId]);
                 }
@@ -194,7 +201,7 @@ class ServicePOSController extends Controller
                     'vehicle_id' => $vehicle->id,
                     'service_type' => 'Hızlı Satış',
                     'service_date' => now(),
-                    'mileage_at_service' => $vehicle->current_mileage ?? 0,
+                    'mileage_at_service' => $request->current_mileage ?? $vehicle->current_mileage ?? 0,
                     'description' => 'Servis POS üzerinden otomatik oluşturuldu. Ürünler: ' . $itemNames,
                     'total_cost' => $grandTotal,
                     'status' => 'completed',

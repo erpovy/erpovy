@@ -23,4 +23,5 @@ Route::middleware(['auth', 'verified', 'module_access:ServiceManagement'])->grou
     Route::get('service-management-pos', [ServicePOSController::class, 'index'])->name('servicemanagement.pos.index');
     Route::get('service-management-pos/products', [ServicePOSController::class, 'products'])->name('servicemanagement.pos.products');
     Route::post('service-management-pos/checkout', [ServicePOSController::class, 'checkout'])->name('servicemanagement.pos.checkout');
+    Route::get('service-management/api/vehicle-status/{plate}', [VehicleController::class, 'statusByPlate'])->name('servicemanagement.vehicles.status-by-plate');
 });
