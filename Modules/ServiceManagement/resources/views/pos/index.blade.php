@@ -1,12 +1,12 @@
 <x-app-layout>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <div x-data="posSystem()" class="fixed inset-0 z-50 bg-gray-100 dark:bg-[#0a0f1c] overflow-hidden flex flex-col font-sans select-none">
+    <div x-data="posSystem()" class="fixed inset-0 z-50 bg-gray-100 dark:bg-slate-950 overflow-hidden flex flex-col select-none">
 
         {{-- ===== HEADER ===== --}}
-        <header class="shrink-0 bg-white dark:bg-[#111827] border-b border-gray-200 dark:border-white/10 shadow-sm">
+        <header class="shrink-0 bg-white dark:bg-slate-900 border-b border-gray-200 dark:border-slate-800 shadow-sm">
             {{-- Top row --}}
             <div class="flex items-center gap-3 px-3 py-2.5">
-                <a href="{{ route('servicemanagement.index') }}" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-white/5 flex items-center justify-center text-gray-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-all shrink-0">
+                <a href="{{ route('servicemanagement.index') }}" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-500 dark:text-slate-400 hover:bg-primary/10 hover:text-primary transition-all shrink-0">
                     <span class="material-symbols-outlined text-lg">arrow_back</span>
                 </a>
 
@@ -15,7 +15,7 @@
                     <p class="text-[9px] font-bold text-primary uppercase tracking-widest">X1M #S-01</p>
                 </div>
 
-                {{-- Search bar (grows) --}}
+                {{-- Search bar --}}
                 <div class="flex-1 relative">
                     <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-base text-gray-400 dark:text-slate-500">search</span>
                     <input
@@ -23,14 +23,13 @@
                         x-model="searchQuery"
                         @input.debounce.300ms="searchProducts()"
                         placeholder="Ürün ya da hizmet ara..."
-                        class="w-full bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 rounded-xl py-2 pl-9 pr-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:border-primary focus:ring-0 transition-all text-sm"
+                        class="w-full bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-xl py-2 pl-9 pr-3 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:border-primary focus:ring-0 transition-all text-sm"
                     >
                 </div>
 
-                {{-- Clock (hidden on small) --}}
                 <div id="pos-clock" class="hidden md:block text-xs font-black text-gray-600 dark:text-slate-300 shrink-0 tabular-nums">--:--:--</div>
 
-                <button @click="toggleFullscreen()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-white/5 border border-gray-200 dark:border-white/10 hidden lg:flex items-center justify-center text-gray-500 dark:text-slate-400 hover:text-primary transition-all shrink-0">
+                <button @click="toggleFullscreen()" class="w-9 h-9 rounded-xl bg-gray-100 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 hidden lg:flex items-center justify-center text-gray-500 dark:text-slate-400 hover:text-primary transition-all shrink-0">
                     <span class="material-symbols-outlined text-lg">fullscreen</span>
                 </button>
             </div>
@@ -38,17 +37,17 @@
             {{-- Filter Pills --}}
             <div class="flex items-center gap-2 px-3 pb-2.5 overflow-x-auto no-scrollbar">
                 <button @click="filterType = 'all'; searchProducts()"
-                    :class="filterType === 'all' ? 'bg-primary text-white shadow-md shadow-primary/30' : 'bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-slate-400 hover:bg-primary/10 hover:text-primary'"
+                    :class="filterType === 'all' ? 'bg-primary text-white shadow-md shadow-primary/20' : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 hover:text-primary'"
                     class="flex-shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wide transition-all">
                     <span class="material-symbols-outlined text-sm">apps</span> Hepsi
                 </button>
                 <button @click="filterType = 'good'; searchProducts()"
-                    :class="filterType === 'good' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/30' : 'bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-slate-400 hover:bg-blue-50 dark:hover:bg-blue-500/10 hover:text-blue-600'"
+                    :class="filterType === 'good' ? 'bg-blue-600 text-white shadow-md shadow-blue-500/20' : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 hover:text-blue-600'"
                     class="flex-shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wide transition-all">
                     <span class="material-symbols-outlined text-sm">inventory_2</span> Ürün
                 </button>
                 <button @click="filterType = 'service'; searchProducts()"
-                    :class="filterType === 'service' ? 'bg-purple-600 text-white shadow-md shadow-purple-500/30' : 'bg-gray-100 dark:bg-white/5 text-gray-600 dark:text-slate-400 hover:bg-purple-50 dark:hover:bg-purple-500/10 hover:text-purple-600'"
+                    :class="filterType === 'service' ? 'bg-purple-600 text-white shadow-md shadow-purple-500/20' : 'bg-gray-100 dark:bg-slate-800 text-gray-600 dark:text-slate-400 hover:text-purple-600'"
                     class="flex-shrink-0 flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-wide transition-all">
                     <span class="material-symbols-outlined text-sm">build</span> Hizmet
                 </button>
@@ -62,38 +61,36 @@
 
             {{-- ===== PRODUCT GRID ===== --}}
             <section class="flex-1 overflow-y-auto p-3 custom-scrollbar">
-                {{-- Grid: 2 col on mobile, 3 on tablet, 4 on large --}}
                 <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pb-24 lg:pb-4">
                     <template x-for="product in products" :key="product.id">
                         <div
                             @click="addToCart(product)"
-                            class="group relative bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/5 rounded-2xl overflow-hidden hover:border-primary/60 hover:shadow-lg hover:shadow-primary/10 active:scale-95 transition-all cursor-pointer flex flex-col"
+                            class="group relative bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-2xl overflow-hidden hover:border-primary/60 hover:shadow-lg hover:shadow-primary/10 active:scale-95 transition-all cursor-pointer flex flex-col"
                         >
                             {{-- Product Icon Area --}}
                             <div class="relative h-24 sm:h-28 flex items-center justify-center"
-                                :class="product.product_type && product.product_type.code === 'service' ? 'bg-purple-50 dark:bg-purple-900/20' : 'bg-blue-50 dark:bg-blue-900/20'">
+                                :class="(product.product_type && product.product_type.code === 'service') || product.type === 'service' ? 'bg-purple-50 dark:bg-purple-900/30' : 'bg-blue-50 dark:bg-blue-900/30'">
                                 <span class="material-symbols-outlined text-5xl transition-transform group-hover:scale-110 group-active:scale-90 duration-150"
-                                    :class="product.product_type && product.product_type.code === 'service' ? 'text-purple-400 dark:text-purple-500' : 'text-blue-400 dark:text-blue-500'"
+                                    :class="(product.product_type && product.product_type.code === 'service') || product.type === 'service' ? 'text-purple-400 dark:text-purple-400' : 'text-blue-400 dark:text-blue-400'"
                                     x-text="(product.product_type && product.product_type.code === 'service') || product.type === 'service' ? 'build' : 'inventory_2'">
                                 </span>
                                 {{-- Stock badge --}}
-                                <div x-show="product.type !== 'service' && !(product.product_type && product.product_type.code === 'service')"
-                                    class="absolute top-2 right-2 px-2 py-0.5 bg-white/80 dark:bg-black/40 backdrop-blur-sm rounded-full text-[9px] font-black border border-gray-200 dark:border-white/10"
-                                    :class="(product.stock || 0) <= 0 ? 'text-red-500 border-red-300 dark:border-red-500/30' : 'text-gray-600 dark:text-slate-300'">
+                                <div x-show="!((product.product_type && product.product_type.code === 'service') || product.type === 'service')"
+                                    class="absolute top-2 right-2 px-2 py-0.5 bg-black/50 dark:bg-black/60 backdrop-blur-sm rounded-full text-[9px] font-black"
+                                    :class="(product.stock || 0) <= 0 ? 'text-red-400' : 'text-white'">
                                     STK <span x-text="product.stock || 0"></span>
                                 </div>
                                 {{-- Type badge --}}
                                 <div class="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] font-black"
-                                    :class="(product.product_type && product.product_type.code === 'service') || product.type === 'service' ? 'bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400' : 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400'">
+                                    :class="(product.product_type && product.product_type.code === 'service') || product.type === 'service' ? 'bg-purple-500/20 text-purple-300 dark:text-purple-300' : 'bg-blue-500/20 text-blue-300 dark:text-blue-300'">
                                     <span x-text="(product.product_type && product.product_type.code === 'service') || product.type === 'service' ? 'HİZMET' : 'ÜRÜN'"></span>
                                 </div>
-                                {{-- Tap feedback --}}
-                                <div class="absolute inset-0 bg-white/30 dark:bg-white/10 opacity-0 group-active:opacity-100 transition-opacity duration-75 pointer-events-none"></div>
+                                <div class="absolute inset-0 bg-white/20 dark:bg-white/5 opacity-0 group-active:opacity-100 transition-opacity duration-75 pointer-events-none"></div>
                             </div>
 
                             {{-- Product Info --}}
-                            <div class="p-3 flex-1 flex flex-col justify-between gap-2">
-                                <h3 class="text-xs font-black text-gray-900 dark:text-white leading-snug group-hover:text-primary transition-colors line-clamp-2" x-text="product.name"></h3>
+                            <div class="p-3 flex-1 flex flex-col justify-between gap-2 bg-white dark:bg-slate-800">
+                                <h3 class="text-xs font-black text-gray-900 dark:text-slate-100 leading-snug group-hover:text-primary transition-colors line-clamp-2" x-text="product.name"></h3>
                                 <div class="flex items-center justify-between">
                                     <span class="text-sm font-black text-primary" x-text="parseFloat(product.sale_price).toLocaleString('tr-TR', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ₺'"></span>
                                     <div class="w-7 h-7 rounded-lg bg-primary/10 group-hover:bg-primary flex items-center justify-center text-primary group-hover:text-white transition-all">
@@ -113,7 +110,7 @@
             </section>
 
             {{-- ===== DESKTOP SIDEBAR ===== --}}
-            <aside class="hidden lg:flex w-80 xl:w-96 flex-col bg-white dark:bg-[#111827] border-l border-gray-200 dark:border-white/10 shrink-0 overflow-hidden">
+            <aside class="hidden lg:flex w-80 xl:w-96 flex-col bg-white dark:bg-slate-900 border-l border-gray-200 dark:border-slate-800 shrink-0 overflow-hidden">
                 @include('servicemanagement::pos.partials.cart-panel')
             </aside>
         </div>
@@ -121,7 +118,7 @@
         {{-- ===== MOBILE: Floating Cart Button ===== --}}
         <div class="lg:hidden fixed bottom-5 right-4 z-50">
             <button @click="cartOpen = true"
-                class="relative flex items-center gap-3 pl-4 pr-5 py-3.5 rounded-2xl bg-primary text-white font-black text-sm shadow-2xl shadow-primary/40 active:scale-95 transition-all">
+                class="relative flex items-center gap-2.5 pl-4 pr-5 py-3.5 rounded-2xl bg-primary text-white font-black text-sm shadow-2xl shadow-primary/40 active:scale-95 transition-all">
                 <span class="material-symbols-outlined text-xl">shopping_cart</span>
                 <span>Sepet</span>
                 <template x-if="cart.length > 0">
@@ -137,7 +134,7 @@
         <div x-show="cartOpen"
              x-cloak
              @click.self="cartOpen = false"
-             class="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm flex items-end"
+             class="lg:hidden fixed inset-0 z-40 bg-black/60 backdrop-blur-sm flex items-end"
              x-transition:enter="transition ease-out duration-300"
              x-transition:enter-start="opacity-0"
              x-transition:enter-end="opacity-100"
@@ -145,18 +142,17 @@
              x-transition:leave-start="opacity-100"
              x-transition:leave-end="opacity-0"
              style="display: none;">
-            <div class="w-full bg-white dark:bg-[#111827] rounded-t-3xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden"
+            <div class="w-full bg-white dark:bg-slate-900 rounded-t-3xl shadow-2xl flex flex-col max-h-[92vh] overflow-hidden"
                  x-transition:enter="transition ease-out duration-300"
                  x-transition:enter-start="translate-y-full"
                  x-transition:enter-end="translate-y-0"
                  x-transition:leave="transition ease-in duration-200"
                  x-transition:leave-start="translate-y-0"
                  x-transition:leave-end="translate-y-full">
-                {{-- Drawer Handle --}}
-                <div class="flex items-center justify-between px-4 pt-3 pb-2 border-b border-gray-100 dark:border-white/5 shrink-0">
-                    <div class="w-10 h-1 bg-gray-300 dark:bg-white/20 rounded-full mx-auto absolute left-1/2 -translate-x-1/2 top-2"></div>
+                <div class="flex items-center justify-between px-4 pt-4 pb-3 border-b border-gray-100 dark:border-slate-800 shrink-0">
+                    <div class="w-10 h-1 bg-gray-300 dark:bg-slate-600 rounded-full absolute left-1/2 -translate-x-1/2 top-2"></div>
                     <h2 class="text-sm font-black text-gray-900 dark:text-white uppercase tracking-tight">Sepet</h2>
-                    <button @click="cartOpen = false" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-white/5 flex items-center justify-center text-gray-500 dark:text-slate-400">
+                    <button @click="cartOpen = false" class="w-8 h-8 rounded-full bg-gray-100 dark:bg-slate-800 flex items-center justify-center text-gray-500 dark:text-slate-400">
                         <span class="material-symbols-outlined text-lg">close</span>
                     </button>
                 </div>
@@ -168,9 +164,9 @@
 
         {{-- ===== SUCCESS MODAL ===== --}}
         <div x-show="showSuccessModal"
-             class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+             class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm"
              style="display: none;">
-            <div class="bg-white dark:bg-[#1e293b] border border-gray-200 dark:border-white/10 rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl relative overflow-hidden">
+            <div class="bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-3xl p-8 max-w-sm w-full text-center shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 inset-x-0 h-1.5 bg-gradient-to-r from-green-400 to-emerald-500 rounded-t-3xl"></div>
                 <div class="w-20 h-20 rounded-full bg-emerald-500/15 text-emerald-500 flex items-center justify-center mx-auto mb-5 animate-bounce">
                     <span class="material-symbols-outlined text-5xl">check_circle</span>
@@ -185,7 +181,7 @@
         </div>
 
         {{-- ===== OCR OVERLAY ===== --}}
-        <div x-show="isOcrScanning" x-cloak class="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/85 backdrop-blur-md">
+        <div x-show="isOcrScanning" x-cloak class="fixed inset-0 z-[120] flex items-center justify-center bg-slate-950/90 backdrop-blur-md">
             <div class="text-center max-w-sm w-full px-6">
                 <div x-show="ocrPreview" class="mb-6 rounded-2xl overflow-hidden border-2 border-primary/40 shadow-2xl">
                     <img :src="ocrPreview" class="w-full h-auto max-h-52 object-contain bg-slate-900" alt="OCR Target">
@@ -213,8 +209,8 @@
         x-transition:leave="transition duration-200 ease-in"
         x-transition:leave-start="opacity-100 translate-y-0"
         x-transition:leave-end="opacity-0 translate-y-8"
-        class="fixed bottom-20 lg:bottom-6 left-1/2 -translate-x-1/2 z-[110] px-6 py-4 rounded-2xl border backdrop-blur-xl shadow-2xl flex items-center gap-3 max-w-xs w-full"
-        :class="type === 'success' ? 'bg-emerald-50/90 dark:bg-emerald-500/15 border-emerald-300 dark:border-emerald-500/30 text-emerald-700 dark:text-emerald-400' : 'bg-red-50/90 dark:bg-red-500/15 border-red-300 dark:border-red-500/30 text-red-700 dark:text-red-400'"
+        class="fixed bottom-20 lg:bottom-6 left-1/2 -translate-x-1/2 z-[110] px-5 py-3.5 rounded-2xl border backdrop-blur-xl shadow-2xl flex items-center gap-3 max-w-xs w-full"
+        :class="type === 'success' ? 'bg-slate-900/95 border-emerald-500/30 text-emerald-400' : 'bg-slate-900/95 border-red-500/30 text-red-400'"
         style="display: none;">
         <div :class="type === 'success' ? 'bg-emerald-500' : 'bg-red-500'" class="w-2.5 h-2.5 rounded-full animate-pulse shrink-0"></div>
         <span class="font-bold text-sm" x-text="message"></span>
@@ -226,8 +222,8 @@
         @keyframes scan { 0%, 100% { top: 0; } 50% { top: calc(100% - 4px); } }
         .custom-scrollbar::-webkit-scrollbar { width: 4px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.08); border-radius: 10px; }
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        .dark .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
         input[type=number]::-webkit-inner-spin-button,
