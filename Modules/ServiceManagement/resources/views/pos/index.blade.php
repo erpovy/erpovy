@@ -42,6 +42,13 @@
                     <span class="material-symbols-outlined text-sm">build</span> Hizmet
                 </button>
                 <div class="flex-1"></div>
+                {{-- Price visibility toggle --}}
+                <button @click="showPrices = !showPrices"
+                    :style="showPrices ? 'background:#1f6feb;color:#fff;' : 'background:#21262d;color:#8b949e;'"
+                    class="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wide transition-all">
+                    <span class="material-symbols-outlined text-sm" x-text="showPrices ? 'visibility_off' : 'visibility'"></span>
+                    <span x-text="showPrices ? 'Fiyatları Gizle' : 'Fiyatları Göster'"></span>
+                </button>
                 <span class="text-[10px] font-bold shrink-0" style="color:#484f58;" x-text="products.length + ' sonuç'"></span>
             </div>
         </header>
@@ -81,7 +88,8 @@
                             <div class="p-3 flex-1 flex flex-col justify-between gap-2" style="background:#161b22;">
                                 <h3 class="text-xs font-black leading-snug line-clamp-2 transition-colors" style="color:#f0f6fc;" x-text="product.name"></h3>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-sm font-black" style="color:#137fec;" x-text="parseFloat(product.sale_price).toLocaleString('tr-TR', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ₺'"></span>
+                                    <span x-show="showPrices" class="text-sm font-black" style="color:#137fec;" x-text="parseFloat(product.sale_price).toLocaleString('tr-TR', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' ₺'"></span>
+                                    <span x-show="!showPrices" class="text-xs font-black" style="color:#30363d;">••••</span>
                                     <div class="w-7 h-7 rounded-lg flex items-center justify-center transition-all" style="background:#1f6feb22;color:#137fec;" onmouseover="this.style.background='#137fec';this.style.color='#fff'" onmouseout="this.style.background='#1f6feb22';this.style.color='#137fec'" @click.stop="addToCart(product)">
                                         <span class="material-symbols-outlined text-base">add</span>
                                     </div>
@@ -112,7 +120,7 @@
                 <template x-if="cart.length > 0">
                     <span class="absolute -top-2 -right-2 w-6 h-6 rounded-full text-white text-[10px] font-black flex items-center justify-center shadow-lg" style="background:#f85149;" x-text="cart.length"></span>
                 </template>
-                <template x-if="cart.length > 0">
+                <template x-if="cart.length > 0 && showPrices">
                     <span class="font-bold text-xs opacity-80" x-text="formatNumber(total) + ' ₺'"></span>
                 </template>
             </button>
@@ -228,6 +236,7 @@
                 currentMileage: 0,
                 vehicleStatus: null,
                 showSuccessModal: false,
+                showPrices: false,
 
                 init() {
                     this.searchProducts();
