@@ -112,12 +112,12 @@
     <div>
         <label class="text-[9px] font-black text-gray-400 dark:text-slate-500 uppercase tracking-widest block mb-1.5">GÜNCEL KM</label>
         <div class="relative">
-            <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-base text-gray-400">speed</span>
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-base text-gray-500 dark:text-slate-400">speed</span>
             <input
                 type="number"
                 x-model.number="currentMileage"
                 placeholder="0"
-                class="w-full bg-white dark:bg-slate-900 border-2 border-gray-200 dark:border-white/10 rounded-xl py-2.5 pl-9 pr-4 text-sm font-black text-gray-900 dark:text-white focus:border-primary focus:ring-0 transition-all">
+                class="w-full bg-white dark:bg-[#1e293b] border-2 border-gray-200 dark:border-white/20 rounded-xl py-2.5 pl-9 pr-4 text-sm font-black text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-slate-500 focus:border-primary focus:ring-0 transition-all">
         </div>
     </div>
 </div>

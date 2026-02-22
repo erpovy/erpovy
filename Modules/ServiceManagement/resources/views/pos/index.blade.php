@@ -63,7 +63,7 @@
             {{-- ===== PRODUCT GRID ===== --}}
             <section class="flex-1 overflow-y-auto p-3 custom-scrollbar">
                 {{-- Grid: 2 col on mobile, 3 on tablet, 4 on large --}}
-                <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 pb-24 lg:pb-4">
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 pb-24 lg:pb-4">
                     <template x-for="product in products" :key="product.id">
                         <div
                             @click="addToCart(product)"
