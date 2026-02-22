@@ -205,6 +205,7 @@ class ProductController extends Controller
 
         $validated['company_id'] = auth()->user()->company_id;
         $validated['min_stock_level'] = $validated['min_stock_level'] ?? 0;
+        $validated['vat_rate'] = $validated['vat_rate'] ?? 20;
         
         Product::create($validated);
 
@@ -253,6 +254,7 @@ class ProductController extends Controller
         ]);
 
         $validated['min_stock_level'] = $validated['min_stock_level'] ?? 0;
+        $validated['vat_rate'] = $validated['vat_rate'] ?? 20;
 
         $product->update($validated);
 
