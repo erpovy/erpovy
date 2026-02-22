@@ -120,15 +120,30 @@
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <form action="{{ route('inventory.products.index') }}" method="GET" class="flex items-center gap-2">
-                            <label class="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Sayfa Başı:</label>
-                            <select name="per_page" onchange="this.form.submit()" 
-                                    class="rounded-xl bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white text-xs font-bold focus:ring-primary focus:border-primary px-3 py-1.5 transition-all">
-                                <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
-                                <option value="50" {{ request('per_page') == 50 || !request('per_page') ? 'selected' : '' }}>50</option>
-                                <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
-                                <option value="200" {{ request('per_page') == 200 ? 'selected' : '' }}>200</option>
-                            </select>
+                        <form action="{{ route('inventory.products.index') }}" method="GET" class="flex items-center gap-4">
+                            <div class="flex items-center gap-2">
+                                <label class="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Kategori:</label>
+                                <select name="category_id" onchange="this.form.submit()" 
+                                        class="rounded-xl bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white text-xs font-bold focus:ring-primary focus:border-primary px-3 py-1.5 transition-all">
+                                    <option value="">Tüm Kategoriler</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <label class="text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider">Sayfa Başı:</label>
+                                <select name="per_page" onchange="this.form.submit()" 
+                                        class="rounded-xl bg-gray-50 dark:bg-white/5 border-gray-200 dark:border-white/10 text-gray-900 dark:text-white text-xs font-bold focus:ring-primary focus:border-primary px-3 py-1.5 transition-all">
+                                    <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10</option>
+                                    <option value="50" {{ request('per_page') == 50 || !request('per_page') ? 'selected' : '' }}>50</option>
+                                    <option value="100" {{ request('per_page') == 100 ? 'selected' : '' }}>100</option>
+                                    <option value="200" {{ request('per_page') == 200 ? 'selected' : '' }}>200</option>
+                                </select>
+                            </div>
                         </form>
                     </div>
                 </div>

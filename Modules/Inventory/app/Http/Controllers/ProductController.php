@@ -141,13 +141,19 @@ class ProductController extends Controller
     {
         $perPage = $request->get('per_page', 50);
 
-        $products = Product::with(['unit', 'productType', 'category', 'brand'])
+        $companyId = auth()->user()->company_id;
+
+        $products = Product::where('company_id', $companyId)
+            ->with(['unit', 'productType', 'category', 'brand'])
             ->withSum('stockMovements as current_stock', 'quantity')
+            ->when($request->category_id, function ($query, $categoryId) {
+                return $query->where('category_id', $categoryId);
+            })
             ->latest()
             ->paginate($perPage)
             ->withQueryString();
 
-        $companyId = auth()->user()->company_id;
+        $categories = \Modules\Inventory\Models\Category::all();
 
         // Dashboard Stats
         $totalProducts = Product::where('company_id', $companyId)->count();
@@ -168,7 +174,7 @@ class ProductController extends Controller
             ->whereRaw('(SELECT SUM(quantity) FROM stock_movements WHERE product_id = products.id) <= min_stock_level')
             ->count();
 
-        return view('inventory::index', compact('products', 'totalProducts', 'totalStockValue', 'criticalStockCount'));
+        return view('inventory::index', compact('products', 'totalProducts', 'totalStockValue', 'criticalStockCount', 'categories'));
     }
 
     public function create()
