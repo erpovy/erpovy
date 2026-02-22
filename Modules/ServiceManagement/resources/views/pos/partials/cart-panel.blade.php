@@ -28,14 +28,14 @@
             <div class="flex items-start gap-2 mb-2">
                 <div class="flex-1 min-w-0">
                     <p class="text-xs font-black leading-snug line-clamp-2" style="color:#f0f6fc;" x-text="item.name"></p>
-                    <p class="text-[10px] mt-0.5" style="color:#484f58;" x-text="formatNumber(item.sale_price) + ' ₺ / adet'"></p>
+                    <p x-show="showPrices" class="text-[10px] mt-0.5" style="color:#484f58;" x-text="formatNumber(item.sale_price) + ' ₺ / adet'"></p>
                 </div>
                 <button @click="removeFromCart(index)" class="transition-colors shrink-0 mt-0.5" style="color:#30363d;"
                     onmouseover="this.style.color='#f85149'" onmouseout="this.style.color='#30363d'">
                     <span class="material-symbols-outlined text-base">close</span>
                 </button>
             </div>
-            <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
                 {{-- Qty --}}
                 <div class="flex items-center rounded-xl overflow-hidden" style="background:#0d1117;border:1px solid #30363d;">
                     <button @click="updateQty(index, -1)" class="w-9 h-9 flex items-center justify-center transition-colors" style="color:#8b949e;"
@@ -50,16 +50,10 @@
                         <span class="material-symbols-outlined text-sm">add</span>
                     </button>
                 </div>
-                {{-- Discount --}}
-                <div class="flex items-center gap-1.5 h-9 px-2.5 rounded-xl" style="background:#0d1117;border:1px solid #30363d;">
-                    <span class="text-[9px] font-black uppercase shrink-0" style="color:#484f58;">İND%</span>
-                    <input type="number" x-model.number="item.discount_rate" @input="calculateTotals()"
-                        class="w-10 border-0 text-center text-xs font-black focus:ring-0 outline-none"
-                        style="background:transparent;color:#e3b341;">
-                </div>
                 {{-- Line total --}}
-                <p class="text-sm font-black shrink-0" style="color:#f0f6fc;"
-                    x-text="formatNumber(item.quantity * item.sale_price * (1 - item.discount_rate/100)) + ' ₺'"></p>
+                <p x-show="showPrices" class="text-sm font-black ml-auto shrink-0" style="color:#f0f6fc;"
+                    x-text="formatNumber(item.quantity * item.sale_price) + ' ₺'"></p>
+                <p x-show="!showPrices" class="text-sm font-black ml-auto shrink-0" style="color:#30363d;">••••</p>
             </div>
         </div>
     </template>
@@ -123,14 +117,10 @@
 
 {{-- Totals & Checkout --}}
 <div class="px-3 pb-4 pt-3 space-y-3 shrink-0" style="background:#161b22;border-top:1px solid #30363d;">
-    <div class="space-y-1.5 text-xs">
+    <div x-show="showPrices" class="space-y-1.5 text-xs">
         <div class="flex justify-between" style="color:#8b949e;">
             <span class="font-semibold">Ara Toplam</span>
             <span class="font-bold" x-text="formatNumber(subtotal) + ' ₺'"></span>
-        </div>
-        <div x-show="discountTotal > 0" class="flex justify-between" style="color:#e3b341;">
-            <span class="font-semibold">İndirim</span>
-            <span class="font-bold" x-text="'- ' + formatNumber(discountTotal) + ' ₺'"></span>
         </div>
         <div class="flex justify-between" style="color:#8b949e;">
             <span class="font-semibold">KDV</span>
