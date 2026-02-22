@@ -50,7 +50,7 @@
         <main class="flex-1 flex flex-col md:flex-row overflow-hidden">
             <!-- Left: Products Grid -->
             <section class="flex-1 overflow-y-auto p-2 lg:p-3 custom-scrollbar bg-gray-50 dark:bg-[#0f172a]">
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5 gap-2">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-3">
                     <template x-for="product in products" :key="product.id">
                         <div 
                             @click="addToCart(product)"
