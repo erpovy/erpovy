@@ -192,11 +192,14 @@ class ProductController extends Controller
             'unit_id' => 'nullable|exists:units,id',
             'sale_price' => 'required|numeric|min:0',
             'purchase_price' => 'required|numeric|min:0',
+            'vat_rate' => 'nullable|numeric|min:0|max:100',
             'stock_track' => 'boolean',
             'min_stock_level' => 'nullable|numeric|min:0',
         ]);
 
         $validated['company_id'] = auth()->user()->company_id;
+        $validated['min_stock_level'] = $validated['min_stock_level'] ?? 0;
+        
         Product::create($validated);
 
         return redirect()->route('inventory.products.index')
@@ -242,6 +245,8 @@ class ProductController extends Controller
             'stock_track' => 'boolean',
             'min_stock_level' => 'nullable|numeric|min:0',
         ]);
+
+        $validated['min_stock_level'] = $validated['min_stock_level'] ?? 0;
 
         $product->update($validated);
 
