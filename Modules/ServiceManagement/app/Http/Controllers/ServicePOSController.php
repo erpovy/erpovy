@@ -39,11 +39,8 @@ class ServicePOSController extends Controller
 
         if ($request->has('type') && in_array($request->type, ['good', 'service'])) {
             $type = $request->type;
-            $query->where(function ($q) use ($type) {
-                $q->where('type', $type)
-                  ->orWhereHas('productType', function ($pq) use ($type) {
-                      $pq->where('code', $type);
-                  });
+            $query->whereHas('productType', function ($pq) use ($type) {
+                $pq->where('code', $type);
             });
         }
 
