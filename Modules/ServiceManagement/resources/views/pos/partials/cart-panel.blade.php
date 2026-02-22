@@ -38,16 +38,16 @@
             <div class="flex items-center gap-2">
                 {{-- Qty --}}
                 <div class="flex items-center rounded-xl overflow-hidden" style="background:#0d1117;border:1px solid #30363d;">
-                    <button @click="updateQty(index, -1)" class="w-9 h-9 flex items-center justify-center transition-colors" style="color:#8b949e;"
+                    <button @click="updateQty(index, -1)" class="w-11 h-11 flex items-center justify-center transition-colors" style="color:#8b949e;"
                         onmouseover="this.style.color='#f85149'" onmouseout="this.style.color='#8b949e'">
-                        <span class="material-symbols-outlined text-sm">remove</span>
+                        <span class="material-symbols-outlined text-base">remove</span>
                     </button>
                     <input type="number" x-model.number="item.quantity" @input="calculateTotals()"
-                        class="w-10 border-0 text-center text-sm font-black focus:ring-0 outline-none"
+                        class="w-16 border-0 text-center text-base font-black focus:ring-0 outline-none"
                         style="background:transparent;color:#137fec;">
-                    <button @click="updateQty(index, 1)" class="w-9 h-9 flex items-center justify-center transition-colors" style="color:#8b949e;"
+                    <button @click="updateQty(index, 1)" class="w-11 h-11 flex items-center justify-center transition-colors" style="color:#8b949e;"
                         onmouseover="this.style.color='#3fb950'" onmouseout="this.style.color='#8b949e'">
-                        <span class="material-symbols-outlined text-sm">add</span>
+                        <span class="material-symbols-outlined text-base">add</span>
                     </button>
                 </div>
                 {{-- Line total --}}
